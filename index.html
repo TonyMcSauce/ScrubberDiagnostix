@@ -6,27 +6,17 @@
 <title>Scrubber Diagnostix</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-[data-theme="light"] {
-  --bg:#f4f6f9;--bg2:#ffffff;--bg3:#eef1f5;--border:#d8dde6;--border2:#b0bac9;
-  --text:#1a2233;--text2:#4a5568;--text3:#8a96a8;--shadow:0 1px 4px rgba(0,0,0,0.08);
-}
-[data-theme="dark"] {
-  --bg:#0d1117;--bg2:#151b24;--bg3:#1c2533;--border:#2a3545;--border2:#3a4a60;
-  --text:#e2e8f0;--text2:#8fa3bc;--text3:#566a82;--shadow:0 1px 4px rgba(0,0,0,0.3);
-}
-:root {
-  --accent:#f97316;--accent2:#fb923c;--normal:#22c55e;--urgent:#f59e0b;--critical:#ef4444;--na:#8b5cf6;
-  --font-display:'Barlow Condensed',sans-serif;--font-body:'Barlow',sans-serif;
-}
+[data-theme="light"]{--bg:#f4f6f9;--bg2:#ffffff;--bg3:#eef1f5;--border:#d8dde6;--border2:#b0bac9;--text:#1a2233;--text2:#4a5568;--text3:#8a96a8;--shadow:0 1px 4px rgba(0,0,0,0.08);}
+[data-theme="dark"]{--bg:#0d1117;--bg2:#151b24;--bg3:#1c2533;--border:#2a3545;--border2:#3a4a60;--text:#e2e8f0;--text2:#8fa3bc;--text3:#566a82;--shadow:0 1px 4px rgba(0,0,0,0.3);}
+:root{--accent:#f97316;--accent2:#fb923c;--normal:#22c55e;--urgent:#f59e0b;--critical:#ef4444;--na:#8b5cf6;--font-display:'Barlow Condensed',sans-serif;--font-body:'Barlow',sans-serif;}
 *{box-sizing:border-box;margin:0;padding:0;}
 body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:15px;line-height:1.6;min-height:100vh;transition:background .2s,color .2s;}
 .page{display:none;min-height:100vh;}.page.active{display:flex;flex-direction:column;}
 .header{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 20px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:var(--shadow);}
-.logo{font-family:var(--font-display);font-size:22px;font-weight:700;letter-spacing:.5px;color:var(--text);}
-.logo span{color:var(--accent);}
+.logo{font-family:var(--font-display);font-size:22px;font-weight:700;letter-spacing:.5px;color:var(--text);}.logo span{color:var(--accent);}
 .header-right{display:flex;align-items:center;gap:10px;}
 .header-sub{font-size:11px;color:var(--text3);letter-spacing:1px;text-transform:uppercase;}
-.theme-toggle{background:var(--bg3);border:1px solid var(--border);border-radius:20px;width:52px;height:28px;cursor:pointer;position:relative;transition:background .2s;flex-shrink:0;}
+.theme-toggle{background:var(--bg3);border:1px solid var(--border);border-radius:20px;width:52px;height:28px;cursor:pointer;position:relative;flex-shrink:0;}
 .theme-toggle-thumb{position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:var(--accent);transition:transform .2s;display:flex;align-items:center;justify-content:center;font-size:11px;}
 [data-theme="dark"] .theme-toggle-thumb{transform:translateX(24px);}
 [data-theme="light"] .theme-toggle-thumb::after{content:'☀️';}
@@ -42,8 +32,8 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-si
 .tech-input-block input:focus{border-color:var(--accent);}
 .tech-input-block input::placeholder{color:var(--text3);}
 .section-label{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);margin-bottom:14px;font-weight:600;}
-.nav-tabs{display:flex;gap:5px;margin-bottom:20px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:4px;box-shadow:var(--shadow);}
-.nav-tab{flex:1;padding:7px 4px;text-align:center;border-radius:6px;font-size:11px;font-weight:600;letter-spacing:.3px;cursor:pointer;color:var(--text3);transition:all .2s;text-transform:uppercase;}
+.nav-tabs{display:flex;gap:4px;margin-bottom:20px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:4px;box-shadow:var(--shadow);flex-wrap:wrap;}
+.nav-tab{flex:1;min-width:60px;padding:7px 4px;text-align:center;border-radius:6px;font-size:11px;font-weight:600;letter-spacing:.3px;cursor:pointer;color:var(--text3);transition:all .2s;text-transform:uppercase;}
 .nav-tab.active{background:var(--accent);color:#fff;}
 .symptom-grid{display:flex;flex-direction:column;gap:8px;margin-bottom:24px;}
 .symptom-card{background:var(--bg2);border:1.5px solid var(--border);border-radius:10px;padding:14px 16px;cursor:pointer;transition:all .15s;display:flex;align-items:flex-start;gap:14px;box-shadow:var(--shadow);}
@@ -54,6 +44,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-si
 .symptom-card.cat-mechanical .symptom-icon{background:rgba(20,184,166,.12);}
 .symptom-card.cat-drum .symptom-icon{background:rgba(249,115,22,.10);}
 .symptom-card.cat-environment .symptom-icon{background:rgba(139,92,246,.12);}
+.symptom-card.cat-electrical .symptom-icon{background:rgba(245,158,11,.12);}
 .symptom-info{flex:1;}
 .symptom-title{font-weight:600;font-size:14px;color:var(--text);margin-bottom:2px;}
 .symptom-desc{font-size:12px;color:var(--text3);line-height:1.4;}
@@ -75,7 +66,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-si
 .symptom-tag{background:rgba(249,115,22,.10);border:1px solid rgba(249,115,22,.25);color:var(--accent);font-size:12px;font-weight:500;padding:4px 10px;border-radius:20px;}
 .checklist-group{margin-bottom:28px;}
 .checklist-group-title{font-family:var(--font-display);font-size:16px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text2);border-bottom:1px solid var(--border);padding-bottom:8px;margin-bottom:14px;}
-.check-item{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:8px;transition:border-color .15s;box-shadow:var(--shadow);}
+.check-item{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:8px;transition:border-color .15s,background .15s;box-shadow:var(--shadow);}
 .check-item.pass{border-color:rgba(34,197,94,.5);background:rgba(34,197,94,.04);}
 .check-item.fail{border-color:rgba(239,68,68,.5);background:rgba(239,68,68,.04);}
 .check-item.na{border-color:rgba(139,92,246,.5);background:rgba(139,92,246,.04);}
@@ -128,6 +119,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-si
 </head>
 <body>
 
+<!-- WELCOME -->
 <div id="page-welcome" class="page active">
   <div class="header">
     <div class="logo">Scrubber <span>Diagnostix</span></div>
@@ -143,7 +135,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-si
     </div>
     <div class="tech-input-block">
       <label>Technician name (optional)</label>
-      <input type="text" id="tech-name" placeholder="Enter your name" />
+      <input type="text" id="tech-name" placeholder="Enter your name"/>
     </div>
     <div class="section-label">Filter by category</div>
     <div class="nav-tabs">
@@ -151,7 +143,8 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-si
       <div class="nav-tab" onclick="filterSymptoms('hydraulic',this)">Hydraulic</div>
       <div class="nav-tab" onclick="filterSymptoms('mechanical',this)">Mechanical</div>
       <div class="nav-tab" onclick="filterSymptoms('drum',this)">Drum</div>
-      <div class="nav-tab" onclick="filterSymptoms('environment',this)">Environment</div>
+      <div class="nav-tab" onclick="filterSymptoms('environment',this)">Environ.</div>
+      <div class="nav-tab" onclick="filterSymptoms('electrical',this)">Electrical</div>
     </div>
     <div class="section-label">Observed symptoms <span id="selected-count" style="display:none" class="counter-badge">0</span></div>
     <div class="symptom-grid" id="symptom-grid"></div>
@@ -164,6 +157,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-si
   </div>
 </div>
 
+<!-- CHECKLIST -->
 <div id="page-checklist" class="page">
   <div class="header">
     <button class="btn btn-ghost" onclick="showPage('welcome')" style="padding:8px 0;">&#8592; Back</button>
@@ -190,6 +184,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-si
   </div>
 </div>
 
+<!-- RESULTS -->
 <div id="page-results" class="page">
   <div class="header">
     <button class="btn btn-ghost" onclick="showPage('checklist')" style="padding:8px 0;">&#8592; Back</button>
@@ -205,6 +200,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-si
   </div>
 </div>
 
+<!-- LOG -->
 <div id="page-log" class="page">
   <div class="header">
     <button class="btn btn-ghost" onclick="showPage('welcome')" style="padding:8px 0;">&#8592; Back</button>
@@ -218,48 +214,58 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-si
 </div>
 
 <script>
+// ── THEME ──
 function toggleTheme(){const h=document.documentElement;const t=h.getAttribute('data-theme')==='dark'?'light':'dark';h.setAttribute('data-theme',t);try{localStorage.setItem('diagnostix-theme',t);}catch(e){}}
 (function(){try{const s=localStorage.getItem('diagnostix-theme')||'light';document.documentElement.setAttribute('data-theme',s);}catch(e){}})();
 
+// ── SYMPTOMS ──
 const SYMPTOMS=[
-  {id:'s1',cat:'hydraulic',icon:'📈',title:'Main pump pressure HIGH',desc:'System pressure above 15 MPa, relief valve chattering or lifting'},
-  {id:'s2',cat:'hydraulic',icon:'📉',title:'Main pump pressure LOW',desc:'System pressure cannot reach 15 MPa under normal load'},
-  {id:'s3',cat:'hydraulic',icon:'⚡',title:'Booster pressure LOW',desc:'Charge pressure dropped below 1.5 MPa'},
-  {id:'s4',cat:'hydraulic',icon:'〰️',title:'Both pressures fluctuating',desc:'Booster and main pump pressures hunting or unstable simultaneously'},
-  {id:'s5',cat:'hydraulic',icon:'🔴',title:'Pressure filter bypass active',desc:'High-pressure filter bypass indicator has triggered'},
-  {id:'s6',cat:'hydraulic',icon:'🔵',title:'Return filter bypass active',desc:'Return line filter bypass indicator has triggered'},
-  {id:'s7',cat:'hydraulic',icon:'💧',title:'Drive shaft seal leaking',desc:'Oil leaking from one or more CA 100 motor shaft seals'},
-  {id:'s8',cat:'hydraulic',icon:'🌡️',title:'System running hot',desc:'Oil temperature above normal operating range'},
-  {id:'s9',cat:'hydraulic',icon:'🔊',title:'Pump noise / cavitation sounds',desc:'Whining, knocking or grinding from pump area'},
-  {id:'s10',cat:'mechanical',icon:'📳',title:'One drive high vibration',desc:'Single drive vibration sensor showing elevated reading'},
-  {id:'s11',cat:'mechanical',icon:'📳',title:'Multiple drives high vibration',desc:'Two or more drive vibration sensors elevated simultaneously'},
-  {id:'s12',cat:'mechanical',icon:'🔥',title:'Hot bearing pedestal',desc:'One or more bearing pedestals running above normal temperature'},
-  {id:'s13',cat:'mechanical',icon:'⚙️',title:'Tyre bank coupling issue',desc:'Noise, misalignment or slip at 3-tyre / 4-tyre shaft coupling'},
-  {id:'s14',cat:'drum',icon:'🐌',title:'Drum rotating slowly',desc:'Drum speed below normal, all drives appear active'},
-  {id:'s15',cat:'drum',icon:'↔️',title:'Drum rotating unevenly',desc:'Speed varies, drum wobbling or surging during operation'},
-  {id:'s16',cat:'drum',icon:'⛔',title:'Drum not rotating',desc:'Drum has stopped completely or will not start'},
-  {id:'s17',cat:'environment',icon:'💦',title:'Water ingress onto tyres / drum',desc:'Water dripping or spraying onto tyre banks or drum riding rings, causing tyre slip'},
+  // HYDRAULIC
+  {id:'s1', cat:'hydraulic',   icon:'📈',title:'Main pump pressure HIGH',          desc:'System pressure above 15 MPa, relief valve chattering or lifting'},
+  {id:'s2', cat:'hydraulic',   icon:'📉',title:'Main pump pressure LOW',           desc:'System pressure cannot reach 15 MPa under normal load'},
+  {id:'s3', cat:'hydraulic',   icon:'⚡',title:'Booster pressure LOW',             desc:'Charge pressure dropped below 1.5 MPa'},
+  {id:'s18',cat:'hydraulic',   icon:'🔺',title:'Booster pressure HIGH',            desc:'Charge pressure running above 1.8 MPa, charge relief valve bypassing continuously or main pump inlet seal at risk'},
+  {id:'s4', cat:'hydraulic',   icon:'〰️',title:'Both pressures fluctuating',       desc:'Booster and main pump pressures hunting or unstable simultaneously'},
+  {id:'s5', cat:'hydraulic',   icon:'🔴',title:'Pressure filter bypass active',    desc:'High-pressure filter bypass indicator has triggered'},
+  {id:'s6', cat:'hydraulic',   icon:'🔵',title:'Return filter bypass active',      desc:'Return line filter bypass indicator has triggered'},
+  {id:'s7', cat:'hydraulic',   icon:'💧',title:'Drive shaft seal leaking',         desc:'Oil leaking from one or more CA 100 motor shaft seals'},
+  {id:'s8', cat:'hydraulic',   icon:'🌡️',title:'System running hot',               desc:'Oil temperature above normal operating range'},
+  {id:'s9', cat:'hydraulic',   icon:'🔊',title:'Pump noise / cavitation sounds',   desc:'Whining, knocking or grinding from pump area'},
+  // MECHANICAL
+  {id:'s10',cat:'mechanical',  icon:'📳',title:'One drive high vibration',         desc:'Single drive vibration sensor showing elevated reading'},
+  {id:'s11',cat:'mechanical',  icon:'📳',title:'Multiple drives high vibration',   desc:'Two or more drive vibration sensors elevated simultaneously'},
+  {id:'s12',cat:'mechanical',  icon:'🔥',title:'Hot bearing pedestal',             desc:'One or more bearing pedestals running above normal temperature'},
+  {id:'s13',cat:'mechanical',  icon:'⚙️',title:'Tyre bank coupling issue',         desc:'Noise, misalignment or slip at 3-tyre / 4-tyre shaft coupling'},
+  // DRIVE ROTATION
+  {id:'s19',cat:'electrical',  icon:'🔄',title:'One drive rotating in reverse',    desc:'One tyre bank is observed turning opposite to the other three, fighting drum rotation - drum crawls, stalls, or pressure spikes'},
+  // DRUM
+  {id:'s14',cat:'drum',        icon:'🐌',title:'Drum rotating slowly',             desc:'Drum speed below normal, all drives appear active'},
+  {id:'s15',cat:'drum',        icon:'↔️',title:'Drum rotating unevenly',           desc:'Speed varies, drum wobbling or surging during operation'},
+  {id:'s16',cat:'drum',        icon:'⛔',title:'Drum not rotating',               desc:'Drum has stopped completely or will not start'},
+  // ENVIRONMENT
+  {id:'s17',cat:'environment', icon:'💦',title:'Water ingress onto tyres / drum',  desc:'Water dripping or spraying onto tyre banks or riding rings, causing tyre slip'},
 ];
 
+// ── CHECKS ──
 const CHECKS={
   s1:[
     {group:'Immediate Checks',items:[
-      {id:'c1',title:'Check reservoir oil level',detail:'Confirm oil is at the correct mark on the sight glass. Low volume forces the pump to build pressure against reduced capacity.',failWeight:{cause:'Low reservoir level',likelihood:'medium'}},
-      {id:'c2',title:'Confirm no shaft has seized - observe visually and check vibration sensors',detail:'Do NOT attempt to rotate tyre shafts by hand. The drum weighs over 20 tons and the shafts cannot be turned manually with the drum in place. Observe each tyre bank visually for rotation during operation and cross-reference with the drive vibration sensors. A seized shaft stalls the motor and spikes pressure to relief.',failWeight:{cause:'Mechanical seizure on tyre shaft',likelihood:'high'}},
-      {id:'c3',title:'Check system relief valve for heat',detail:'Carefully feel the main relief valve body. If it is significantly hotter than surrounding pipework, it is bypassing flow under excess pressure. Confirm against a calibrated test gauge.',failWeight:{cause:'Relief valve set high or faulty',likelihood:'high'}},
+      {id:'c1', title:'Check reservoir oil level',detail:'Confirm oil is at the correct mark on the sight glass. Low volume forces the pump to build pressure against reduced capacity.',failWeight:{cause:'Low reservoir level',likelihood:'medium'}},
+      {id:'c2', title:'Confirm no shaft has seized - observe visually and check vibration sensors',detail:'Do NOT attempt to rotate tyre shafts by hand. The drum weighs over 20 tons and the shafts cannot be turned manually with the drum in place. Observe each tyre bank visually for rotation during operation and cross-reference with the drive vibration sensors. A seized shaft stalls the motor and spikes pressure to relief.',failWeight:{cause:'Mechanical seizure on tyre shaft',likelihood:'high'}},
+      {id:'c3', title:'Check system relief valve for heat',detail:'Carefully feel the main relief valve body. If it is significantly hotter than surrounding pipework, it is bypassing flow under excess pressure. Confirm against a calibrated test gauge.',failWeight:{cause:'Relief valve set high or faulty',likelihood:'high'}},
     ]},
     {group:'Hydraulic Circuit',items:[
-      {id:'c4',title:'Inspect all directional control valves',detail:'Verify all valves are in their correct operating position. A partially closed or failed valve creates a downstream restriction that forces pressure to climb.',failWeight:{cause:'Control valve failed or partially closed',likelihood:'high'}},
-      {id:'c5',title:'Check for collapsed or restricted hoses',detail:'Inspect all hoses under load for unusual hot spots. A hose delaminated internally restricts flow but looks fine externally. A localised hot section confirms a restriction point.',failWeight:{cause:'Internal hose collapse',likelihood:'medium'}},
+      {id:'c4', title:'Inspect all directional control valves',detail:'Verify all valves are in their correct operating position. A partially closed or failed valve creates a downstream restriction that forces pressure to climb.',failWeight:{cause:'Control valve failed or partially closed',likelihood:'high'}},
+      {id:'c5', title:'Check for collapsed or restricted hoses',detail:'Inspect all hoses under load for unusual hot spots. A hose delaminated internally restricts flow but looks fine externally. A localised hot section confirms a restriction point.',failWeight:{cause:'Internal hose collapse',likelihood:'medium'}},
     ]},
     {group:'Pump Condition',items:[
-      {id:'c7',title:'Measure main pump case drain flow',detail:'Compare measured case drain flow against manufacturer specification. Excessive drain flow alongside high pressure indicates the pump is worn and recirculating internally, demanding greater effort to maintain pressure.',failWeight:{cause:'Worn main pump, excessive internal leakage',likelihood:'medium'}},
+      {id:'c7', title:'Measure main pump case drain flow',detail:'Compare measured case drain flow against manufacturer specification. Excessive drain flow alongside high pressure indicates the pump is worn and recirculating internally.',failWeight:{cause:'Worn main pump, excessive internal leakage',likelihood:'medium'}},
     ]},
   ],
   s2:[
     {group:'Immediate Checks',items:[
-      {id:'c8',title:'Check booster pressure gauge',detail:'Confirm booster is holding 1.8 MPa. If booster pressure is also low, the fault is upstream of the main pump. If booster is normal, the main pump itself is the fault.',failWeight:{cause:'Booster fault affecting main pump inlet',likelihood:'high'}},
-      {id:'c9',title:'Check main relief valve setting and temperature',detail:'Relief valve may be set below 15 MPa or stuck partially open, bypassing all flow to tank. The valve body will be hot if continuous flow is passing through it.',failWeight:{cause:'Relief valve set low or stuck open',likelihood:'high'}},
+      {id:'c8', title:'Check booster pressure gauge',detail:'Confirm booster is holding 1.8 MPa. If booster pressure is also low, the fault is upstream of the main pump. If booster is normal, the main pump itself is the fault.',failWeight:{cause:'Booster fault affecting main pump inlet',likelihood:'high'}},
+      {id:'c9', title:'Check main relief valve setting and temperature',detail:'Relief valve may be set below 15 MPa or stuck partially open, bypassing all flow to tank. The valve body will be hot if continuous flow is passing through it.',failWeight:{cause:'Relief valve set low or stuck open',likelihood:'high'}},
     ]},
     {group:'Pump Assessment',items:[
       {id:'c10',title:'Measure main pump case drain flow',detail:'A worn pump shows excessive case drain flow. It cannot build pressure because oil slips back internally rather than being delivered to the system.',failWeight:{cause:'Main pump worn, excessive internal leakage',likelihood:'high'}},
@@ -277,8 +283,19 @@ const CHECKS={
       {id:'c16',title:'Inspect suction line for air ingestion points',detail:'Check all fittings and joints on the suction pipe above oil level. A loose fitting draws air without any visible external leak. Look for foam or aeration in the reservoir.',failWeight:{cause:'Air ingestion on suction line',likelihood:'medium'}},
     ]},
     {group:'Booster Pump',items:[
-      {id:'c17',title:'Test booster pump output pressure',detail:'Temporarily restrict flow downstream of the booster and observe whether it can approach 1.8 MPa under reduced flow. Failure to develop adequate pressure confirms the pump is worn.',failWeight:{cause:'Booster pump worn internally',likelihood:'high'}},
+      {id:'c17',title:'Test booster pump output pressure',detail:'Temporarily restrict flow downstream of the booster and observe whether it can approach 1.8 MPa. Failure to develop adequate pressure confirms the pump is worn.',failWeight:{cause:'Booster pump worn internally',likelihood:'high'}},
       {id:'c18',title:'Inspect booster relief valve',detail:'Check the booster outlet relief valve is not stuck open or set too low. If booster flow is bypassing through a failed relief valve, charge pressure collapses regardless of pump condition.',failWeight:{cause:'Booster relief valve stuck open or set too low',likelihood:'medium'}},
+    ]},
+  ],
+  s18:[
+    {group:'Immediate Checks - Booster Pressure HIGH',items:[
+      {id:'c68',title:'Check booster charge relief valve for heat and operation',detail:'The charge relief valve on the booster outlet is the primary pressure-limiting device for the charge circuit. If it is stuck closed or set too high, booster pressure will climb above 1.8 MPa. Feel the valve body carefully - a correctly functioning relief valve will be warm when passing flow. A cold valve at elevated pressure means it is not opening at all.',failWeight:{cause:'Charge relief valve stuck closed or set too high',likelihood:'high'}},
+      {id:'c69',title:'Check main pump inlet restriction',detail:'High booster pressure can also result from a restriction between the booster outlet and the main pump inlet - for example a partially closed isolation valve or a blocked check valve in the charge line. The booster is pumping against a blockage, forcing pressure up. Check all valves and fittings in the charge line between booster outlet and main pump inlet.',failWeight:{cause:'Restriction in charge line between booster and main pump inlet',likelihood:'high'}},
+      {id:'c70',title:'Verify charge relief valve setting after any recent maintenance',detail:'If the charge relief valve has been adjusted or replaced recently, confirm the setting is correct for your system at 1.8 MPa. An over-adjusted or incorrectly specified replacement valve is a common post-maintenance cause of high charge pressure.',failWeight:{cause:'Charge relief valve incorrectly set after maintenance',likelihood:'medium'}},
+    ]},
+    {group:'Main Pump Protection',items:[
+      {id:'c71',title:'Check main pump shaft seal for weeping or leakage',detail:'The main pump inlet shaft seal is designed for charge pressure, not high pressure. If booster pressure has been running high for a period, inspect the pump shaft seal area for oil weeping or leakage. Early seal distress indicates the inlet has been over-pressurised.',failWeight:{cause:'Main pump inlet shaft seal distressed by overpressure',likelihood:'medium'}},
+      {id:'c72',title:'Monitor main pump case drain pressure',detail:'Elevated booster pressure feeding the main pump inlet raises case pressure inside the main pump. Check drain pressure at the pump case drain port. If it is above 2 bar, the elevated charge pressure is transmitting into the case and threatening the main pump shaft seal.',failWeight:{cause:'Elevated case pressure in main pump due to high charge pressure',likelihood:'medium'}},
     ]},
   ],
   s4:[
@@ -309,8 +326,8 @@ const CHECKS={
   ],
   s7:[
     {group:'Case Pressure Checks',items:[
-      {id:'c29',title:'Check drain line for restriction or backpressure',detail:'The drain line must return freely to tank. Measure pressure at the drain port on the affected motor. More than 2 bar indicates restriction. Check for kinked hoses, closed valves, or a drain line incorrectly shared with the main return circuit.',failWeight:{cause:'Case drain restriction causing elevated case pressure and seal failure',likelihood:'high'}},
-      {id:'c30',title:'Verify flushing pressure at F4',detail:'Confirm the flushing tap-off is sourced from the charge pressure line (1.8 MPa) and not accidentally connected to the high-pressure supply. Excessive flushing pressure over-pressurises the case and destroys the shaft seal.',failWeight:{cause:'Flushing pressure too high, overpressurising motor case',likelihood:'medium'}},
+      {id:'c29',title:'Check drain line for restriction or backpressure',detail:'The drain line must return freely to tank. Measure pressure at the drain port on the affected motor. More than 2 bar indicates restriction. Check for kinked hoses, closed valves, or a drain line shared with the main return circuit.',failWeight:{cause:'Case drain restriction causing elevated case pressure and seal failure',likelihood:'high'}},
+      {id:'c30',title:'Verify flushing pressure at F4',detail:'Confirm the flushing tap-off is sourced from the charge pressure line (1.8 MPa) and not accidentally connected to the high-pressure supply. Excessive flushing pressure over-pressurises the case.',failWeight:{cause:'Flushing pressure too high, overpressurising motor case',likelihood:'medium'}},
       {id:'c31',title:'Inspect drain line routing back to tank',detail:'Confirm the drain line returns to tank independently and is not shared with the main return circuit. Backpressure spikes in the return line raise case pressure directly.',failWeight:{cause:'Drain line shared with return circuit, causing backpressure',likelihood:'medium'}},
     ]},
     {group:'Seal Condition',items:[
@@ -320,8 +337,8 @@ const CHECKS={
   s8:[
     {group:'Cooling System',items:[
       {id:'c33',title:'Confirm cooler drive fan is running',detail:'Visually confirm the cooler drive fan is operating. If the fan motor has failed or its hydraulic circuit has faulted, the heat exchanger is not being cooled and oil temperature will rise continuously.',failWeight:{cause:'Cooler drive fan not running',likelihood:'high'}},
-      {id:'c34',title:'Inspect heat exchanger for fouling or blockage',detail:'Check the cooler core for dust, process material, or scale buildup on the face of the exchanger. A fouled core cannot transfer heat adequately. Clean or replace as necessary.',failWeight:{cause:'Heat exchanger fouled or blocked',likelihood:'high'}},
-      {id:'c35',title:'Check thermostat setpoint and operation',detail:'Verify the cooling thermostat is functioning and set correctly. A failed thermostat may not signal the cooler to activate when oil temperature rises to the setpoint.',failWeight:{cause:'Thermostat failed or set incorrectly',likelihood:'medium'}},
+      {id:'c34',title:'Inspect heat exchanger for fouling or blockage',detail:'Check the cooler core for dust, process material, or scale buildup. A fouled core cannot transfer heat adequately. Clean or replace as necessary.',failWeight:{cause:'Heat exchanger fouled or blocked',likelihood:'high'}},
+      {id:'c35',title:'Check thermostat setpoint and operation',detail:'Verify the cooling thermostat is functioning and set correctly. A failed thermostat may not signal the cooler to activate when oil temperature rises.',failWeight:{cause:'Thermostat failed or set incorrectly',likelihood:'medium'}},
       {id:'c36',title:'Check flushing connections on all four drives',detail:'Confirm F4 flushing lines are connected and flowing on all four CA 100 motors. A disconnected flushing line causes heat to build inside the motor case, adding to the overall system heat load.',failWeight:{cause:'Flushing lines disconnected on one or more drives',likelihood:'medium'}},
     ]},
     {group:'Oil Condition',items:[
@@ -332,75 +349,96 @@ const CHECKS={
     {group:'Noise Diagnosis',items:[
       {id:'c38',title:'Check booster pressure gauge immediately',detail:'Pump noise is the primary sign of cavitation. If booster pressure is low, the main pump is being starved at its inlet. Urgent - cavitation causes rapid internal erosion of pistons and valve plate.',failWeight:{cause:'Main pump cavitating due to low charge pressure',likelihood:'high'}},
       {id:'c39',title:'Check for aerated oil in the reservoir',detail:'Foam in the reservoir or a gargling sound at the pump confirms air is entering the suction circuit. Locate and seal the air ingestion point on the suction line.',failWeight:{cause:'Air ingestion causing pump aeration and noise',likelihood:'high'}},
-      {id:'c40',title:'Check booster pump coupling integrity',detail:'A partially failed coupling can cause intermittent drive and knocking noise. Inspect the coupling for wear, cracking, or missing elements.',failWeight:{cause:'Pump coupling damaged or failing',likelihood:'medium'}},
+      {id:'c40',title:'Check for a reversed drive creating a sustained overload on the pump',detail:'A drive rotating in reverse fights the drum and forces the other three drives to work against it. This sustained overload causes the pump to labour noisily and pressure to spike repeatedly. Observe each tyre bank rotation direction from a safe position and confirm all four are turning the same way.',failWeight:{cause:'Reversed drive overloading pump, causing noise and pressure spikes',likelihood:'high'}},
+      {id:'c41',title:'Check booster pump coupling integrity',detail:'A partially failed coupling can cause intermittent drive and knocking noise. Inspect the coupling for wear, cracking, or missing elements.',failWeight:{cause:'Pump coupling damaged or failing',likelihood:'medium'}},
     ]},
   ],
   s10:[
     {group:'Single Drive Vibration',items:[
-      {id:'c41',title:'Immediately check bearing pedestal temperatures on that shaft',detail:'Check the temperature of both bearing pedestals on the affected drive shaft using a contact thermometer or thermal camera. An elevated pedestal temperature alongside high vibration indicates bearing distress. Do not wait for vibration to worsen before acting.',failWeight:{cause:'Bearing failure on affected tyre shaft',likelihood:'high'}},
-      {id:'c42',title:'Inspect tyre condition on the affected bank visually from a safe distance',detail:'With the system running, observe the tyres on the affected bank from a safe position. Look for flat spots, uneven wear, bulging, or visible surface damage that could cause vibration transmitted through the shaft to the motor sensor. Do not approach the rotating shaft.',failWeight:{cause:'Tyre flat spot or uneven wear causing vibration',likelihood:'medium'}},
-      {id:'c43',title:'Inspect the 3-tyre to 4-tyre shaft coupling on that drive during next shutdown',detail:'Check the coupling between the two banks on this drive shaft during the next planned shutdown with the system de-energised and isolated. Look for fretting wear, axial play, or angular misalignment.',failWeight:{cause:'Shaft coupling worn or misaligned',likelihood:'medium'}},
-      {id:'c44',title:'Cross-reference with system pressure trend',detail:'If one drive is absorbing increased mechanical load, system pressure on the common rail will have crept slightly higher. A correlation between the elevated vibration and a pressure rise confirms increased load on that drive.',failWeight:{cause:'Increased mechanical load on that drive',likelihood:'medium'}},
+      {id:'c42',title:'Immediately check bearing pedestal temperatures on that shaft',detail:'Check the temperature of both bearing pedestals on the affected drive shaft using a contact thermometer or thermal camera. An elevated pedestal temperature alongside high vibration indicates bearing distress. Do not wait for vibration to worsen before acting.',failWeight:{cause:'Bearing failure on affected tyre shaft',likelihood:'high'}},
+      {id:'c43',title:'Observe tyre rotation direction on the affected bank from a safe distance',detail:'Confirm the affected tyre bank is rotating in the same direction as the other three banks. A reversed drive will show elevated vibration as it fights the drum and the other drives. This is one of the clearest early indicators of reverse rotation.',failWeight:{cause:'Reversed drive causing vibration on that motor',likelihood:'high'}},
+      {id:'c44',title:'Inspect tyre condition on the affected bank visually',detail:'Look for flat spots, uneven wear, bulging, or visible surface damage that could cause vibration transmitted through the shaft to the motor sensor. Observe from a safe distance with the system running.',failWeight:{cause:'Tyre flat spot or uneven wear causing vibration',likelihood:'medium'}},
+      {id:'c45',title:'Inspect the shaft coupling on that drive during next planned shutdown',detail:'Check the coupling between the 3-tyre and 4-tyre banks for fretting wear, axial play, or angular misalignment with the system de-energised and isolated.',failWeight:{cause:'Shaft coupling worn or misaligned',likelihood:'medium'}},
     ]},
   ],
   s11:[
     {group:'Multiple Drive Vibration',items:[
-      {id:'c45',title:'Inspect drum riding ring condition',detail:'Multiple drives vibrating simultaneously points toward the drum itself rather than individual shafts. Inspect the drum riding rings for wear, cracks, out-of-round surface, or weld repair buildup that creates a periodic excitation as the drum rotates.',failWeight:{cause:'Drum riding ring worn, cracked, or uneven',likelihood:'high'}},
-      {id:'c46',title:'Check drum for uneven process load or internal material buildup',detail:'Material buildup concentrated on one side of the drum interior creates an imbalance that drives vibration across all tyre banks simultaneously.',failWeight:{cause:'Drum out of balance due to material buildup or uneven load',likelihood:'high'}},
-      {id:'c47',title:'Inspect tyre alignment across all banks',detail:'Check that all tyre banks are properly aligned with the drum riding rings. Lateral misalignment across multiple banks creates a common vibration source that registers on all drive sensors.',failWeight:{cause:'Tyre bank misalignment across multiple shafts',likelihood:'medium'}},
+      {id:'c46',title:'Inspect drum riding ring condition',detail:'Multiple drives vibrating simultaneously points toward the drum itself rather than individual shafts. Inspect the drum riding rings for wear, cracks, out-of-round surface, or weld repair buildup.',failWeight:{cause:'Drum riding ring worn, cracked, or uneven',likelihood:'high'}},
+      {id:'c47',title:'Check drum for uneven process load or internal material buildup',detail:'Material buildup concentrated on one side of the drum interior creates an imbalance that drives vibration across all tyre banks simultaneously.',failWeight:{cause:'Drum out of balance due to material buildup or uneven load',likelihood:'high'}},
+      {id:'c48',title:'Inspect tyre alignment across all banks',detail:'Check that all tyre banks are properly aligned with the drum riding rings. Lateral misalignment across multiple banks creates a common vibration source that registers on all drive sensors.',failWeight:{cause:'Tyre bank misalignment across multiple shafts',likelihood:'medium'}},
     ]},
   ],
   s12:[
     {group:'Bearing Temperature',items:[
-      {id:'c48',title:'Check lubrication on the hot bearing immediately',detail:'Confirm grease or oil lubrication on the affected pedestal bearing is present and not degraded. A bearing running dry generates heat well before vibration becomes detectable. Re-lubricate immediately if dry - do not continue running a dry bearing.',failWeight:{cause:'Bearing lubrication failure',likelihood:'high'}},
-      {id:'c49',title:'Cross-reference with vibration sensor on corresponding drive',detail:'Check the vibration reading on the drive connected to that shaft. If vibration has also risen, the bearing is in active distress. If vibration is still normal, this is likely an early-stage lubrication problem.',failWeight:{cause:'Bearing in early to mid-stage failure',likelihood:'high'}},
-      {id:'c50',title:'Inspect bearing housing seal for contamination ingress',detail:'The scrubber environment introduces process moisture and material into bearing housings over time. Check the housing seal condition. If the seal is compromised, contamination has replaced lubrication and wear will accelerate rapidly.',failWeight:{cause:'Contamination ingress into bearing housing through failed seal',likelihood:'medium'}},
+      {id:'c49',title:'Check lubrication on the hot bearing immediately',detail:'Confirm grease or oil lubrication on the affected pedestal bearing is present and not degraded. A bearing running dry generates heat well before vibration becomes detectable. Re-lubricate immediately if dry.',failWeight:{cause:'Bearing lubrication failure',likelihood:'high'}},
+      {id:'c50',title:'Cross-reference with vibration sensor on corresponding drive',detail:'Check the vibration reading on the drive connected to that shaft. If vibration has also risen, the bearing is in active distress. If vibration is still normal, this is likely an early-stage lubrication problem.',failWeight:{cause:'Bearing in early to mid-stage failure',likelihood:'high'}},
+      {id:'c51',title:'Inspect bearing housing seal for contamination ingress',detail:'Check the housing seal condition. If the seal is compromised, process moisture and material has replaced lubrication and wear will accelerate rapidly.',failWeight:{cause:'Contamination ingress into bearing housing through failed seal',likelihood:'medium'}},
     ]},
   ],
   s13:[
     {group:'Coupling Inspection',items:[
-      {id:'c51',title:'Arrange shutdown to inspect coupling for visible wear or damage',detail:'The coupling between the 3-tyre and 4-tyre banks must be inspected with the system de-energised and fully isolated. Look for cracking, fretting, missing elements, or significant wear on the coupling faces.',failWeight:{cause:'Coupling worn or mechanically damaged',likelihood:'high'}},
-      {id:'c52',title:'Check coupling alignment during shutdown',detail:'Verify the two shaft sections are correctly aligned at the coupling joint. Misalignment imposes significant additional load on the coupling and both adjacent bearings.',failWeight:{cause:'Shaft misalignment at coupling',likelihood:'high'}},
-      {id:'c53',title:'Check fastener torque on coupling flanges',detail:'Loose coupling bolts allow relative movement at the joint causing fretting, noise, and eventual fatigue failure. Check and re-torque all fasteners to the specified value.',failWeight:{cause:'Coupling fasteners loose, allowing relative movement',likelihood:'medium'}},
+      {id:'c52',title:'Arrange shutdown to inspect coupling for visible wear or damage',detail:'The coupling between the 3-tyre and 4-tyre banks must be inspected with the system de-energised and fully isolated. Look for cracking, fretting, missing elements, or significant wear on the coupling faces.',failWeight:{cause:'Coupling worn or mechanically damaged',likelihood:'high'}},
+      {id:'c53',title:'Check coupling alignment during shutdown',detail:'Verify the two shaft sections are correctly aligned at the coupling joint. Misalignment imposes significant additional load on the coupling and both adjacent bearings.',failWeight:{cause:'Shaft misalignment at coupling',likelihood:'high'}},
+      {id:'c54',title:'Check fastener torque on coupling flanges',detail:'Loose coupling bolts allow relative movement at the joint causing fretting, noise, and eventual fatigue failure. Check and re-torque all fasteners to the specified value.',failWeight:{cause:'Coupling fasteners loose, allowing relative movement',likelihood:'medium'}},
+    ]},
+  ],
+  s19:[
+    {group:'Reverse Rotation - Confirm the Fault',items:[
+      {id:'c73',title:'Observe all four tyre bank rotation directions from a safe distance',detail:'From a safe observation point with the system running, watch each of the four tyre banks and confirm their direction of rotation. Three banks should be turning the same way. The reversed drive tyre bank will be visibly turning in the opposite direction, dragging against the drum. Do not approach rotating equipment.',failWeight:{cause:'One drive confirmed rotating in reverse, opposing drum rotation',likelihood:'high'}},
+      {id:'c74',title:'Check system pressure - expect it to be significantly elevated',detail:'A reversed drive creates a sustained mechanical conflict. The three correct drives are fighting the reversed drive through the drum. System pressure will be significantly above the normal 15 MPa operating level as the pump works to maintain flow against this abnormal load. This is a useful confirmation of the fault.',failWeight:{cause:'Pressure spike caused by reversed drive opposing drum torque',likelihood:'high'}},
+      {id:'c75',title:'Check vibration sensor on the suspected reversed drive',detail:'The reversed drive motor is experiencing abnormal radial and axial forces as it is pushed against by the drum and the other drives. Its vibration sensor reading will typically be elevated. Compare all four drive sensors and identify which one is anomalous.',failWeight:{cause:'Reversed drive generating abnormal vibration signature',likelihood:'medium'}},
+    ]},
+    {group:'Identify the Root Cause of Reversal',items:[
+      {id:'c76',title:'Check hydraulic hose connections on the suspected drive - A and B ports',detail:'The most common cause of a reversed drive is the A and B port hoses being swapped at the motor, either incorrectly at initial installation or reconnected in reverse after maintenance. With the system shut down and isolated, identify the A and B ports on the reversed motor and confirm the hoses are connected in the correct orientation matching the other three drives.',failWeight:{cause:'A and B port hoses swapped on that motor',likelihood:'high'}},
+      {id:'c77',title:'Check the directional control valve for that drive',detail:'A directional control valve that has failed in the wrong position, or has been manually shifted and not returned, will reverse the flow direction to the motor. Check the valve position and electrical/hydraulic signal for the affected drive circuit.',failWeight:{cause:'Directional control valve failed or incorrectly positioned',likelihood:'high'}},
+      {id:'c78',title:'Review any recent maintenance activity on that drive circuit',detail:'Reverse rotation after maintenance is almost always a reconnection error. Review the maintenance log for the affected drive. Any work involving disconnection and reconnection of hydraulic hoses, replacement of control valves, or motor removal on that circuit in recent weeks is the likely cause.',failWeight:{cause:'Incorrect reconnection following recent maintenance',likelihood:'high'}},
+    ]},
+    {group:'Remediation',items:[
+      {id:'c79',title:'Shut down the system before attempting any correction',detail:'Do not attempt to correct hose connections or valve positions while the system is running or pressurised. Shut down, depressurise, and isolate the full hydraulic system before working on any connections.',failWeight:{cause:'System must be shut down before any corrective action',likelihood:'high'}},
+      {id:'c80',title:'After correction, verify rotation direction before loading the drum',detail:'After correcting the hose connection or valve position, run the drive briefly without the drum under full load and confirm the tyre bank is now rotating in the correct direction matching the other three drives before returning to normal operation.',failWeight:{cause:'Rotation direction must be confirmed after correction before resuming drum operation',likelihood:'medium'}},
     ]},
   ],
   s14:[
     {group:'System Performance',items:[
-      {id:'c54',title:'Check system pressure against the 15 MPa baseline',detail:'If system pressure is at 15 MPa and the drum is still running slow, the drives are not developing sufficient torque. Check that all four drive inlet valves are fully open and verify no single drive is bypassing internally.',failWeight:{cause:'Drive control valve partially closed or drive bypassing internally',likelihood:'high'}},
-      {id:'c55',title:'Observe tyre-to-drum contact on all banks from a safe distance',detail:'Watch the contact between the tyres and drum riding rings during operation. Worn, contaminated, water-affected, or glazed tyres can slip under load without any hydraulic fault, reducing effective drum drive.',failWeight:{cause:'Tyre slip on drum riding ring',likelihood:'high'}},
-      {id:'c56',title:'Confirm all four drives are producing rotation',detail:'Observe each drive and tyre bank for rotation during operation. A drive that has failed internally or whose shaft coupling has failed contributes no torque while still consuming flow from the common rail.',failWeight:{cause:'One or more drives not contributing torque to drum',likelihood:'medium'}},
+      {id:'c55',title:'Check system pressure against the 15 MPa baseline',detail:'If system pressure is at 15 MPa and the drum is still running slow, the drives are not developing sufficient torque. Check that all four drive inlet valves are fully open and verify no single drive is bypassing internally.',failWeight:{cause:'Drive control valve partially closed or drive bypassing internally',likelihood:'high'}},
+      {id:'c56',title:'Observe tyre-to-drum contact on all banks from a safe distance',detail:'Watch the contact between the tyres and drum riding rings during operation. Worn, contaminated, water-affected, or glazed tyres can slip under load without any hydraulic fault.',failWeight:{cause:'Tyre slip on drum riding ring',likelihood:'high'}},
+      {id:'c57',title:'Check whether one drive may be rotating in reverse',detail:'A reversed drive actively resists drum rotation. The drum will turn slowly or struggle under full hydraulic pressure if one drive is opposing the others. Observe each tyre bank rotation direction from a safe distance and confirm all four match.',failWeight:{cause:'One drive rotating in reverse, opposing drum rotation',likelihood:'high'}},
+      {id:'c58',title:'Confirm all four drives are producing rotation',detail:'Observe each drive and tyre bank for rotation during operation. A drive that has failed internally or whose shaft coupling has failed contributes no torque while still consuming flow from the common rail.',failWeight:{cause:'One or more drives not contributing torque to drum',likelihood:'medium'}},
     ]},
   ],
   s15:[
     {group:'Drum Stability',items:[
-      {id:'c57',title:'Observe each tyre bank during operation from a safe position',detail:'Watch the drum and all tyre banks during operation. If one bank is intermittently surging or visibly not maintaining consistent contact with the riding ring, that bank is the source of the uneven rotation.',failWeight:{cause:'Tyre bank intermittently slipping or losing contact with riding ring',likelihood:'high'}},
-      {id:'c58',title:'Check system pressure for fluctuation in sync with drum surging',detail:'If hydraulic pressure fluctuates in sync with the drum surging, the cause is hydraulic. If pressure is steady while the drum surges, the cause is mechanical slip, water ingress, tyre wear, or drum balance.',failWeight:{cause:'Hydraulic pressure instability driving uneven drum rotation',likelihood:'medium'}},
+      {id:'c59',title:'Observe each tyre bank during operation from a safe position',detail:'Watch all tyre banks during operation. If one bank is intermittently surging or visibly not maintaining consistent contact with the riding ring, that bank is the source of the uneven rotation.',failWeight:{cause:'Tyre bank intermittently slipping or losing contact with riding ring',likelihood:'high'}},
+      {id:'c60',title:'Check system pressure for fluctuation in sync with drum surging',detail:'If hydraulic pressure fluctuates in sync with the drum surging, the cause is hydraulic. If pressure is steady while the drum surges, the cause is mechanical slip, water ingress, tyre wear, or drum balance.',failWeight:{cause:'Hydraulic pressure instability driving uneven drum rotation',likelihood:'medium'}},
     ]},
   ],
   s16:[
     {group:'Emergency Checks',items:[
-      {id:'c59',title:'Confirm powerpack is running and pressure has built',detail:'Check that both pumps are operational and system pressure is at 15 MPa. A drum that will not start may simply have no hydraulic supply. Check all alarms and confirm the powerpack has not tripped.',failWeight:{cause:'Powerpack not supplying pressure to drives',likelihood:'high'}},
-      {id:'c60',title:'Check for a seized shaft - observe visually and check vibration sensors',detail:'Do NOT attempt to manually rotate any tyre shaft. The drum weighs over 20 tons and the shafts cannot be turned by hand with the drum sitting on them. Observe visually whether any shaft bank is stationary while others rotate, and check each drive vibration sensor for an abnormal reading indicating a locked shaft.',failWeight:{cause:'Tyre shaft or bearing seized, preventing drum rotation',likelihood:'high'}},
-      {id:'c61',title:'Check for process material or foreign object obstructing the drum',detail:'Inspect around the drum shell and riding rings for accumulated process material, a dislodged component, or any foreign object that is physically blocking rotation.',failWeight:{cause:'Drum mechanically blocked by process material or foreign object',likelihood:'medium'}},
+      {id:'c61',title:'Confirm powerpack is running and pressure has built',detail:'Check that both pumps are operational and system pressure is at 15 MPa. A drum that will not start may simply have no hydraulic supply. Check all alarms and confirm the powerpack has not tripped.',failWeight:{cause:'Powerpack not supplying pressure to drives',likelihood:'high'}},
+      {id:'c62',title:'Check whether a drive may be rotating in reverse - observe visually',detail:'A reversed drive directly opposing drum rotation is capable of preventing the drum from starting at all. Observe each tyre bank from a safe distance when the system is started. If one bank is turning opposite to the others, it is fighting the drum and preventing rotation.',failWeight:{cause:'Reversed drive preventing drum from rotating',likelihood:'high'}},
+      {id:'c63',title:'Check for a seized shaft - observe visually and check vibration sensors',detail:'Do NOT attempt to manually rotate any tyre shaft. The drum weighs over 20 tons and the shafts cannot be turned by hand with the drum sitting on them. Observe visually whether any shaft bank is stationary while others rotate, and check each drive vibration sensor for an abnormal reading indicating a locked shaft.',failWeight:{cause:'Tyre shaft or bearing seized, preventing drum rotation',likelihood:'high'}},
+      {id:'c64',title:'Check for process material or foreign object obstructing the drum',detail:'Inspect around the drum shell and riding rings for accumulated process material, a dislodged component, or any foreign object that is physically blocking rotation.',failWeight:{cause:'Drum mechanically blocked by process material or foreign object',likelihood:'medium'}},
     ]},
   ],
   s17:[
     {group:'Water Ingress - Immediate Checks',items:[
-      {id:'c62',title:'Identify and confirm the water source',detail:'Locate where water is coming from. Common sources include a leaking spray bar or nozzle inside the drum, a damaged drum shell seal allowing process water out, condensation dripping from overhead structures, or an external pipe failure above the tyre banks.',failWeight:{cause:'Active water source wetting tyre contact surfaces',likelihood:'high'}},
-      {id:'c63',title:'Observe tyre-to-drum contact during operation from a safe distance',detail:'Watch the contact band between the wet tyres and the riding rings. Visible slipping, squealing, or inability to maintain drum speed under load confirms traction loss from water contamination of the contact surfaces.',failWeight:{cause:'Tyre slip on riding ring due to water on contact surfaces',likelihood:'high'}},
-      {id:'c64',title:'Check system pressure for drop or instability during slip events',detail:'When a tyre bank slips, that drive suddenly loses its mechanical load and the motor overspeeds momentarily. This may show as a brief pressure drop or fluctuation on the system gauge. A correlation between observed slip and a pressure event confirms tyre slip as the primary cause.',failWeight:{cause:'Drive overspeeding during tyre slip, causing pressure instability',likelihood:'medium'}},
+      {id:'c65',title:'Identify and confirm the water source',detail:'Locate where water is coming from. Common sources include a leaking spray bar or nozzle inside the drum, a damaged drum shell seal allowing process water out, condensation dripping from overhead structures, or an external pipe failure above the tyre banks.',failWeight:{cause:'Active water source wetting tyre contact surfaces',likelihood:'high'}},
+      {id:'c66',title:'Observe tyre-to-drum contact during operation from a safe distance',detail:'Watch the contact band between the wet tyres and the riding rings. Visible slipping, squealing, or inability to maintain drum speed under load confirms traction loss from water on the contact surfaces.',failWeight:{cause:'Tyre slip on riding ring due to water on contact surfaces',likelihood:'high'}},
+      {id:'c67',title:'Check system pressure for drop or instability during slip events',detail:'When a tyre bank slips, that drive suddenly loses its mechanical load and the motor overspeeds momentarily. This may show as a brief pressure drop or fluctuation on the system gauge. A correlation between observed slip and a pressure event confirms tyre slip as the primary cause.',failWeight:{cause:'Drive overspeeding during tyre slip, causing pressure instability',likelihood:'medium'}},
     ]},
     {group:'Remediation Steps',items:[
-      {id:'c65',title:'Isolate or redirect the water source if safe to do so',detail:'If the water source can be safely isolated or redirected away from the tyre banks without stopping the process, do so immediately. Even reducing water flow onto the contact surfaces will partially restore traction.',failWeight:{cause:'Ongoing water contamination preventing traction recovery',likelihood:'high'}},
-      {id:'c66',title:'Check tyre rubber condition for glazing',detail:'Water ingress over time can cause rubber glazing on the tyre surface, permanently reducing the coefficient of friction even when dry. Inspect tyre surfaces for a smooth, glazed appearance as opposed to the normal textured tread surface. Glazed tyres require replacement.',failWeight:{cause:'Tyre surface glazed, permanent traction reduction',likelihood:'medium'}},
-      {id:'c67',title:'Check riding ring surface for rust, scale, or water pitting',detail:'Prolonged water exposure causes the drum riding ring surface to rust or pit, reducing effective friction contact. Inspect the riding ring contact band for surface degradation that would reduce traction even after the water source is eliminated.',failWeight:{cause:'Riding ring surface degraded by water corrosion',likelihood:'medium'}},
+      {id:'c68b',title:'Isolate or redirect the water source if safe to do so',detail:'If the water source can be safely isolated or redirected away from the tyre banks without stopping the process, do so immediately. Even reducing water flow onto the contact surfaces will partially restore traction.',failWeight:{cause:'Ongoing water contamination preventing traction recovery',likelihood:'high'}},
+      {id:'c69b',title:'Check tyre rubber condition for glazing',detail:'Water ingress over time can cause rubber glazing on the tyre surface, permanently reducing the coefficient of friction even when dry. Inspect tyre surfaces for a smooth, glazed appearance. Glazed tyres require replacement.',failWeight:{cause:'Tyre surface glazed, permanent traction reduction',likelihood:'medium'}},
+      {id:'c70b',title:'Check riding ring surface for rust, scale, or water pitting',detail:'Prolonged water exposure causes the drum riding ring surface to rust or pit, reducing effective friction contact. Inspect the riding ring contact band for surface degradation.',failWeight:{cause:'Riding ring surface degraded by water corrosion',likelihood:'medium'}},
     ]},
   ],
 };
 
+// ── STATE ──
 let selectedSymptoms=[],checkResults={},currentFilter='all';
 let sessions=[];try{sessions=JSON.parse(localStorage.getItem('diagnostix-sessions')||'[]');}catch(e){sessions=[];}
 
+// ── RENDER SYMPTOMS ──
 function renderSymptoms(){
   const grid=document.getElementById('symptom-grid');
   grid.innerHTML='';
@@ -409,9 +447,7 @@ function renderSymptoms(){
     grid.innerHTML+=`<div class="symptom-card cat-${s.cat}${sel?' selected':''}" onclick="toggleSymptom('${s.id}')"><div class="symptom-icon">${s.icon}</div><div class="symptom-info"><div class="symptom-title">${s.title}</div><div class="symptom-desc">${s.desc}</div></div><div class="symptom-check"><div class="symptom-check-inner"></div></div></div>`;
   });
 }
-
 function filterSymptoms(cat,el){currentFilter=cat;document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');renderSymptoms();}
-
 function toggleSymptom(id){
   const idx=selectedSymptoms.indexOf(id);
   if(idx>=0)selectedSymptoms.splice(idx,1);else selectedSymptoms.push(id);
@@ -421,19 +457,18 @@ function toggleSymptom(id){
   renderSymptoms();
 }
 
+// ── CHECKLIST ──
 function startDiagnosis(){checkResults={};buildChecklist();showPage('checklist');}
-
 function buildChecklist(){
   document.getElementById('symptom-tags').innerHTML=selectedSymptoms.map(id=>{const s=SYMPTOMS.find(x=>x.id===id);return`<span class="symptom-tag">${s.title}</span>`;}).join('');
   const container=document.getElementById('checklist-content');container.innerHTML='';
   const allGroups={};
   selectedSymptoms.forEach(sid=>{(CHECKS[sid]||[]).forEach(group=>{if(!allGroups[group.group])allGroups[group.group]=[];group.items.forEach(item=>{if(!allGroups[group.group].find(x=>x.id===item.id))allGroups[group.group].push(item);});});});
-  Object.entries(allGroups).forEach(([groupName,items],gi)=>{
-    container.innerHTML+=`<div class="checklist-group"><div class="checklist-group-title">${groupName}</div>${items.map((item,i)=>`<div class="check-item" id="ci-${item.id}"><div class="check-item-header"><div class="check-step">S${gi+1}.${i+1}</div><div class="check-text"><div class="check-title">${item.title}</div><div class="check-detail">${item.detail}</div></div></div><div class="check-actions"><button class="check-btn pass-btn" onclick="setCheck('${item.id}','pass')">Pass</button><button class="check-btn fail-btn" onclick="setCheck('${item.id}','fail')">Fail</button><button class="check-btn na-btn" onclick="setCheck('${item.id}','na')">N/A</button></div></div>`).join('')}</div>`;
+  Object.entries(allGroups).forEach(([gName,items],gi)=>{
+    container.innerHTML+=`<div class="checklist-group"><div class="checklist-group-title">${gName}</div>${items.map((item,i)=>`<div class="check-item" id="ci-${item.id}"><div class="check-item-header"><div class="check-step">S${gi+1}.${i+1}</div><div class="check-text"><div class="check-title">${item.title}</div><div class="check-detail">${item.detail}</div></div></div><div class="check-actions"><button class="check-btn pass-btn" onclick="setCheck('${item.id}','pass')">Pass</button><button class="check-btn fail-btn" onclick="setCheck('${item.id}','fail')">Fail</button><button class="check-btn na-btn" onclick="setCheck('${item.id}','na')">N/A</button></div></div>`).join('')}</div>`;
   });
   updateCheckProgress();
 }
-
 function setCheck(id,result){
   checkResults[id]=result;
   const card=document.getElementById('ci-'+id);
@@ -442,7 +477,6 @@ function setCheck(id,result){
   card.querySelector('.'+result+'-btn').classList.add('active');
   updateCheckProgress();
 }
-
 function updateCheckProgress(){
   const total=document.querySelectorAll('.check-item').length;
   const answered=Object.keys(checkResults).length;
@@ -451,26 +485,50 @@ function updateCheckProgress(){
   document.getElementById('check-progress-label').textContent=answered+'/'+total;
 }
 
+// ── DIAGNOSIS ENGINE ──
 function generateDiagnosis(){
   const causes={};const failedItems=[];
   selectedSymptoms.forEach(sid=>{(CHECKS[sid]||[]).forEach(group=>{group.items.forEach(item=>{if(checkResults[item.id]==='fail'&&item.failWeight){const key=item.failWeight.cause;if(!causes[key])causes[key]={cause:key,likelihood:item.failWeight.likelihood,count:0,items:[],score:0};causes[key].count++;causes[key].items.push(item.title);causes[key].score+=item.failWeight.likelihood==='high'?3:item.failWeight.likelihood==='medium'?2:1;failedItems.push(item.title);}});});});
   const sortedCauses=Object.values(causes).sort((a,b)=>b.score-a.score);
   let urgency='normal';
   if(sortedCauses.some(c=>c.likelihood==='high'))urgency='urgent';
-  if(selectedSymptoms.includes('s3')||selectedSymptoms.includes('s16')||selectedSymptoms.includes('s9'))urgency='critical';
-  if(failedItems.some(i=>i.toLowerCase().includes('cavitat')||i.toLowerCase().includes('seized')||i.toLowerCase().includes('immediately')))urgency='critical';
+  if(selectedSymptoms.some(s=>['s3','s9','s16','s18','s19'].includes(s)))urgency='critical';
+  if(failedItems.some(i=>i.toLowerCase().includes('cavitat')||i.toLowerCase().includes('seized')||i.toLowerCase().includes('immediately')||i.toLowerCase().includes('reverse')))urgency='critical';
   const primaryCause=sortedCauses.length>0?sortedCauses[0].cause:null;
-  const actionMap={critical:'Consider shutting down the system immediately to prevent further damage. Assign a qualified hydraulic technician without delay.',urgent:'Arrange maintenance intervention at the earliest opportunity. Monitor system closely and log all readings until resolved.',normal:'Schedule maintenance at the next planned opportunity. Continue monitoring system parameters and document findings.'};
+  const actionMap={
+    critical:'Shut down the system as soon as it is safe to do so to prevent further damage. Assign a qualified hydraulic technician immediately. Do not restart until the root cause has been identified and corrected.',
+    urgent:'Arrange maintenance intervention at the earliest opportunity. Monitor system closely and log all readings until resolved.',
+    normal:'Schedule maintenance at the next planned opportunity. Continue monitoring system parameters and document findings.',
+  };
   const techName=document.getElementById('tech-name').value.trim();
   const session={id:Date.now(),date:new Date().toLocaleString(),technician:techName||'Anonymous',symptoms:selectedSymptoms.map(id=>SYMPTOMS.find(s=>s.id===id).title),causes:sortedCauses,urgency,primaryCause,checkedItems:Object.keys(checkResults).length,failedItems};
   sessions.unshift(session);try{localStorage.setItem('diagnostix-sessions',JSON.stringify(sessions));}catch(e){}
   const urgencyLabel={normal:'Normal',urgent:'Urgent',critical:'Critical'}[urgency];
   const dot='<span class="urgency-dot"></span>';
-  const causesHTML=sortedCauses.length===0?`<div class="cause-card"><div class="cause-title" style="color:var(--normal)">No failed checks identified</div><div class="cause-reasoning" style="margin-top:6px;">All checks passed or were marked N/A. The fault may be intermittent. Consider re-running the diagnostic during the active fault condition.</div></div>`:sortedCauses.slice(0,5).map(c=>`<div class="cause-card"><div class="cause-card-header"><div class="cause-title">${c.cause}</div><span class="likelihood ${c.likelihood}">${c.likelihood}</span></div><div class="cause-reasoning">Flagged by: ${c.items.join(', ')}.</div></div>`).join('');
-  document.getElementById('results-content').innerHTML=`<div class="section-label" style="margin-bottom:12px;">Diagnosis result</div><div class="result-header"><div class="urgency-badge ${urgency}">${dot}${urgencyLabel}</div><div class="result-title">${primaryCause||'No faults confirmed'}</div><div style="font-size:12px;color:var(--text3);margin-top:6px;">${session.date}${techName?' &middot; '+techName:''}</div><div class="result-action"><strong>Recommended action</strong>${actionMap[urgency]}</div></div><div class="section-label" style="margin-bottom:12px;">Probable causes ranked by likelihood</div>${causesHTML}<div class="divider"></div><div class="section-label" style="margin-bottom:12px;">Session summary</div><div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px;box-shadow:var(--shadow);"><div style="display:flex;justify-content:space-between;margin-bottom:8px;"><span style="font-size:12px;color:var(--text3);">Symptoms selected</span><span style="font-size:12px;font-weight:600;">${selectedSymptoms.length}</span></div><div style="display:flex;justify-content:space-between;margin-bottom:8px;"><span style="font-size:12px;color:var(--text3);">Checks completed</span><span style="font-size:12px;font-weight:600;">${session.checkedItems}</span></div><div style="display:flex;justify-content:space-between;"><span style="font-size:12px;color:var(--text3);">Failed checks</span><span style="font-size:12px;font-weight:600;color:${failedItems.length>0?'var(--critical)':'var(--normal)'};">${failedItems.length}</span></div></div>`;
+  const causesHTML=sortedCauses.length===0
+    ?`<div class="cause-card"><div class="cause-title" style="color:var(--normal)">No failed checks identified</div><div class="cause-reasoning" style="margin-top:6px;">All checks passed or were marked N/A. The fault may be intermittent. Consider re-running the diagnostic during the active fault condition.</div></div>`
+    :sortedCauses.slice(0,5).map(c=>`<div class="cause-card"><div class="cause-card-header"><div class="cause-title">${c.cause}</div><span class="likelihood ${c.likelihood}">${c.likelihood}</span></div><div class="cause-reasoning">Flagged by: ${c.items.join(', ')}.</div></div>`).join('');
+  document.getElementById('results-content').innerHTML=`
+    <div class="section-label" style="margin-bottom:12px;">Diagnosis result</div>
+    <div class="result-header">
+      <div class="urgency-badge ${urgency}">${dot}${urgencyLabel}</div>
+      <div class="result-title">${primaryCause||'No faults confirmed'}</div>
+      <div style="font-size:12px;color:var(--text3);margin-top:6px;">${session.date}${techName?' &middot; '+techName:''}</div>
+      <div class="result-action"><strong>Recommended action</strong>${actionMap[urgency]}</div>
+    </div>
+    <div class="section-label" style="margin-bottom:12px;">Probable causes ranked by likelihood</div>
+    ${causesHTML}
+    <div class="divider"></div>
+    <div class="section-label" style="margin-bottom:12px;">Session summary</div>
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px;box-shadow:var(--shadow);">
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px;"><span style="font-size:12px;color:var(--text3);">Symptoms selected</span><span style="font-size:12px;font-weight:600;">${selectedSymptoms.length}</span></div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px;"><span style="font-size:12px;color:var(--text3);">Checks completed</span><span style="font-size:12px;font-weight:600;">${session.checkedItems}</span></div>
+      <div style="display:flex;justify-content:space-between;"><span style="font-size:12px;color:var(--text3);">Failed checks</span><span style="font-size:12px;font-weight:600;color:${failedItems.length>0?'var(--critical)':'var(--normal)'};">${failedItems.length}</span></div>
+    </div>`;
   showPage('results');
 }
 
+// ── LOG ──
 function goToLog(){renderLog();showPage('log');}
 function renderLog(){
   const container=document.getElementById('log-content');
@@ -478,8 +536,11 @@ function renderLog(){
   container.innerHTML=`<div class="section-label" style="margin-bottom:14px;">${sessions.length} session${sessions.length!==1?'s':''} recorded</div>`+sessions.map(s=>`<div class="log-item"><div class="log-item-header"><span class="log-date">${s.date}</span><span class="urgency-badge ${s.urgency}" style="font-size:10px;padding:3px 8px;">${s.urgency}</span></div><div class="log-tech">${s.technician}</div><div class="log-symptoms">${s.symptoms.join(' / ')}</div><div class="log-diagnosis">${s.primaryCause||'No faults confirmed'}</div></div>`).join('');
 }
 function clearLog(){if(confirm('Clear all session records?')){sessions=[];try{localStorage.setItem('diagnostix-sessions','[]');}catch(e){}renderLog();}}
+
+// ── NAV ──
 function showPage(name){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById('page-'+name).classList.add('active');window.scrollTo(0,0);}
-function newSession(){selectedSymptoms=[];checkResults=[];document.getElementById('selected-count').style.display='none';document.getElementById('start-btn').disabled=true;renderSymptoms();showPage('welcome');}
+function newSession(){selectedSymptoms=[];checkResults={};document.getElementById('selected-count').style.display='none';document.getElementById('start-btn').disabled=true;renderSymptoms();showPage('welcome');}
+
 renderSymptoms();
 </script>
 </body>
