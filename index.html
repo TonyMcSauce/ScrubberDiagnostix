@@ -33,7 +33,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-si
 .tech-input-block input::placeholder{color:var(--text3);}
 .section-label{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);margin-bottom:14px;font-weight:600;}
 .nav-tabs{display:flex;gap:4px;margin-bottom:20px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:4px;box-shadow:var(--shadow);flex-wrap:wrap;}
-.nav-tab{flex:1;min-width:60px;padding:7px 4px;text-align:center;border-radius:6px;font-size:11px;font-weight:600;letter-spacing:.3px;cursor:pointer;color:var(--text3);transition:all .2s;text-transform:uppercase;}
+.nav-tab{flex:1;min-width:55px;padding:7px 4px;text-align:center;border-radius:6px;font-size:11px;font-weight:600;letter-spacing:.3px;cursor:pointer;color:var(--text3);transition:all .2s;text-transform:uppercase;}
 .nav-tab.active{background:var(--accent);color:#fff;}
 .symptom-grid{display:flex;flex-direction:column;gap:8px;margin-bottom:24px;}
 .symptom-card{background:var(--bg2);border:1.5px solid var(--border);border-radius:10px;padding:14px 16px;cursor:pointer;transition:all .15s;display:flex;align-items:flex-start;gap:14px;box-shadow:var(--shadow);}
@@ -214,49 +214,48 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-si
 </div>
 
 <script>
-// ── THEME ──
 function toggleTheme(){const h=document.documentElement;const t=h.getAttribute('data-theme')==='dark'?'light':'dark';h.setAttribute('data-theme',t);try{localStorage.setItem('diagnostix-theme',t);}catch(e){}}
 (function(){try{const s=localStorage.getItem('diagnostix-theme')||'light';document.documentElement.setAttribute('data-theme',s);}catch(e){}})();
 
-// ── SYMPTOMS ──
 const SYMPTOMS=[
   // HYDRAULIC
-  {id:'s1', cat:'hydraulic',   icon:'📈',title:'Main pump pressure HIGH',          desc:'System pressure above 15 MPa, relief valve chattering or lifting'},
-  {id:'s2', cat:'hydraulic',   icon:'📉',title:'Main pump pressure LOW',           desc:'System pressure cannot reach 15 MPa under normal load'},
-  {id:'s3', cat:'hydraulic',   icon:'⚡',title:'Booster pressure LOW',             desc:'Charge pressure dropped below 1.5 MPa'},
-  {id:'s18',cat:'hydraulic',   icon:'🔺',title:'Booster pressure HIGH',            desc:'Charge pressure running above 1.8 MPa, charge relief valve bypassing continuously or main pump inlet seal at risk'},
-  {id:'s4', cat:'hydraulic',   icon:'〰️',title:'Both pressures fluctuating',       desc:'Booster and main pump pressures hunting or unstable simultaneously'},
-  {id:'s5', cat:'hydraulic',   icon:'🔴',title:'Pressure filter bypass active',    desc:'High-pressure filter bypass indicator has triggered'},
-  {id:'s6', cat:'hydraulic',   icon:'🔵',title:'Return filter bypass active',      desc:'Return line filter bypass indicator has triggered'},
-  {id:'s7', cat:'hydraulic',   icon:'💧',title:'Drive shaft seal leaking',         desc:'Oil leaking from one or more CA 100 motor shaft seals'},
-  {id:'s8', cat:'hydraulic',   icon:'🌡️',title:'System running hot',               desc:'Oil temperature above normal operating range'},
-  {id:'s9', cat:'hydraulic',   icon:'🔊',title:'Pump noise / cavitation sounds',   desc:'Whining, knocking or grinding from pump area'},
+  {id:'s1', cat:'hydraulic',   icon:'📈',title:'Main pump pressure HIGH',             desc:'System pressure above 15 MPa, relief valve chattering or lifting'},
+  {id:'s2', cat:'hydraulic',   icon:'📉',title:'Main pump pressure LOW',              desc:'System pressure cannot reach 15 MPa under normal load'},
+  {id:'s3', cat:'hydraulic',   icon:'⚡',title:'Booster pressure LOW',                desc:'Charge pressure dropped below 1.5 MPa'},
+  {id:'s18',cat:'hydraulic',   icon:'🔺',title:'Booster pressure HIGH',               desc:'Charge pressure running above 1.8 MPa, charge relief valve bypassing or main pump inlet seal at risk'},
+  {id:'s4', cat:'hydraulic',   icon:'〰️',title:'Both pressures fluctuating',          desc:'Booster and main pump pressures hunting or unstable simultaneously'},
+  {id:'s5', cat:'hydraulic',   icon:'🔴',title:'Pressure filter bypass active',       desc:'High-pressure filter bypass indicator has triggered'},
+  {id:'s6', cat:'hydraulic',   icon:'🔵',title:'Return filter bypass active',         desc:'Return line filter bypass indicator has triggered'},
+  {id:'s7', cat:'hydraulic',   icon:'💧',title:'Drive shaft seal leaking',            desc:'Oil leaking from one or more CA 100 motor shaft seals'},
+  {id:'s8', cat:'hydraulic',   icon:'🌡️',title:'System running hot',                  desc:'Oil temperature above normal operating range'},
+  {id:'s9', cat:'hydraulic',   icon:'🔊',title:'Pump noise / cavitation sounds',      desc:'Whining, knocking or grinding from pump area'},
   // MECHANICAL
-  {id:'s10',cat:'mechanical',  icon:'📳',title:'One drive high vibration',         desc:'Single drive vibration sensor showing elevated reading'},
-  {id:'s11',cat:'mechanical',  icon:'📳',title:'Multiple drives high vibration',   desc:'Two or more drive vibration sensors elevated simultaneously'},
-  {id:'s12',cat:'mechanical',  icon:'🔥',title:'Hot bearing pedestal',             desc:'One or more bearing pedestals running above normal temperature'},
-  {id:'s13',cat:'mechanical',  icon:'⚙️',title:'Tyre bank coupling issue',         desc:'Noise, misalignment or slip at 3-tyre / 4-tyre shaft coupling'},
-  // DRIVE ROTATION
-  {id:'s19',cat:'electrical',  icon:'🔄',title:'One drive rotating in reverse',    desc:'One tyre bank is observed turning opposite to the other three, fighting drum rotation - drum crawls, stalls, or pressure spikes'},
+  {id:'s10',cat:'mechanical',  icon:'📳',title:'One drive high vibration',            desc:'Single drive vibration sensor showing elevated reading'},
+  {id:'s11',cat:'mechanical',  icon:'📳',title:'Multiple drives high vibration',      desc:'Two or more drive vibration sensors elevated simultaneously'},
+  {id:'s12',cat:'mechanical',  icon:'🔥',title:'Hot bearing pedestal',                desc:'One or more bearing pedestals running above normal temperature'},
+  {id:'s13',cat:'mechanical',  icon:'⚙️',title:'Tyre bank coupling issue',            desc:'Noise, misalignment or slip at 3-tyre / 4-tyre shaft coupling'},
+  // ELECTRICAL / OPERATIONAL
+  {id:'s19',cat:'electrical',  icon:'🔄',title:'One drive rotating in reverse',       desc:'One tyre bank observed turning opposite to the other three, fighting drum rotation'},
   // DRUM
-  {id:'s14',cat:'drum',        icon:'🐌',title:'Drum rotating slowly',             desc:'Drum speed below normal, all drives appear active'},
-  {id:'s15',cat:'drum',        icon:'↔️',title:'Drum rotating unevenly',           desc:'Speed varies, drum wobbling or surging during operation'},
-  {id:'s16',cat:'drum',        icon:'⛔',title:'Drum not rotating',               desc:'Drum has stopped completely or will not start'},
+  {id:'s14',cat:'drum',        icon:'🐌',title:'Drum rotating slowly',                desc:'Drum speed below normal, drives appear active and pressure is normal'},
+  {id:'s15',cat:'drum',        icon:'↔️',title:'Drum rotating unevenly',              desc:'Speed varies, drum wobbling or surging during operation'},
+  {id:'s16',cat:'drum',        icon:'⛔',title:'Drum not rotating',                  desc:'Drum has stopped or will not start despite tyres and drives appearing to run'},
+  {id:'s20',cat:'drum',        icon:'🛞',title:'Tyres rotating but drum not moving',  desc:'All tyre banks are turning, drives running, pressure normal - but drum itself is stationary or barely moving. No grip between tyre and drum riding ring.'},
+  {id:'s21',cat:'drum',        icon:'➡️',title:'Drum drifting axially',               desc:'Drum is migrating sideways along its axis, riding off-centre on the tyre banks. Caused by misalignment or missing / collapsed thrust roller.'},
   // ENVIRONMENT
-  {id:'s17',cat:'environment', icon:'💦',title:'Water ingress onto tyres / drum',  desc:'Water dripping or spraying onto tyre banks or riding rings, causing tyre slip'},
+  {id:'s17',cat:'environment', icon:'💦',title:'Water ingress onto tyres / drum',     desc:'Water dripping or spraying onto tyre banks or riding rings, causing tyre slip'},
 ];
 
-// ── CHECKS ──
 const CHECKS={
   s1:[
     {group:'Immediate Checks',items:[
       {id:'c1', title:'Check reservoir oil level',detail:'Confirm oil is at the correct mark on the sight glass. Low volume forces the pump to build pressure against reduced capacity.',failWeight:{cause:'Low reservoir level',likelihood:'medium'}},
       {id:'c2', title:'Confirm no shaft has seized - observe visually and check vibration sensors',detail:'Do NOT attempt to rotate tyre shafts by hand. The drum weighs over 20 tons and the shafts cannot be turned manually with the drum in place. Observe each tyre bank visually for rotation during operation and cross-reference with the drive vibration sensors. A seized shaft stalls the motor and spikes pressure to relief.',failWeight:{cause:'Mechanical seizure on tyre shaft',likelihood:'high'}},
-      {id:'c3', title:'Check system relief valve for heat',detail:'Carefully feel the main relief valve body. If it is significantly hotter than surrounding pipework, it is bypassing flow under excess pressure. Confirm against a calibrated test gauge.',failWeight:{cause:'Relief valve set high or faulty',likelihood:'high'}},
+      {id:'c3', title:'Check system relief valve for heat',detail:'Carefully feel the main relief valve body. If it is significantly hotter than surrounding pipework it is bypassing flow under excess pressure. Confirm against a calibrated test gauge.',failWeight:{cause:'Relief valve set high or faulty',likelihood:'high'}},
     ]},
     {group:'Hydraulic Circuit',items:[
       {id:'c4', title:'Inspect all directional control valves',detail:'Verify all valves are in their correct operating position. A partially closed or failed valve creates a downstream restriction that forces pressure to climb.',failWeight:{cause:'Control valve failed or partially closed',likelihood:'high'}},
-      {id:'c5', title:'Check for collapsed or restricted hoses',detail:'Inspect all hoses under load for unusual hot spots. A hose delaminated internally restricts flow but looks fine externally. A localised hot section confirms a restriction point.',failWeight:{cause:'Internal hose collapse',likelihood:'medium'}},
+      {id:'c5', title:'Check for collapsed or restricted hoses',detail:'Inspect all hoses under load for unusual hot spots. A hose delaminated internally restricts flow but looks fine externally.',failWeight:{cause:'Internal hose collapse',likelihood:'medium'}},
     ]},
     {group:'Pump Condition',items:[
       {id:'c7', title:'Measure main pump case drain flow',detail:'Compare measured case drain flow against manufacturer specification. Excessive drain flow alongside high pressure indicates the pump is worn and recirculating internally.',failWeight:{cause:'Worn main pump, excessive internal leakage',likelihood:'medium'}},
@@ -264,7 +263,7 @@ const CHECKS={
   ],
   s2:[
     {group:'Immediate Checks',items:[
-      {id:'c8', title:'Check booster pressure gauge',detail:'Confirm booster is holding 1.8 MPa. If booster pressure is also low, the fault is upstream of the main pump. If booster is normal, the main pump itself is the fault.',failWeight:{cause:'Booster fault affecting main pump inlet',likelihood:'high'}},
+      {id:'c8', title:'Check booster pressure gauge',detail:'Confirm booster is holding 1.8 MPa. If booster pressure is also low the fault is upstream of the main pump. If booster is normal the main pump itself is the fault.',failWeight:{cause:'Booster fault affecting main pump inlet',likelihood:'high'}},
       {id:'c9', title:'Check main relief valve setting and temperature',detail:'Relief valve may be set below 15 MPa or stuck partially open, bypassing all flow to tank. The valve body will be hot if continuous flow is passing through it.',failWeight:{cause:'Relief valve set low or stuck open',likelihood:'high'}},
     ]},
     {group:'Pump Assessment',items:[
@@ -274,7 +273,7 @@ const CHECKS={
   ],
   s3:[
     {group:'Critical - Check Immediately',items:[
-      {id:'c12',title:'Check reservoir oil level immediately',detail:'URGENT. If oil level has dropped below the suction inlet, the booster is drawing air. Consider shutting down if level is critically low to prevent main pump cavitation damage.',failWeight:{cause:'Reservoir critically low, air ingestion',likelihood:'high'}},
+      {id:'c12',title:'Check reservoir oil level immediately',detail:'URGENT. If oil level has dropped below the suction inlet the booster is drawing air. Consider shutting down if level is critically low to prevent main pump cavitation damage.',failWeight:{cause:'Reservoir critically low, air ingestion',likelihood:'high'}},
       {id:'c13',title:'Listen for cavitation noise at the main pump',detail:'A whining or knocking sound means the main pump may be cavitating now. Low booster pressure is not protecting it. Address immediately to prevent costly internal damage.',failWeight:{cause:'Main pump actively cavitating',likelihood:'high'}},
     ]},
     {group:'Suction Circuit',items:[
@@ -284,34 +283,34 @@ const CHECKS={
     ]},
     {group:'Booster Pump',items:[
       {id:'c17',title:'Test booster pump output pressure',detail:'Temporarily restrict flow downstream of the booster and observe whether it can approach 1.8 MPa. Failure to develop adequate pressure confirms the pump is worn.',failWeight:{cause:'Booster pump worn internally',likelihood:'high'}},
-      {id:'c18',title:'Inspect booster relief valve',detail:'Check the booster outlet relief valve is not stuck open or set too low. If booster flow is bypassing through a failed relief valve, charge pressure collapses regardless of pump condition.',failWeight:{cause:'Booster relief valve stuck open or set too low',likelihood:'medium'}},
+      {id:'c18',title:'Inspect booster relief valve',detail:'Check the booster outlet relief valve is not stuck open or set too low. If booster flow is bypassing through a failed relief valve charge pressure collapses regardless of pump condition.',failWeight:{cause:'Booster relief valve stuck open or set too low',likelihood:'medium'}},
     ]},
   ],
   s18:[
     {group:'Immediate Checks - Booster Pressure HIGH',items:[
-      {id:'c68',title:'Check booster charge relief valve for heat and operation',detail:'The charge relief valve on the booster outlet is the primary pressure-limiting device for the charge circuit. If it is stuck closed or set too high, booster pressure will climb above 1.8 MPa. Feel the valve body carefully - a correctly functioning relief valve will be warm when passing flow. A cold valve at elevated pressure means it is not opening at all.',failWeight:{cause:'Charge relief valve stuck closed or set too high',likelihood:'high'}},
-      {id:'c69',title:'Check main pump inlet restriction',detail:'High booster pressure can also result from a restriction between the booster outlet and the main pump inlet - for example a partially closed isolation valve or a blocked check valve in the charge line. The booster is pumping against a blockage, forcing pressure up. Check all valves and fittings in the charge line between booster outlet and main pump inlet.',failWeight:{cause:'Restriction in charge line between booster and main pump inlet',likelihood:'high'}},
-      {id:'c70',title:'Verify charge relief valve setting after any recent maintenance',detail:'If the charge relief valve has been adjusted or replaced recently, confirm the setting is correct for your system at 1.8 MPa. An over-adjusted or incorrectly specified replacement valve is a common post-maintenance cause of high charge pressure.',failWeight:{cause:'Charge relief valve incorrectly set after maintenance',likelihood:'medium'}},
+      {id:'c68',title:'Check charge relief valve for heat and correct operation',detail:'The charge relief valve on the booster outlet is the primary pressure-limiting device for the charge circuit. If it is stuck closed or set too high booster pressure will climb above 1.8 MPa. A correctly functioning relief valve will be warm when passing bypass flow. A cold valve body at elevated pressure means it is not opening at all.',failWeight:{cause:'Charge relief valve stuck closed or set too high',likelihood:'high'}},
+      {id:'c69',title:'Check charge line between booster outlet and main pump inlet for restriction',detail:'High booster pressure can result from a restriction in the charge line itself - a partially closed isolation valve or a blocked check valve. The booster is pumping against a blockage, forcing pressure up. Check all valves and fittings in this line.',failWeight:{cause:'Restriction in charge line between booster and main pump inlet',likelihood:'high'}},
+      {id:'c70',title:'Verify charge relief valve setting after any recent maintenance',detail:'If the charge relief valve has been adjusted or replaced recently confirm the setting is correct at 1.8 MPa. An over-adjusted or incorrectly specified replacement valve is a common post-maintenance cause of high charge pressure.',failWeight:{cause:'Charge relief valve incorrectly set after maintenance',likelihood:'medium'}},
     ]},
     {group:'Main Pump Protection',items:[
-      {id:'c71',title:'Check main pump shaft seal for weeping or leakage',detail:'The main pump inlet shaft seal is designed for charge pressure, not high pressure. If booster pressure has been running high for a period, inspect the pump shaft seal area for oil weeping or leakage. Early seal distress indicates the inlet has been over-pressurised.',failWeight:{cause:'Main pump inlet shaft seal distressed by overpressure',likelihood:'medium'}},
-      {id:'c72',title:'Monitor main pump case drain pressure',detail:'Elevated booster pressure feeding the main pump inlet raises case pressure inside the main pump. Check drain pressure at the pump case drain port. If it is above 2 bar, the elevated charge pressure is transmitting into the case and threatening the main pump shaft seal.',failWeight:{cause:'Elevated case pressure in main pump due to high charge pressure',likelihood:'medium'}},
+      {id:'c71',title:'Check main pump shaft seal area for weeping or leakage',detail:'The main pump inlet shaft seal is designed for charge pressure only. If booster pressure has been running high for a period inspect the pump shaft seal area for oil weeping or leakage. Early seal distress indicates the inlet has been over-pressurised.',failWeight:{cause:'Main pump inlet shaft seal distressed by overpressure',likelihood:'medium'}},
+      {id:'c72',title:'Monitor main pump case drain pressure',detail:'Elevated booster pressure feeding the main pump inlet raises case pressure inside the main pump. Check drain pressure at the pump case drain port. If it is above 2 bar the elevated charge pressure is transmitting into the case and threatening the shaft seal.',failWeight:{cause:'Elevated case pressure in main pump due to high charge pressure',likelihood:'medium'}},
     ]},
   ],
   s4:[
     {group:'Suction Side - Primary Suspect',items:[
       {id:'c19',title:'Inspect suction strainer immediately',detail:'Both pumps fluctuating together strongly indicates suction starvation. Remove and inspect the strainer element. Note what is on it - sludge, metal particles, and rubber fragments each point to different underlying problems.',failWeight:{cause:'Suction strainer partially blocked',likelihood:'high'}},
-      {id:'c20',title:'Check reservoir oil level',detail:'Confirm oil level is adequate on the sight glass. If near or below minimum, the booster intermittently pulls air, causing pressure fluctuation in both pumps simultaneously.',failWeight:{cause:'Low oil level causing intermittent air draw',likelihood:'high'}},
-      {id:'c21',title:'Check for aerated or foaming oil in the reservoir',detail:'Observe the oil surface. Foam or persistent bubbles confirm air has entered the suction circuit. Milky oil indicates water contamination, which requires an oil change.',failWeight:{cause:'Air ingestion causing oil aeration',likelihood:'high'}},
+      {id:'c20',title:'Check reservoir oil level',detail:'Confirm oil level is adequate on the sight glass. If near or below minimum the booster intermittently pulls air causing pressure fluctuation in both pumps simultaneously.',failWeight:{cause:'Low oil level causing intermittent air draw',likelihood:'high'}},
+      {id:'c21',title:'Check for aerated or foaming oil in the reservoir',detail:'Observe the oil surface. Foam or persistent bubbles confirm air has entered the suction circuit. Milky oil indicates water contamination which requires an oil change.',failWeight:{cause:'Air ingestion causing oil aeration',likelihood:'high'}},
     ]},
     {group:'Booster Stability',items:[
-      {id:'c22',title:'Inspect booster relief valve for chatter',detail:'A worn or contaminated booster relief valve seat can chatter rapidly, causing pressure pulses affecting both pumps. Listen for rapid clicking or ticking near the valve.',failWeight:{cause:'Booster relief valve chattering',likelihood:'medium'}},
+      {id:'c22',title:'Inspect booster relief valve for chatter',detail:'A worn or contaminated booster relief valve seat can chatter rapidly causing pressure pulses affecting both pumps. Listen for rapid clicking or ticking near the valve.',failWeight:{cause:'Booster relief valve chattering',likelihood:'medium'}},
       {id:'c23',title:'Check booster pump for internal wear',detail:'A worn booster delivers pulsed rather than smooth flow. The main pump inlet sees pressure pulses which cause the fluctuation observed on both gauges.',failWeight:{cause:'Booster pump worn, pulsed output',likelihood:'medium'}},
     ]},
   ],
   s5:[
     {group:'Filter Assessment',items:[
-      {id:'c24',title:'Check oil temperature and time since startup',detail:'If bypass trips only during a cold start and clears after warmup, this is a cold-start viscosity bypass, not a blocked element. If it persists at operating temperature, change the element immediately.',failWeight:{cause:'Filter element blinded, bypassing unfiltered oil to drives',likelihood:'high'}},
+      {id:'c24',title:'Check oil temperature and time since startup',detail:'If bypass trips only during a cold start and clears after warmup this is a cold-start viscosity bypass not a blocked element. If it persists at operating temperature change the element immediately.',failWeight:{cause:'Filter element blinded, bypassing unfiltered oil to drives',likelihood:'high'}},
       {id:'c25',title:'Replace filter element and inspect debris carefully',detail:'Cut open the removed element. Copper or bronze particles indicate bearing material loss. Steel particles indicate pump or motor wear. Rubber fragments indicate internal hose or seal failure. Each finding points to a source that must be traced and eliminated.',failWeight:{cause:'System contamination - identify and eliminate particle source',likelihood:'high'}},
     ]},
     {group:'Contamination Source',items:[
@@ -320,8 +319,8 @@ const CHECKS={
   ],
   s6:[
     {group:'Return Filter',items:[
-      {id:'c27',title:'Change return filter element as soon as safely possible',detail:'Return filter bypass means hot return oil from all four drives is going directly to the reservoir unfiltered, depositing contamination. This is an urgent maintenance item.',failWeight:{cause:'Return filter element blinded',likelihood:'high'}},
-      {id:'c28',title:'Inspect removed element for metal particles',detail:'A sudden appearance of metal particles in the return filter directly indicates internal motor damage in one or more of the CA 100 drives. If found, identify the affected drive and arrange inspection.',failWeight:{cause:'Motor internal damage shedding wear particles',likelihood:'medium'}},
+      {id:'c27',title:'Change return filter element as soon as safely possible',detail:'Return filter bypass means hot return oil from all four drives is going directly to the reservoir unfiltered depositing contamination. This is an urgent maintenance item.',failWeight:{cause:'Return filter element blinded',likelihood:'high'}},
+      {id:'c28',title:'Inspect removed element for metal particles',detail:'A sudden appearance of metal particles in the return filter directly indicates internal motor damage in one or more of the CA 100 drives. If found identify the affected drive and arrange inspection.',failWeight:{cause:'Motor internal damage shedding wear particles',likelihood:'medium'}},
     ]},
   ],
   s7:[
@@ -331,32 +330,32 @@ const CHECKS={
       {id:'c31',title:'Inspect drain line routing back to tank',detail:'Confirm the drain line returns to tank independently and is not shared with the main return circuit. Backpressure spikes in the return line raise case pressure directly.',failWeight:{cause:'Drain line shared with return circuit, causing backpressure',likelihood:'medium'}},
     ]},
     {group:'Seal Condition',items:[
-      {id:'c32',title:'Check service history of shaft seal',detail:'If case pressure is confirmed normal, the seal has reached end of service life. Document the oil loss rate to determine urgency and schedule planned replacement.',failWeight:{cause:'Shaft seal worn, end of service life',likelihood:'medium'}},
+      {id:'c32',title:'Check service history of shaft seal',detail:'If case pressure is confirmed normal the seal has reached end of service life. Document the oil loss rate to determine urgency and schedule planned replacement.',failWeight:{cause:'Shaft seal worn, end of service life',likelihood:'medium'}},
     ]},
   ],
   s8:[
     {group:'Cooling System',items:[
-      {id:'c33',title:'Confirm cooler drive fan is running',detail:'Visually confirm the cooler drive fan is operating. If the fan motor has failed or its hydraulic circuit has faulted, the heat exchanger is not being cooled and oil temperature will rise continuously.',failWeight:{cause:'Cooler drive fan not running',likelihood:'high'}},
+      {id:'c33',title:'Confirm cooler drive fan is running',detail:'Visually confirm the cooler drive fan is operating. If the fan motor has failed or its hydraulic circuit has faulted the heat exchanger is not being cooled and oil temperature will rise continuously.',failWeight:{cause:'Cooler drive fan not running',likelihood:'high'}},
       {id:'c34',title:'Inspect heat exchanger for fouling or blockage',detail:'Check the cooler core for dust, process material, or scale buildup. A fouled core cannot transfer heat adequately. Clean or replace as necessary.',failWeight:{cause:'Heat exchanger fouled or blocked',likelihood:'high'}},
       {id:'c35',title:'Check thermostat setpoint and operation',detail:'Verify the cooling thermostat is functioning and set correctly. A failed thermostat may not signal the cooler to activate when oil temperature rises.',failWeight:{cause:'Thermostat failed or set incorrectly',likelihood:'medium'}},
-      {id:'c36',title:'Check flushing connections on all four drives',detail:'Confirm F4 flushing lines are connected and flowing on all four CA 100 motors. A disconnected flushing line causes heat to build inside the motor case, adding to the overall system heat load.',failWeight:{cause:'Flushing lines disconnected on one or more drives',likelihood:'medium'}},
+      {id:'c36',title:'Check flushing connections on all four drives',detail:'Confirm F4 flushing lines are connected and flowing on all four CA 100 motors. A disconnected flushing line causes heat to build inside the motor case adding to the overall system heat load.',failWeight:{cause:'Flushing lines disconnected on one or more drives',likelihood:'medium'}},
     ]},
     {group:'Oil Condition',items:[
-      {id:'c37',title:'Inspect oil condition and service interval',detail:'Degraded or incorrect viscosity oil has reduced heat-carrying capacity. If oil is dark, smells burnt, or is overdue for a change, oil condition itself is contributing to elevated temperature.',failWeight:{cause:'Degraded oil with poor thermal properties',likelihood:'medium'}},
+      {id:'c37',title:'Inspect oil condition and service interval',detail:'Degraded or incorrect viscosity oil has reduced heat-carrying capacity. If oil is dark, smells burnt, or is overdue for a change oil condition itself is contributing to elevated temperature.',failWeight:{cause:'Degraded oil with poor thermal properties',likelihood:'medium'}},
     ]},
   ],
   s9:[
     {group:'Noise Diagnosis',items:[
-      {id:'c38',title:'Check booster pressure gauge immediately',detail:'Pump noise is the primary sign of cavitation. If booster pressure is low, the main pump is being starved at its inlet. Urgent - cavitation causes rapid internal erosion of pistons and valve plate.',failWeight:{cause:'Main pump cavitating due to low charge pressure',likelihood:'high'}},
+      {id:'c38',title:'Check booster pressure gauge immediately',detail:'Pump noise is the primary sign of cavitation. If booster pressure is low the main pump is being starved at its inlet. Urgent - cavitation causes rapid internal erosion of pistons and valve plate.',failWeight:{cause:'Main pump cavitating due to low charge pressure',likelihood:'high'}},
       {id:'c39',title:'Check for aerated oil in the reservoir',detail:'Foam in the reservoir or a gargling sound at the pump confirms air is entering the suction circuit. Locate and seal the air ingestion point on the suction line.',failWeight:{cause:'Air ingestion causing pump aeration and noise',likelihood:'high'}},
-      {id:'c40',title:'Check for a reversed drive creating a sustained overload on the pump',detail:'A drive rotating in reverse fights the drum and forces the other three drives to work against it. This sustained overload causes the pump to labour noisily and pressure to spike repeatedly. Observe each tyre bank rotation direction from a safe position and confirm all four are turning the same way.',failWeight:{cause:'Reversed drive overloading pump, causing noise and pressure spikes',likelihood:'high'}},
+      {id:'c40',title:'Check for a reversed drive creating sustained overload on the pump',detail:'A drive rotating in reverse fights the drum and forces the other three drives to work against it. This sustained overload causes the pump to labour noisily and pressure to spike repeatedly. Observe each tyre bank rotation direction from a safe position and confirm all four are turning the same way.',failWeight:{cause:'Reversed drive overloading pump, causing noise and pressure spikes',likelihood:'high'}},
       {id:'c41',title:'Check booster pump coupling integrity',detail:'A partially failed coupling can cause intermittent drive and knocking noise. Inspect the coupling for wear, cracking, or missing elements.',failWeight:{cause:'Pump coupling damaged or failing',likelihood:'medium'}},
     ]},
   ],
   s10:[
     {group:'Single Drive Vibration',items:[
       {id:'c42',title:'Immediately check bearing pedestal temperatures on that shaft',detail:'Check the temperature of both bearing pedestals on the affected drive shaft using a contact thermometer or thermal camera. An elevated pedestal temperature alongside high vibration indicates bearing distress. Do not wait for vibration to worsen before acting.',failWeight:{cause:'Bearing failure on affected tyre shaft',likelihood:'high'}},
-      {id:'c43',title:'Observe tyre rotation direction on the affected bank from a safe distance',detail:'Confirm the affected tyre bank is rotating in the same direction as the other three banks. A reversed drive will show elevated vibration as it fights the drum and the other drives. This is one of the clearest early indicators of reverse rotation.',failWeight:{cause:'Reversed drive causing vibration on that motor',likelihood:'high'}},
+      {id:'c43',title:'Observe tyre rotation direction on the affected bank from a safe distance',detail:'Confirm the affected tyre bank is rotating in the same direction as the other three banks. A reversed drive will show elevated vibration as it fights the drum and the other drives.',failWeight:{cause:'Reversed drive causing vibration on that motor',likelihood:'high'}},
       {id:'c44',title:'Inspect tyre condition on the affected bank visually',detail:'Look for flat spots, uneven wear, bulging, or visible surface damage that could cause vibration transmitted through the shaft to the motor sensor. Observe from a safe distance with the system running.',failWeight:{cause:'Tyre flat spot or uneven wear causing vibration',likelihood:'medium'}},
       {id:'c45',title:'Inspect the shaft coupling on that drive during next planned shutdown',detail:'Check the coupling between the 3-tyre and 4-tyre banks for fretting wear, axial play, or angular misalignment with the system de-energised and isolated.',failWeight:{cause:'Shaft coupling worn or misaligned',likelihood:'medium'}},
     ]},
@@ -371,8 +370,8 @@ const CHECKS={
   s12:[
     {group:'Bearing Temperature',items:[
       {id:'c49',title:'Check lubrication on the hot bearing immediately',detail:'Confirm grease or oil lubrication on the affected pedestal bearing is present and not degraded. A bearing running dry generates heat well before vibration becomes detectable. Re-lubricate immediately if dry.',failWeight:{cause:'Bearing lubrication failure',likelihood:'high'}},
-      {id:'c50',title:'Cross-reference with vibration sensor on corresponding drive',detail:'Check the vibration reading on the drive connected to that shaft. If vibration has also risen, the bearing is in active distress. If vibration is still normal, this is likely an early-stage lubrication problem.',failWeight:{cause:'Bearing in early to mid-stage failure',likelihood:'high'}},
-      {id:'c51',title:'Inspect bearing housing seal for contamination ingress',detail:'Check the housing seal condition. If the seal is compromised, process moisture and material has replaced lubrication and wear will accelerate rapidly.',failWeight:{cause:'Contamination ingress into bearing housing through failed seal',likelihood:'medium'}},
+      {id:'c50',title:'Cross-reference with vibration sensor on corresponding drive',detail:'Check the vibration reading on the drive connected to that shaft. If vibration has also risen the bearing is in active distress. If vibration is still normal this is likely an early-stage lubrication problem.',failWeight:{cause:'Bearing in early to mid-stage failure',likelihood:'high'}},
+      {id:'c51',title:'Inspect bearing housing seal for contamination ingress',detail:'Check the housing seal condition. If the seal is compromised process moisture and material has replaced lubrication and wear will accelerate rapidly.',failWeight:{cause:'Contamination ingress into bearing housing through failed seal',likelihood:'medium'}},
     ]},
   ],
   s13:[
@@ -384,23 +383,23 @@ const CHECKS={
   ],
   s19:[
     {group:'Reverse Rotation - Confirm the Fault',items:[
-      {id:'c73',title:'Observe all four tyre bank rotation directions from a safe distance',detail:'From a safe observation point with the system running, watch each of the four tyre banks and confirm their direction of rotation. Three banks should be turning the same way. The reversed drive tyre bank will be visibly turning in the opposite direction, dragging against the drum. Do not approach rotating equipment.',failWeight:{cause:'One drive confirmed rotating in reverse, opposing drum rotation',likelihood:'high'}},
-      {id:'c74',title:'Check system pressure - expect it to be significantly elevated',detail:'A reversed drive creates a sustained mechanical conflict. The three correct drives are fighting the reversed drive through the drum. System pressure will be significantly above the normal 15 MPa operating level as the pump works to maintain flow against this abnormal load. This is a useful confirmation of the fault.',failWeight:{cause:'Pressure spike caused by reversed drive opposing drum torque',likelihood:'high'}},
+      {id:'c73',title:'Observe all four tyre bank rotation directions from a safe distance',detail:'From a safe observation point with the system running watch each of the four tyre banks and confirm their direction of rotation. Three banks should be turning the same way. The reversed drive tyre bank will be visibly turning in the opposite direction dragging against the drum. Do not approach rotating equipment.',failWeight:{cause:'One drive confirmed rotating in reverse, opposing drum rotation',likelihood:'high'}},
+      {id:'c74',title:'Check system pressure - expect it to be significantly elevated',detail:'A reversed drive creates a sustained mechanical conflict. The three correct drives are fighting the reversed drive through the drum. System pressure will be significantly above the normal 15 MPa operating level as the pump works to maintain flow against this abnormal load.',failWeight:{cause:'Pressure spike caused by reversed drive opposing drum torque',likelihood:'high'}},
       {id:'c75',title:'Check vibration sensor on the suspected reversed drive',detail:'The reversed drive motor is experiencing abnormal radial and axial forces as it is pushed against by the drum and the other drives. Its vibration sensor reading will typically be elevated. Compare all four drive sensors and identify which one is anomalous.',failWeight:{cause:'Reversed drive generating abnormal vibration signature',likelihood:'medium'}},
     ]},
     {group:'Identify the Root Cause of Reversal',items:[
-      {id:'c76',title:'Check hydraulic hose connections on the suspected drive - A and B ports',detail:'The most common cause of a reversed drive is the A and B port hoses being swapped at the motor, either incorrectly at initial installation or reconnected in reverse after maintenance. With the system shut down and isolated, identify the A and B ports on the reversed motor and confirm the hoses are connected in the correct orientation matching the other three drives.',failWeight:{cause:'A and B port hoses swapped on that motor',likelihood:'high'}},
-      {id:'c77',title:'Check the directional control valve for that drive',detail:'A directional control valve that has failed in the wrong position, or has been manually shifted and not returned, will reverse the flow direction to the motor. Check the valve position and electrical/hydraulic signal for the affected drive circuit.',failWeight:{cause:'Directional control valve failed or incorrectly positioned',likelihood:'high'}},
-      {id:'c78',title:'Review any recent maintenance activity on that drive circuit',detail:'Reverse rotation after maintenance is almost always a reconnection error. Review the maintenance log for the affected drive. Any work involving disconnection and reconnection of hydraulic hoses, replacement of control valves, or motor removal on that circuit in recent weeks is the likely cause.',failWeight:{cause:'Incorrect reconnection following recent maintenance',likelihood:'high'}},
+      {id:'c76',title:'Check A and B port hose connections on the suspected drive',detail:'The most common cause of a reversed drive is the A and B port hoses being swapped at the motor either incorrectly at initial installation or reconnected in reverse after maintenance. With the system shut down and isolated identify the A and B ports on the reversed motor and confirm the hoses match the orientation of the other three drives.',failWeight:{cause:'A and B port hoses swapped on that motor',likelihood:'high'}},
+      {id:'c77',title:'Check the directional control valve for that drive',detail:'A directional control valve that has failed in the wrong position or has been manually shifted and not returned will reverse the flow direction to the motor. Check the valve position and its electrical or hydraulic signal for the affected drive circuit.',failWeight:{cause:'Directional control valve failed or incorrectly positioned',likelihood:'high'}},
+      {id:'c78',title:'Review any recent maintenance activity on that drive circuit',detail:'Reverse rotation after maintenance is almost always a reconnection error. Review the maintenance log for the affected drive. Any work involving disconnection of hydraulic hoses, replacement of control valves, or motor removal on that circuit in recent weeks is the likely cause.',failWeight:{cause:'Incorrect reconnection following recent maintenance',likelihood:'high'}},
     ]},
     {group:'Remediation',items:[
-      {id:'c79',title:'Shut down the system before attempting any correction',detail:'Do not attempt to correct hose connections or valve positions while the system is running or pressurised. Shut down, depressurise, and isolate the full hydraulic system before working on any connections.',failWeight:{cause:'System must be shut down before any corrective action',likelihood:'high'}},
-      {id:'c80',title:'After correction, verify rotation direction before loading the drum',detail:'After correcting the hose connection or valve position, run the drive briefly without the drum under full load and confirm the tyre bank is now rotating in the correct direction matching the other three drives before returning to normal operation.',failWeight:{cause:'Rotation direction must be confirmed after correction before resuming drum operation',likelihood:'medium'}},
+      {id:'c79',title:'Shut down the system before attempting any correction',detail:'Do not attempt to correct hose connections or valve positions while the system is running or pressurised. Shut down, depressurise, and isolate the full hydraulic system before working on any connections.',failWeight:{cause:'System must be shut down before any corrective action on reversed drive',likelihood:'high'}},
+      {id:'c80',title:'After correction verify rotation direction before reloading the drum',detail:'After correcting the hose connection or valve position run the drive briefly and confirm the tyre bank is now rotating in the correct direction matching the other three drives before returning to normal drum operation.',failWeight:{cause:'Rotation direction must be confirmed after correction before resuming operation',likelihood:'medium'}},
     ]},
   ],
   s14:[
     {group:'System Performance',items:[
-      {id:'c55',title:'Check system pressure against the 15 MPa baseline',detail:'If system pressure is at 15 MPa and the drum is still running slow, the drives are not developing sufficient torque. Check that all four drive inlet valves are fully open and verify no single drive is bypassing internally.',failWeight:{cause:'Drive control valve partially closed or drive bypassing internally',likelihood:'high'}},
+      {id:'c55',title:'Check system pressure against the 15 MPa baseline',detail:'If system pressure is at 15 MPa and the drum is still running slow the drives are not developing sufficient torque. Check that all four drive inlet valves are fully open and verify no single drive is bypassing internally.',failWeight:{cause:'Drive control valve partially closed or drive bypassing internally',likelihood:'high'}},
       {id:'c56',title:'Observe tyre-to-drum contact on all banks from a safe distance',detail:'Watch the contact between the tyres and drum riding rings during operation. Worn, contaminated, water-affected, or glazed tyres can slip under load without any hydraulic fault.',failWeight:{cause:'Tyre slip on drum riding ring',likelihood:'high'}},
       {id:'c57',title:'Check whether one drive may be rotating in reverse',detail:'A reversed drive actively resists drum rotation. The drum will turn slowly or struggle under full hydraulic pressure if one drive is opposing the others. Observe each tyre bank rotation direction from a safe distance and confirm all four match.',failWeight:{cause:'One drive rotating in reverse, opposing drum rotation',likelihood:'high'}},
       {id:'c58',title:'Confirm all four drives are producing rotation',detail:'Observe each drive and tyre bank for rotation during operation. A drive that has failed internally or whose shaft coupling has failed contributes no torque while still consuming flow from the common rail.',failWeight:{cause:'One or more drives not contributing torque to drum',likelihood:'medium'}},
@@ -408,28 +407,69 @@ const CHECKS={
   ],
   s15:[
     {group:'Drum Stability',items:[
-      {id:'c59',title:'Observe each tyre bank during operation from a safe position',detail:'Watch all tyre banks during operation. If one bank is intermittently surging or visibly not maintaining consistent contact with the riding ring, that bank is the source of the uneven rotation.',failWeight:{cause:'Tyre bank intermittently slipping or losing contact with riding ring',likelihood:'high'}},
-      {id:'c60',title:'Check system pressure for fluctuation in sync with drum surging',detail:'If hydraulic pressure fluctuates in sync with the drum surging, the cause is hydraulic. If pressure is steady while the drum surges, the cause is mechanical slip, water ingress, tyre wear, or drum balance.',failWeight:{cause:'Hydraulic pressure instability driving uneven drum rotation',likelihood:'medium'}},
+      {id:'c59',title:'Observe each tyre bank during operation from a safe position',detail:'Watch all tyre banks during operation. If one bank is intermittently surging or visibly not maintaining consistent contact with the riding ring that bank is the source of the uneven rotation.',failWeight:{cause:'Tyre bank intermittently slipping or losing contact with riding ring',likelihood:'high'}},
+      {id:'c60',title:'Check system pressure for fluctuation in sync with drum surging',detail:'If hydraulic pressure fluctuates in sync with the drum surging the cause is hydraulic. If pressure is steady while the drum surges the cause is mechanical slip, water ingress, tyre wear, or drum balance.',failWeight:{cause:'Hydraulic pressure instability driving uneven drum rotation',likelihood:'medium'}},
     ]},
   ],
   s16:[
     {group:'Emergency Checks',items:[
       {id:'c61',title:'Confirm powerpack is running and pressure has built',detail:'Check that both pumps are operational and system pressure is at 15 MPa. A drum that will not start may simply have no hydraulic supply. Check all alarms and confirm the powerpack has not tripped.',failWeight:{cause:'Powerpack not supplying pressure to drives',likelihood:'high'}},
-      {id:'c62',title:'Check whether a drive may be rotating in reverse - observe visually',detail:'A reversed drive directly opposing drum rotation is capable of preventing the drum from starting at all. Observe each tyre bank from a safe distance when the system is started. If one bank is turning opposite to the others, it is fighting the drum and preventing rotation.',failWeight:{cause:'Reversed drive preventing drum from rotating',likelihood:'high'}},
-      {id:'c63',title:'Check for a seized shaft - observe visually and check vibration sensors',detail:'Do NOT attempt to manually rotate any tyre shaft. The drum weighs over 20 tons and the shafts cannot be turned by hand with the drum sitting on them. Observe visually whether any shaft bank is stationary while others rotate, and check each drive vibration sensor for an abnormal reading indicating a locked shaft.',failWeight:{cause:'Tyre shaft or bearing seized, preventing drum rotation',likelihood:'high'}},
-      {id:'c64',title:'Check for process material or foreign object obstructing the drum',detail:'Inspect around the drum shell and riding rings for accumulated process material, a dislodged component, or any foreign object that is physically blocking rotation.',failWeight:{cause:'Drum mechanically blocked by process material or foreign object',likelihood:'medium'}},
+      {id:'c62',title:'Check whether a drive may be rotating in reverse - observe visually',detail:'A reversed drive directly opposing drum rotation is capable of preventing the drum from starting at all. Observe each tyre bank from a safe distance when the system is started. If one bank is turning opposite to the others it is fighting the drum and preventing rotation.',failWeight:{cause:'Reversed drive preventing drum from rotating',likelihood:'high'}},
+      {id:'c63',title:'Check whether tyres are turning but drum is not moving',detail:'If all tyre banks appear to be rotating but the drum itself is stationary the fault is loss of grip between the tyre surface and the riding ring, not a hydraulic or drive fault. Select the symptom "Tyres rotating but drum not moving" for the specific checklist for this failure mode.',failWeight:{cause:'Loss of grip between tyre and drum riding ring',likelihood:'high'}},
+      {id:'c64b',title:'Check for a seized shaft - observe visually and check vibration sensors',detail:'Do NOT attempt to manually rotate any tyre shaft. The drum weighs over 20 tons and the shafts cannot be turned by hand with the drum sitting on them. Observe visually whether any shaft bank is stationary while others rotate and check each drive vibration sensor for an abnormal reading indicating a locked shaft.',failWeight:{cause:'Tyre shaft or bearing seized, preventing drum rotation',likelihood:'high'}},
+      {id:'c64c',title:'Check for process material or foreign object obstructing the drum',detail:'Inspect around the drum shell and riding rings for accumulated process material, a dislodged component, or any foreign object that is physically blocking rotation.',failWeight:{cause:'Drum mechanically blocked by process material or foreign object',likelihood:'medium'}},
+    ]},
+  ],
+  s20:[
+    {group:'Confirm the Fault Mode',items:[
+      {id:'c81',title:'Confirm hydraulic system is running normally',detail:'Verify that booster pressure is at 1.8 MPa, main pump pressure is at 15 MPa, and all four drives are running. If hydraulic pressure is low the fault is hydraulic not a grip failure. This checklist applies only when pressure and drive rotation are confirmed normal.',failWeight:{cause:'Hydraulic fault incorrectly identified as grip failure',likelihood:'medium'}},
+      {id:'c82',title:'Confirm all four tyre banks are visibly rotating',detail:'From a safe observation position confirm each of the four tyre banks is turning. If any bank is stationary the fault is a seized shaft or failed drive, not tyre-to-drum grip loss. All four banks must be rotating for this to be a grip failure diagnosis.',failWeight:{cause:'One or more tyre banks not rotating - not a grip failure',likelihood:'high'}},
+      {id:'c83',title:'Observe the drum shell directly for any rotation',detail:'Watch a fixed reference point on the drum shell (a bolt, weld seam, or marking) over several seconds. If the reference point does not move while the tyres are clearly turning the drum has lost grip on the tyre banks completely.',failWeight:{cause:'Drum confirmed stationary while tyres rotate - complete grip loss',likelihood:'high'}},
+    ]},
+    {group:'Riding Ring Surface',items:[
+      {id:'c84',title:'Inspect riding ring surface for contamination',detail:'With the system stopped, inspect the riding ring contact band for oil, grease, process slurry, or water contamination. Any lubricating contamination on the contact surface dramatically reduces friction between tyre and ring. Identify and eliminate the contamination source before restarting.',failWeight:{cause:'Riding ring surface contaminated with oil, grease, or slurry',likelihood:'high'}},
+      {id:'c85',title:'Inspect riding ring surface for glazing or polishing',detail:'Over time the riding ring contact surface can become highly polished and smooth through continuous tyre contact. A glazed riding ring surface has a significantly lower coefficient of friction than a properly textured one. Look for a mirror-like sheen on the contact band as opposed to a dull or slightly rough surface.',failWeight:{cause:'Riding ring surface glazed and polished, reduced friction',likelihood:'high'}},
+      {id:'c86',title:'Check riding ring for severe wear, grooving, or out-of-round condition',detail:'A heavily worn riding ring may have developed circumferential grooves or an out-of-round profile. Grooves can trap lubricating contamination and reduce contact area. Out-of-round causes intermittent loss of contact between tyre and ring.',failWeight:{cause:'Riding ring severely worn, grooved, or out of round',likelihood:'medium'}},
+    ]},
+    {group:'Tyre Condition',items:[
+      {id:'c87',title:'Inspect tyre surfaces for glazing across all banks',detail:'Examine the tyre rubber surface on each bank. A glazed tyre surface is smooth and shiny rather than the normal slightly rough compound surface. Glazed tyres have permanently reduced grip and cannot be restored by cleaning. Replacement is required.',failWeight:{cause:'Tyre surfaces glazed, permanent grip reduction requiring replacement',likelihood:'high'}},
+      {id:'c88',title:'Check tyre condition for cracking, chunking, or severe wear',detail:'Inspect each tyre for rubber cracking, surface chunks missing, or tread worn flat. Damaged rubber reduces the effective contact area between tyre and riding ring and reduces the available friction force.',failWeight:{cause:'Tyre rubber damaged or severely worn, insufficient contact area',likelihood:'medium'}},
+      {id:'c89',title:'Check for water or liquid contamination on tyre surfaces',detail:'Even if no active water source is present residual moisture on the tyre surface from a previous water ingress event can cause grip loss. Check for wet or damp tyre surfaces and trace any moisture source.',failWeight:{cause:'Residual water on tyre surface causing grip loss',likelihood:'medium'}},
+    ]},
+    {group:'Load Assessment',items:[
+      {id:'c90',title:'Check drum process load against normal operating range',detail:'An overloaded drum requires more friction force than the tyre banks can generate at the current contact pressure. If the drum has been filled beyond its normal operating load the available tyre-to-ring friction may be insufficient to rotate it. Check feed rate and drum fill level.',failWeight:{cause:'Drum overloaded, friction force insufficient to rotate drum',likelihood:'medium'}},
+    ]},
+  ],
+  s21:[
+    {group:'Confirm Axial Drift and Assess Severity',items:[
+      {id:'c91',title:'Measure drum axial position against a fixed reference',detail:'CRITICAL SAFETY CHECK. Mark a fixed reference on the drum shell and measure its position relative to a fixed structural point. Confirm the drum is actually migrating axially and not simply rocking. Measure drift rate if possible - slow creep is different from rapid migration. If the drum is close to riding off the tyre banks consider an emergency shutdown.',failWeight:{cause:'Drum confirmed migrating axially - risk of riding off tyre banks',likelihood:'high'}},
+      {id:'c92',title:'Check whether drift is toward one end consistently',detail:'Note which direction the drum is drifting. Consistent drift in one direction points to a sustained axial force - typically from tyre bank misalignment creating a herringbone effect pushing the drum in one direction, or a failed thrust roller on the opposite end that can no longer resist the drift.',failWeight:{cause:'Sustained directional axial force causing consistent drum drift',likelihood:'high'}},
+    ]},
+    {group:'Thrust Roller Inspection',items:[
+      {id:'c93',title:'Inspect all thrust rollers for presence and physical condition',detail:'Locate all thrust rollers on your drum installation. These are the guide rollers positioned at the ends of the drum riding rings to prevent axial migration. Check that all thrust rollers are physically present - a missing thrust roller leaves no restraint on one side of the drum.',failWeight:{cause:'One or more thrust rollers missing',likelihood:'high'}},
+      {id:'c94',title:'Check thrust rollers for seizure or collapsed bearing',detail:'A thrust roller whose bearing has seized will no longer rotate freely. Instead of guiding the drum it will be dragged against the riding ring face, grinding and eventually failing to provide any restraint. Check each thrust roller for free rotation by hand with the system stopped and isolated. A seized roller will not turn or will turn with significant resistance.',failWeight:{cause:'Thrust roller bearing seized or collapsed',likelihood:'high'}},
+      {id:'c95',title:'Check thrust roller mounting and bracket integrity',detail:'Inspect the structural mounting of each thrust roller. Cracked or broken mounting brackets, missing fasteners, or a collapsed mounting pedestal will allow the thrust roller to move out of position and lose contact with the drum riding ring face even if the roller itself is intact.',failWeight:{cause:'Thrust roller mounting bracket cracked or failed',likelihood:'high'}},
+      {id:'c96',title:'Check thrust roller contact with riding ring face',detail:'Confirm each thrust roller is making proper contact with the axial face of the drum riding ring. A roller that has shifted in its mounting may no longer be in contact with the riding ring at all, providing no axial restraint. Check clearance between roller and riding ring face.',failWeight:{cause:'Thrust roller out of position, not contacting riding ring face',likelihood:'medium'}},
+    ]},
+    {group:'Tyre Bank Alignment',items:[
+      {id:'c97',title:'Check tyre bank alignment across all four shafts',detail:'Misaligned tyre banks create a resultant axial force on the drum known as a herringbone or skew effect. If the tyre banks are not parallel to each other and perpendicular to the drum axis they will continuously push the drum in one axial direction. This is a common cause of persistent drift even when thrust rollers are intact.',failWeight:{cause:'Tyre bank misalignment creating axial herringbone force on drum',likelihood:'high'}},
+      {id:'c98',title:'Check individual tyre positions on each shaft',detail:'Confirm that tyres on each shaft are correctly spaced and positioned to contact the drum riding rings symmetrically. A tyre shifted along its shaft changes the effective contact angle and can contribute to axial force generation.',failWeight:{cause:'Individual tyre mispositioned on shaft, contributing to axial force',likelihood:'medium'}},
+    ]},
+    {group:'Drum and Riding Ring Condition',items:[
+      {id:'c99',title:'Inspect riding ring profile for uneven wear creating axial bias',detail:'A riding ring that has worn unevenly - thicker on one side than the other - creates a tapered profile that acts like a wedge pushing the drum axially toward the thinner side. Inspect the riding ring cross-section profile for taper or uneven wear.',failWeight:{cause:'Riding ring worn unevenly, creating taper and axial bias',likelihood:'medium'}},
+      {id:'c100',title:'Check drum shell for any permanent deformation or asymmetric loading',detail:'In rare cases a drum that has suffered impact damage or has significant material buildup on one side can develop an asymmetric mass distribution that generates an axial component as the drum rotates. Check the drum shell for visible deformation and inspect for internal buildup if accessible.',failWeight:{cause:'Drum asymmetric loading or deformation contributing to axial drift',likelihood:'low'}},
     ]},
   ],
   s17:[
     {group:'Water Ingress - Immediate Checks',items:[
       {id:'c65',title:'Identify and confirm the water source',detail:'Locate where water is coming from. Common sources include a leaking spray bar or nozzle inside the drum, a damaged drum shell seal allowing process water out, condensation dripping from overhead structures, or an external pipe failure above the tyre banks.',failWeight:{cause:'Active water source wetting tyre contact surfaces',likelihood:'high'}},
       {id:'c66',title:'Observe tyre-to-drum contact during operation from a safe distance',detail:'Watch the contact band between the wet tyres and the riding rings. Visible slipping, squealing, or inability to maintain drum speed under load confirms traction loss from water on the contact surfaces.',failWeight:{cause:'Tyre slip on riding ring due to water on contact surfaces',likelihood:'high'}},
-      {id:'c67',title:'Check system pressure for drop or instability during slip events',detail:'When a tyre bank slips, that drive suddenly loses its mechanical load and the motor overspeeds momentarily. This may show as a brief pressure drop or fluctuation on the system gauge. A correlation between observed slip and a pressure event confirms tyre slip as the primary cause.',failWeight:{cause:'Drive overspeeding during tyre slip, causing pressure instability',likelihood:'medium'}},
+      {id:'c67',title:'Check system pressure for drop or instability during slip events',detail:'When a tyre bank slips that drive suddenly loses its mechanical load and the motor overspeeds momentarily. This may show as a brief pressure drop or fluctuation on the system gauge. A correlation between observed slip and a pressure event confirms tyre slip as the primary cause.',failWeight:{cause:'Drive overspeeding during tyre slip, causing pressure instability',likelihood:'medium'}},
     ]},
     {group:'Remediation Steps',items:[
-      {id:'c68b',title:'Isolate or redirect the water source if safe to do so',detail:'If the water source can be safely isolated or redirected away from the tyre banks without stopping the process, do so immediately. Even reducing water flow onto the contact surfaces will partially restore traction.',failWeight:{cause:'Ongoing water contamination preventing traction recovery',likelihood:'high'}},
-      {id:'c69b',title:'Check tyre rubber condition for glazing',detail:'Water ingress over time can cause rubber glazing on the tyre surface, permanently reducing the coefficient of friction even when dry. Inspect tyre surfaces for a smooth, glazed appearance. Glazed tyres require replacement.',failWeight:{cause:'Tyre surface glazed, permanent traction reduction',likelihood:'medium'}},
-      {id:'c70b',title:'Check riding ring surface for rust, scale, or water pitting',detail:'Prolonged water exposure causes the drum riding ring surface to rust or pit, reducing effective friction contact. Inspect the riding ring contact band for surface degradation.',failWeight:{cause:'Riding ring surface degraded by water corrosion',likelihood:'medium'}},
+      {id:'c65b',title:'Isolate or redirect the water source if safe to do so',detail:'If the water source can be safely isolated or redirected away from the tyre banks without stopping the process do so immediately. Even reducing water flow onto the contact surfaces will partially restore traction.',failWeight:{cause:'Ongoing water contamination preventing traction recovery',likelihood:'high'}},
+      {id:'c66b',title:'Check tyre rubber condition for glazing',detail:'Water ingress over time can cause rubber glazing on the tyre surface permanently reducing the coefficient of friction even when dry. Inspect tyre surfaces for a smooth glazed appearance. Glazed tyres require replacement.',failWeight:{cause:'Tyre surface glazed, permanent traction reduction',likelihood:'medium'}},
+      {id:'c67b',title:'Check riding ring surface for rust, scale, or water pitting',detail:'Prolonged water exposure causes the drum riding ring surface to rust or pit reducing effective friction contact. Inspect the riding ring contact band for surface degradation.',failWeight:{cause:'Riding ring surface degraded by water corrosion',likelihood:'medium'}},
     ]},
   ],
 };
@@ -438,10 +478,9 @@ const CHECKS={
 let selectedSymptoms=[],checkResults={},currentFilter='all';
 let sessions=[];try{sessions=JSON.parse(localStorage.getItem('diagnostix-sessions')||'[]');}catch(e){sessions=[];}
 
-// ── RENDER SYMPTOMS ──
+// ── RENDER ──
 function renderSymptoms(){
-  const grid=document.getElementById('symptom-grid');
-  grid.innerHTML='';
+  const grid=document.getElementById('symptom-grid');grid.innerHTML='';
   SYMPTOMS.filter(s=>currentFilter==='all'||s.cat===currentFilter).forEach(s=>{
     const sel=selectedSymptoms.includes(s.id);
     grid.innerHTML+=`<div class="symptom-card cat-${s.cat}${sel?' selected':''}" onclick="toggleSymptom('${s.id}')"><div class="symptom-icon">${s.icon}</div><div class="symptom-info"><div class="symptom-title">${s.title}</div><div class="symptom-desc">${s.desc}</div></div><div class="symptom-check"><div class="symptom-check-inner"></div></div></div>`;
@@ -492,11 +531,11 @@ function generateDiagnosis(){
   const sortedCauses=Object.values(causes).sort((a,b)=>b.score-a.score);
   let urgency='normal';
   if(sortedCauses.some(c=>c.likelihood==='high'))urgency='urgent';
-  if(selectedSymptoms.some(s=>['s3','s9','s16','s18','s19'].includes(s)))urgency='critical';
-  if(failedItems.some(i=>i.toLowerCase().includes('cavitat')||i.toLowerCase().includes('seized')||i.toLowerCase().includes('immediately')||i.toLowerCase().includes('reverse')))urgency='critical';
+  if(selectedSymptoms.some(s=>['s3','s9','s16','s18','s19','s20','s21'].includes(s)))urgency='critical';
+  if(failedItems.some(i=>i.toLowerCase().includes('cavitat')||i.toLowerCase().includes('seized')||i.toLowerCase().includes('immediately')||i.toLowerCase().includes('reverse')||i.toLowerCase().includes('axial')||i.toLowerCase().includes('riding off')))urgency='critical';
   const primaryCause=sortedCauses.length>0?sortedCauses[0].cause:null;
   const actionMap={
-    critical:'Shut down the system as soon as it is safe to do so to prevent further damage. Assign a qualified hydraulic technician immediately. Do not restart until the root cause has been identified and corrected.',
+    critical:'Shut down the system as soon as it is safe to do so to prevent further damage or a structural failure event. Assign a qualified technician immediately. Do not restart until the root cause has been identified and corrected.',
     urgent:'Arrange maintenance intervention at the earliest opportunity. Monitor system closely and log all readings until resolved.',
     normal:'Schedule maintenance at the next planned opportunity. Continue monitoring system parameters and document findings.',
   };
@@ -536,11 +575,8 @@ function renderLog(){
   container.innerHTML=`<div class="section-label" style="margin-bottom:14px;">${sessions.length} session${sessions.length!==1?'s':''} recorded</div>`+sessions.map(s=>`<div class="log-item"><div class="log-item-header"><span class="log-date">${s.date}</span><span class="urgency-badge ${s.urgency}" style="font-size:10px;padding:3px 8px;">${s.urgency}</span></div><div class="log-tech">${s.technician}</div><div class="log-symptoms">${s.symptoms.join(' / ')}</div><div class="log-diagnosis">${s.primaryCause||'No faults confirmed'}</div></div>`).join('');
 }
 function clearLog(){if(confirm('Clear all session records?')){sessions=[];try{localStorage.setItem('diagnostix-sessions','[]');}catch(e){}renderLog();}}
-
-// ── NAV ──
 function showPage(name){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById('page-'+name).classList.add('active');window.scrollTo(0,0);}
 function newSession(){selectedSymptoms=[];checkResults={};document.getElementById('selected-count').style.display='none';document.getElementById('start-btn').disabled=true;renderSymptoms();showPage('welcome');}
-
 renderSymptoms();
 </script>
 </body>
