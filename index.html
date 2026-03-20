@@ -1,225 +1,553 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Scrubber Diagnostix</title>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<title>Scrubber Diagnostix v6</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-[data-theme="light"]{--bg:#f4f6f9;--bg2:#ffffff;--bg3:#eef1f5;--border:#d8dde6;--border2:#b0bac9;--text:#1a2233;--text2:#4a5568;--text3:#8a96a8;--shadow:0 1px 4px rgba(0,0,0,0.08);}
-[data-theme="dark"]{--bg:#0d1117;--bg2:#151b24;--bg3:#1c2533;--border:#2a3545;--border2:#3a4a60;--text:#e2e8f0;--text2:#8fa3bc;--text3:#566a82;--shadow:0 1px 4px rgba(0,0,0,0.3);}
-:root{--accent:#f97316;--accent2:#fb923c;--normal:#22c55e;--urgent:#f59e0b;--critical:#ef4444;--na:#8b5cf6;--font-display:'Barlow Condensed',sans-serif;--font-body:'Barlow',sans-serif;}
+/* ── TOKENS ── */
+[data-theme="dark"]{
+  --bg:#0a0c0f;--bg2:#111418;--bg3:#181c22;--bg4:#1e232b;
+  --border:#232930;--border2:#2e3642;--border3:#3d4a5c;
+  --text:#d8e0ec;--text2:#8496ae;--text3:#4d5f75;
+  --shadow:0 2px 12px rgba(0,0,0,0.5);
+  --grid-line:rgba(255,255,255,0.03);
+}
+[data-theme="light"]{
+  --bg:#f0f2f5;--bg2:#ffffff;--bg3:#e8edf3;--bg4:#dde3ec;
+  --border:#d0d8e4;--border2:#b8c4d4;--border3:#94a8c0;
+  --text:#1a2535;--text2:#4a5e78;--text3:#8096b0;
+  --shadow:0 2px 12px rgba(0,0,0,0.08);
+  --grid-line:rgba(0,0,0,0.03);
+}
+:root{
+  --amber:#f59e0b;--amber2:#fbbf24;--amber-dim:rgba(245,158,11,0.12);
+  --red:#ef4444;--red-dim:rgba(239,68,68,0.12);
+  --green:#22c55e;--green-dim:rgba(34,197,94,0.12);
+  --violet:#8b5cf6;--violet-dim:rgba(139,92,246,0.12);
+  --blue:#3b8fd4;
+  --normal:#22c55e;--urgent:#f59e0b;--critical:#ef4444;--na:#8b5cf6;
+  --fd:'Rajdhani',sans-serif;
+  --fm:'Share Tech Mono',monospace;
+  --fb:'DM Sans',sans-serif;
+}
 *{box-sizing:border-box;margin:0;padding:0;}
-body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:15px;line-height:1.6;min-height:100vh;transition:background .2s,color .2s;}
-.page{display:none;min-height:100vh;}.page.active{display:flex;flex-direction:column;}
-.header{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 20px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:var(--shadow);}
-.logo{font-family:var(--font-display);font-size:22px;font-weight:700;letter-spacing:.5px;color:var(--text);}.logo span{color:var(--accent);}
-.header-right{display:flex;align-items:center;gap:10px;}
-.header-sub{font-size:11px;color:var(--text3);letter-spacing:1px;text-transform:uppercase;}
-.theme-toggle{background:var(--bg3);border:1px solid var(--border);border-radius:20px;width:52px;height:28px;cursor:pointer;position:relative;flex-shrink:0;}
-.theme-toggle-thumb{position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:var(--accent);transition:transform .2s;display:flex;align-items:center;justify-content:center;font-size:11px;}
-[data-theme="dark"] .theme-toggle-thumb{transform:translateX(24px);}
-[data-theme="light"] .theme-toggle-thumb::after{content:'☀️';}
-[data-theme="dark"] .theme-toggle-thumb::after{content:'🌙';}
-.content{flex:1;padding:24px 20px;max-width:680px;width:100%;margin:0 auto;}
-.welcome-hero{margin:32px 0 36px;}
-.welcome-hero h1{font-family:var(--font-display);font-size:42px;font-weight:700;line-height:1.1;margin-bottom:12px;letter-spacing:.5px;}
-.welcome-hero h1 em{color:var(--accent);font-style:normal;}
-.welcome-hero p{color:var(--text2);font-size:15px;max-width:480px;}
-.tech-input-block{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:20px;margin-bottom:28px;box-shadow:var(--shadow);}
-.tech-input-block label{display:block;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:8px;}
-.tech-input-block input{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:10px 14px;color:var(--text);font-family:var(--font-body);font-size:15px;outline:none;transition:border-color .2s;}
-.tech-input-block input:focus{border-color:var(--accent);}
-.tech-input-block input::placeholder{color:var(--text3);}
-.section-label{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);margin-bottom:14px;font-weight:600;}
-.nav-tabs{display:flex;gap:4px;margin-bottom:20px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:4px;box-shadow:var(--shadow);flex-wrap:wrap;}
-.nav-tab{flex:1;min-width:55px;padding:7px 4px;text-align:center;border-radius:6px;font-size:11px;font-weight:600;letter-spacing:.3px;cursor:pointer;color:var(--text3);transition:all .2s;text-transform:uppercase;}
-.nav-tab.active{background:var(--accent);color:#fff;}
-.symptom-grid{display:flex;flex-direction:column;gap:8px;margin-bottom:24px;}
-.symptom-card{background:var(--bg2);border:1.5px solid var(--border);border-radius:10px;padding:14px 16px;cursor:pointer;transition:all .15s;display:flex;align-items:flex-start;gap:14px;box-shadow:var(--shadow);}
-.symptom-card:hover{border-color:var(--border2);}
-.symptom-card.selected{border-color:var(--accent);background:rgba(249,115,22,.06);}
-.symptom-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:17px;}
-.symptom-card.cat-hydraulic .symptom-icon{background:rgba(59,130,246,.12);}
-.symptom-card.cat-mechanical .symptom-icon{background:rgba(20,184,166,.12);}
-.symptom-card.cat-drum .symptom-icon{background:rgba(249,115,22,.10);}
-.symptom-card.cat-environment .symptom-icon{background:rgba(139,92,246,.12);}
-.symptom-card.cat-electrical .symptom-icon{background:rgba(245,158,11,.12);}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--fb);
+  font-size:15px;
+  line-height:1.6;
+  min-height:100vh;
+  transition:background .25s,color .25s;
+  background-image:
+    linear-gradient(var(--grid-line) 1px,transparent 1px),
+    linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);
+  background-size:32px 32px;
+}
+
+/* ── PAGES ── */
+.page{display:none;min-height:100vh;flex-direction:column;}
+.page.active{display:flex;animation:pageIn .3s ease;}
+@keyframes pageIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+
+/* ── HEADER ── */
+.header{
+  background:var(--bg2);
+  border-bottom:2px solid var(--border);
+  padding:0 20px;
+  height:60px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:200;
+}
+[data-theme="dark"] .header{box-shadow:0 1px 0 var(--border),0 4px 24px rgba(0,0,0,0.6);}
+[data-theme="light"] .header{box-shadow:0 1px 0 var(--border),0 4px 24px rgba(0,0,0,0.06);}
+
+.logo{
+  font-family:var(--fd);
+  font-size:24px;
+  font-weight:700;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--text);
+  display:flex;align-items:center;gap:10px;
+}
+.logo-mark{
+  width:32px;height:32px;
+  border:2px solid var(--amber);
+  border-radius:6px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--fm);font-size:13px;color:var(--amber);font-weight:700;
+  flex-shrink:0;
+}
+.logo em{color:var(--amber);font-style:normal;}
+.header-right{display:flex;align-items:center;gap:12px;}
+
+/* Theme toggle */
+.theme-toggle{
+  width:40px;height:40px;border-radius:8px;
+  background:var(--bg3);border:1px solid var(--border2);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:16px;transition:all .2s;flex-shrink:0;
+}
+.theme-toggle:hover{border-color:var(--amber);background:var(--amber-dim);}
+[data-theme="light"] .theme-toggle::after{content:'🌙';}
+[data-theme="dark"] .theme-toggle::after{content:'☀️';}
+
+/* ── CONTENT ── */
+.content{flex:1;padding:28px 20px;max-width:700px;width:100%;margin:0 auto;}
+
+/* ── WELCOME HERO ── */
+.hero{
+  padding:36px 0 40px;
+  border-bottom:1px solid var(--border);
+  margin-bottom:32px;
+  position:relative;
+}
+.hero::before{
+  content:'';
+  position:absolute;left:0;top:0;bottom:0;
+  width:3px;background:var(--amber);border-radius:2px;
+}
+.hero-inner{padding-left:20px;}
+.hero-eyebrow{
+  font-family:var(--fm);font-size:11px;
+  color:var(--amber);letter-spacing:2px;
+  text-transform:uppercase;margin-bottom:12px;
+  display:flex;align-items:center;gap:8px;
+}
+.hero-eyebrow::before{content:'//';opacity:.5;}
+.hero h1{
+  font-family:var(--fd);
+  font-size:52px;font-weight:700;
+  line-height:1.0;letter-spacing:1px;
+  text-transform:uppercase;
+  margin-bottom:14px;
+  color:var(--text);
+}
+.hero h1 em{color:var(--amber);font-style:normal;display:block;}
+.hero-desc{color:var(--text2);font-size:14px;max-width:420px;line-height:1.6;}
+.version-tag{
+  display:inline-flex;align-items:center;gap:6px;
+  margin-top:18px;
+  background:var(--amber-dim);
+  border:1px solid rgba(245,158,11,0.3);
+  color:var(--amber);
+  font-family:var(--fm);font-size:11px;letter-spacing:1.5px;
+  padding:5px 12px;border-radius:4px;text-transform:uppercase;
+}
+.version-tag::before{content:'▸';font-size:9px;}
+
+/* ── TECH INPUT ── */
+.tech-block{
+  background:var(--bg2);
+  border:1px solid var(--border);
+  border-radius:0;
+  border-left:3px solid var(--border3);
+  padding:20px;
+  margin-bottom:28px;
+}
+.tech-block:focus-within{border-left-color:var(--amber);}
+.field-label{
+  font-family:var(--fm);font-size:10px;letter-spacing:2px;
+  text-transform:uppercase;color:var(--text3);margin-bottom:8px;display:block;
+}
+.tech-block input{
+  width:100%;background:transparent;border:none;border-bottom:1px solid var(--border2);
+  padding:8px 0;color:var(--text);font-family:var(--fb);font-size:15px;outline:none;
+  transition:border-color .2s;
+}
+.tech-block input:focus{border-bottom-color:var(--amber);}
+.tech-block input::placeholder{color:var(--text3);}
+
+/* ── SECTION LABEL ── */
+.slabel{
+  font-family:var(--fm);font-size:10px;letter-spacing:2.5px;
+  text-transform:uppercase;color:var(--text3);
+  margin-bottom:14px;display:flex;align-items:center;gap:8px;
+}
+.slabel::after{content:'';flex:1;height:1px;background:var(--border);}
+
+/* ── FILTER TABS ── */
+.filter-row{
+  display:flex;gap:4px;margin-bottom:20px;flex-wrap:wrap;
+}
+.ftab{
+  padding:7px 14px;border-radius:3px;
+  font-family:var(--fd);font-size:12px;font-weight:600;
+  letter-spacing:1px;text-transform:uppercase;
+  cursor:pointer;color:var(--text3);
+  border:1px solid var(--border);background:var(--bg2);
+  transition:all .15s;
+}
+.ftab:hover{color:var(--text);border-color:var(--border2);}
+.ftab.active{background:var(--amber);color:#000;border-color:var(--amber);font-weight:700;}
+
+/* ── SYMPTOM CARDS ── */
+.symptom-grid{display:flex;flex-direction:column;gap:6px;margin-bottom:24px;}
+.symptom-card{
+  background:var(--bg2);
+  border:1px solid var(--border);
+  border-left:3px solid var(--border);
+  padding:14px 16px;
+  cursor:pointer;
+  transition:all .15s;
+  display:flex;align-items:flex-start;gap:14px;
+  position:relative;
+}
+.symptom-card:hover{border-color:var(--border3);border-left-color:var(--border3);background:var(--bg3);}
+.symptom-card.selected{
+  border-color:var(--amber);border-left-color:var(--amber);
+  background:var(--amber-dim);
+}
+.symptom-card.cat-hydraulic{border-left-color:var(--blue);}
+.symptom-card.cat-hydraulic:hover,.symptom-card.cat-hydraulic.selected{border-left-color:var(--blue);}
+.symptom-card.cat-hydraulic.selected{background:rgba(59,143,212,0.08);border-color:var(--blue);}
+.symptom-card.cat-mechanical{border-left-color:#14b8a6;}
+.symptom-card.cat-mechanical.selected{background:rgba(20,184,166,0.08);border-color:#14b8a6;}
+.symptom-card.cat-drum{border-left-color:var(--amber);}
+.symptom-card.cat-drum.selected{background:var(--amber-dim);border-color:var(--amber);}
+.symptom-card.cat-environment{border-left-color:var(--violet);}
+.symptom-card.cat-environment.selected{background:var(--violet-dim);border-color:var(--violet);}
+.symptom-card.cat-electrical{border-left-color:#f97316;}
+.symptom-card.cat-electrical.selected{background:rgba(249,115,22,0.08);border-color:#f97316;}
+
+.symptom-icon{
+  width:34px;height:34px;border-radius:4px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;font-size:16px;
+  background:var(--bg3);border:1px solid var(--border);
+}
+.symptom-card.selected .symptom-icon{background:transparent;border-color:transparent;}
 .symptom-info{flex:1;}
-.symptom-title{font-weight:600;font-size:14px;color:var(--text);margin-bottom:2px;}
+.symptom-title{
+  font-family:var(--fd);font-weight:700;font-size:15px;letter-spacing:.5px;
+  color:var(--text);margin-bottom:2px;text-transform:uppercase;
+}
 .symptom-desc{font-size:12px;color:var(--text3);line-height:1.4;}
-.symptom-check{width:20px;height:20px;border-radius:50%;border:2px solid var(--border2);flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;transition:all .15s;}
-.symptom-card.selected .symptom-check{background:var(--accent);border-color:var(--accent);}
-.symptom-check-inner{width:8px;height:8px;border-radius:50%;background:white;opacity:0;transition:opacity .15s;}
-.symptom-card.selected .symptom-check-inner{opacity:1;}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 24px;border-radius:8px;font-family:var(--font-body);font-size:14px;font-weight:600;cursor:pointer;border:none;transition:all .15s;text-transform:uppercase;letter-spacing:.5px;}
-.btn-primary{background:var(--accent);color:white;width:100%;}
-.btn-primary:hover{background:var(--accent2);}
-.btn-primary:disabled{background:var(--bg3);color:var(--text3);cursor:not-allowed;}
-.btn-secondary{background:var(--bg2);color:var(--text2);border:1px solid var(--border);}
-.btn-secondary:hover{border-color:var(--border2);color:var(--text);}
-.btn-ghost{background:transparent;color:var(--text3);padding:8px 12px;font-size:13px;}
+.symptom-sel{
+  width:18px;height:18px;border-radius:2px;
+  border:2px solid var(--border2);flex-shrink:0;margin-top:2px;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .15s;font-size:10px;color:transparent;
+}
+.symptom-card.selected .symptom-sel{
+  background:var(--amber);border-color:var(--amber);color:#000;
+  font-weight:900;
+}
+.symptom-card.selected .symptom-sel::after{content:'✓';}
+
+/* ── BUTTONS ── */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:13px 24px;border-radius:3px;
+  font-family:var(--fd);font-size:14px;font-weight:700;letter-spacing:1.5px;
+  text-transform:uppercase;cursor:pointer;border:none;transition:all .15s;
+}
+.btn-primary{background:var(--amber);color:#000;width:100%;}
+.btn-primary:hover{background:var(--amber2);}
+.btn-primary:disabled{background:var(--bg4);color:var(--text3);cursor:not-allowed;}
+.btn-secondary{background:var(--bg2);color:var(--text2);border:1px solid var(--border2);}
+.btn-secondary:hover{border-color:var(--border3);color:var(--text);}
+.btn-ghost{background:transparent;color:var(--text3);padding:8px 12px;font-size:13px;font-family:var(--fb);text-transform:none;letter-spacing:0;font-weight:500;}
 .btn-ghost:hover{color:var(--text);}
-.symptom-summary{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:24px;box-shadow:var(--shadow);}
-.symptom-summary-title{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:10px;}
-.symptom-tags{display:flex;flex-wrap:wrap;gap:6px;}
-.symptom-tag{background:rgba(249,115,22,.10);border:1px solid rgba(249,115,22,.25);color:var(--accent);font-size:12px;font-weight:500;padding:4px 10px;border-radius:20px;}
-.checklist-group{margin-bottom:28px;}
-.checklist-group-title{font-family:var(--font-display);font-size:16px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text2);border-bottom:1px solid var(--border);padding-bottom:8px;margin-bottom:14px;}
-.check-item{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:8px;transition:border-color .15s,background .15s;box-shadow:var(--shadow);}
-.check-item.pass{border-color:rgba(34,197,94,.5);background:rgba(34,197,94,.04);}
-.check-item.fail{border-color:rgba(239,68,68,.5);background:rgba(239,68,68,.04);}
-.check-item.na{border-color:rgba(139,92,246,.5);background:rgba(139,92,246,.04);}
-.check-item-header{display:flex;align-items:flex-start;gap:12px;margin-bottom:6px;}
-.check-step{font-size:10px;font-weight:700;letter-spacing:1px;color:var(--text3);text-transform:uppercase;min-width:28px;padding-top:2px;}
+
+/* ── COUNTER BADGE ── */
+.cbadge{
+  background:var(--amber);color:#000;
+  font-family:var(--fm);font-size:10px;font-weight:700;
+  width:20px;height:20px;border-radius:2px;
+  display:inline-flex;align-items:center;justify-content:center;margin-left:6px;
+}
+
+/* ── BOTTOM BAR ── */
+.bottom-bar{
+  position:sticky;bottom:0;
+  background:var(--bg2);border-top:2px solid var(--border);
+  padding:14px 20px;
+}
+[data-theme="dark"] .bottom-bar{box-shadow:0 -4px 24px rgba(0,0,0,0.5);}
+[data-theme="light"] .bottom-bar{box-shadow:0 -4px 24px rgba(0,0,0,0.06);}
+.bottom-bar-inner{max-width:700px;margin:0 auto;display:flex;gap:10px;}
+
+/* ── CHECKLIST PAGE ── */
+.symptom-summary{
+  background:var(--bg2);border:1px solid var(--border);
+  border-left:3px solid var(--amber);
+  padding:14px 16px;margin-bottom:24px;
+}
+.symptom-summary-title{
+  font-family:var(--fm);font-size:10px;letter-spacing:2px;
+  text-transform:uppercase;color:var(--text3);margin-bottom:10px;
+}
+.symptom-tags{display:flex;flex-wrap:wrap;gap:5px;}
+.symptom-tag{
+  background:var(--amber-dim);border:1px solid rgba(245,158,11,.25);
+  color:var(--amber);font-family:var(--fm);font-size:10px;letter-spacing:.5px;
+  padding:3px 9px;border-radius:2px;text-transform:uppercase;
+}
+
+.checklist-group{margin-bottom:32px;}
+.checklist-group-title{
+  font-family:var(--fd);font-size:13px;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;color:var(--text3);
+  padding:8px 12px;background:var(--bg3);border:1px solid var(--border);
+  margin-bottom:8px;display:flex;align-items:center;gap:8px;
+}
+.checklist-group-title::before{content:'//';font-family:var(--fm);color:var(--amber);font-size:11px;}
+
+.check-item{
+  background:var(--bg2);border:1px solid var(--border);
+  border-left:3px solid var(--border);
+  padding:14px 16px;margin-bottom:6px;
+  transition:border-color .15s,background .15s;
+}
+.check-item.pass{border-left-color:var(--green);background:var(--green-dim);}
+.check-item.fail{border-left-color:var(--red);background:var(--red-dim);}
+.check-item.na{border-left-color:var(--violet);background:var(--violet-dim);}
+
+.check-item-header{display:flex;align-items:flex-start;gap:12px;margin-bottom:8px;}
+.check-step{
+  font-family:var(--fm);font-size:10px;font-weight:700;
+  color:var(--text3);min-width:32px;padding-top:2px;letter-spacing:.5px;
+}
 .check-text{flex:1;}
-.check-title{font-weight:600;font-size:14px;margin-bottom:3px;}
-.check-detail{font-size:12px;color:var(--text3);line-height:1.5;}
-.check-actions{display:flex;gap:8px;margin-top:10px;margin-left:40px;}
-.check-btn{flex:1;padding:7px 12px;border-radius:6px;border:1px solid var(--border);background:var(--bg3);color:var(--text2);font-family:var(--font-body);font-size:12px;font-weight:600;cursor:pointer;text-transform:uppercase;letter-spacing:.5px;transition:all .15s;}
-.check-btn:hover{border-color:var(--border2);}
-.check-btn.pass-btn.active{background:rgba(34,197,94,.12);border-color:var(--normal);color:var(--normal);}
-.check-btn.fail-btn.active{background:rgba(239,68,68,.12);border-color:var(--critical);color:var(--critical);}
-.check-btn.na-btn.active{background:rgba(139,92,246,.12);border-color:var(--na);color:var(--na);}
-.result-header{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:24px;box-shadow:var(--shadow);}
-.urgency-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;}
-.urgency-badge.normal{background:rgba(34,197,94,.12);color:var(--normal);border:1px solid rgba(34,197,94,.3);}
-.urgency-badge.urgent{background:rgba(245,158,11,.12);color:var(--urgent);border:1px solid rgba(245,158,11,.3);}
-.urgency-badge.critical{background:rgba(239,68,68,.12);color:var(--critical);border:1px solid rgba(239,68,68,.3);}
-.urgency-dot{width:7px;height:7px;border-radius:50%;background:currentColor;}
-.result-title{font-family:var(--font-display);font-size:26px;font-weight:700;margin-bottom:8px;line-height:1.2;}
-.result-action{background:var(--bg3);border-left:3px solid var(--accent);padding:12px 14px;border-radius:0 6px 6px 0;font-size:13px;color:var(--text2);margin-top:12px;}
-.result-action strong{color:var(--text);display:block;margin-bottom:3px;font-size:12px;text-transform:uppercase;letter-spacing:.5px;}
-.cause-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:10px;box-shadow:var(--shadow);}
-.cause-card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
-.cause-title{font-weight:600;font-size:14px;}
-.likelihood{font-size:11px;font-weight:700;letter-spacing:.5px;padding:3px 8px;border-radius:4px;text-transform:uppercase;}
-.likelihood.high{background:rgba(239,68,68,.12);color:var(--critical);}
-.likelihood.medium{background:rgba(245,158,11,.12);color:var(--urgent);}
-.likelihood.low{background:rgba(86,106,130,.12);color:var(--text2);}
-.cause-reasoning{font-size:12px;color:var(--text3);line-height:1.5;}
-.log-empty{text-align:center;padding:60px 20px;color:var(--text3);}
-.log-empty-icon{font-size:40px;margin-bottom:12px;}
-.log-item{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:10px;box-shadow:var(--shadow);}
+.check-title{font-family:var(--fd);font-weight:700;font-size:15px;letter-spacing:.5px;margin-bottom:4px;text-transform:uppercase;}
+.check-detail{font-size:12px;color:var(--text3);line-height:1.55;font-family:var(--fb);}
+.check-actions{display:flex;gap:6px;margin-top:10px;margin-left:44px;}
+.check-btn{
+  flex:1;padding:8px;border-radius:2px;
+  border:1px solid var(--border2);background:var(--bg3);
+  color:var(--text3);font-family:var(--fd);font-size:12px;font-weight:700;
+  cursor:pointer;text-transform:uppercase;letter-spacing:1px;transition:all .15s;
+}
+.check-btn:hover{border-color:var(--border3);color:var(--text);}
+.check-btn.pass-btn.active{background:var(--green-dim);border-color:var(--green);color:var(--green);}
+.check-btn.fail-btn.active{background:var(--red-dim);border-color:var(--red);color:var(--red);}
+.check-btn.na-btn.active{background:var(--violet-dim);border-color:var(--violet);color:var(--violet);}
+
+/* ── PROGRESS ── */
+.progress-wrap{margin-bottom:24px;}
+.progress-meta{
+  display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;
+}
+.progress-label{font-family:var(--fm);font-size:10px;color:var(--text3);letter-spacing:1px;text-transform:uppercase;}
+.progress-count{font-family:var(--fm);font-size:11px;color:var(--amber);}
+.progress-bar{background:var(--bg3);height:2px;border-radius:0;overflow:hidden;border:1px solid var(--border);}
+.progress-fill{height:100%;background:var(--amber);transition:width .3s;border-radius:0;}
+
+/* ── RESULTS ── */
+.result-hero{
+  background:var(--bg2);border:1px solid var(--border);
+  border-top:3px solid var(--amber);
+  padding:24px;margin-bottom:24px;
+}
+.result-hero.critical-theme{border-top-color:var(--red);}
+.result-hero.urgent-theme{border-top-color:var(--amber);}
+.result-hero.normal-theme{border-top-color:var(--green);}
+
+.urgency-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:4px 12px;border-radius:2px;
+  font-family:var(--fm);font-size:10px;font-weight:700;
+  text-transform:uppercase;letter-spacing:2px;margin-bottom:14px;
+}
+.urgency-badge.normal{background:var(--green-dim);color:var(--green);border:1px solid rgba(34,197,94,.3);}
+.urgency-badge.urgent{background:var(--amber-dim);color:var(--amber);border:1px solid rgba(245,158,11,.3);}
+.urgency-badge.critical{background:var(--red-dim);color:var(--red);border:1px solid rgba(239,68,68,.3);}
+.urgency-dot{width:6px;height:6px;border-radius:50%;background:currentColor;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+
+.result-title{
+  font-family:var(--fd);font-size:28px;font-weight:700;
+  letter-spacing:1px;text-transform:uppercase;
+  margin-bottom:8px;line-height:1.2;
+}
+.result-meta{font-family:var(--fm);font-size:11px;color:var(--text3);letter-spacing:1px;margin-bottom:16px;}
+.result-action{
+  background:var(--bg3);border-left:3px solid var(--amber);
+  padding:12px 16px;font-size:13px;color:var(--text2);font-family:var(--fb);
+}
+.result-action strong{
+  font-family:var(--fm);font-size:10px;letter-spacing:2px;
+  color:var(--amber);text-transform:uppercase;display:block;margin-bottom:4px;
+}
+
+.cause-card{
+  background:var(--bg2);border:1px solid var(--border);
+  border-left:3px solid var(--border3);
+  padding:14px 16px;margin-bottom:6px;
+}
+.cause-card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
+.cause-title{font-family:var(--fd);font-weight:700;font-size:14px;letter-spacing:.5px;text-transform:uppercase;}
+.likelihood{
+  font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:1px;
+  padding:3px 8px;border-radius:2px;text-transform:uppercase;
+}
+.likelihood.high{background:var(--red-dim);color:var(--red);}
+.likelihood.medium{background:var(--amber-dim);color:var(--amber);}
+.likelihood.low{background:var(--bg3);color:var(--text3);}
+.cause-reasoning{font-size:12px;color:var(--text3);line-height:1.5;font-family:var(--fb);}
+
+.summary-grid{
+  display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:16px;
+}
+.summary-cell{
+  background:var(--bg3);border:1px solid var(--border);
+  padding:12px;text-align:center;
+}
+.summary-val{font-family:var(--fm);font-size:28px;font-weight:700;color:var(--amber);line-height:1;}
+.summary-key{font-family:var(--fm);font-size:9px;letter-spacing:1.5px;color:var(--text3);text-transform:uppercase;margin-top:4px;}
+
+/* ── LOG ── */
+.log-empty{text-align:center;padding:80px 20px;color:var(--text3);}
+.log-empty-icon{font-size:36px;margin-bottom:12px;opacity:.4;}
+.log-item{
+  background:var(--bg2);border:1px solid var(--border);
+  border-left:3px solid var(--border3);
+  padding:14px 16px;margin-bottom:6px;
+  cursor:pointer;transition:all .15s;
+}
 .log-item:hover{border-color:var(--border2);}
+.log-item.critical-log{border-left-color:var(--red);}
+.log-item.urgent-log{border-left-color:var(--amber);}
+.log-item.normal-log{border-left-color:var(--green);}
 .log-item-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
-.log-date{font-size:12px;color:var(--text3);}
-.log-tech{font-size:12px;color:var(--text2);font-weight:500;margin-bottom:4px;}
-.log-symptoms{font-size:13px;color:var(--text);margin-bottom:4px;font-weight:500;}
-.log-diagnosis{font-size:12px;color:var(--text3);}
+.log-date{font-family:var(--fm);font-size:10px;color:var(--text3);letter-spacing:.5px;}
+.log-tech{font-family:var(--fd);font-size:13px;font-weight:600;color:var(--text2);margin-bottom:3px;letter-spacing:.5px;text-transform:uppercase;}
+.log-symptoms{font-size:12px;color:var(--text2);margin-bottom:3px;}
+.log-diagnosis{font-family:var(--fd);font-size:13px;font-weight:700;color:var(--text);letter-spacing:.5px;text-transform:uppercase;}
+
 .divider{height:1px;background:var(--border);margin:24px 0;}
-.bottom-bar{position:sticky;bottom:0;background:var(--bg2);border-top:1px solid var(--border);padding:12px 20px;box-shadow:0 -2px 8px rgba(0,0,0,.06);}
-.bottom-bar-inner{max-width:680px;margin:0 auto;display:flex;gap:10px;}
-.progress-bar{background:var(--bg3);height:3px;border-radius:2px;margin-bottom:20px;overflow:hidden;}
-.progress-fill{height:100%;background:var(--accent);border-radius:2px;transition:width .3s;}
-.counter-badge{background:var(--accent);color:white;font-size:11px;font-weight:700;width:20px;height:20px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;margin-left:6px;}
-.fade-in{animation:fadeIn .25s ease;}
-@keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
 </style>
 </head>
 <body>
 
-<!-- WELCOME -->
+<!-- ── WELCOME ── -->
 <div id="page-welcome" class="page active">
   <div class="header">
-    <div class="logo">Scrubber <span>Diagnostix</span></div>
+    <div class="logo">
+      <div class="logo-mark">SD</div>
+      Scrubber <em>Diagnostix</em>
+    </div>
     <div class="header-right">
-      <div class="header-sub">Hydraulic &amp; Mech</div>
-      <div class="theme-toggle" onclick="toggleTheme()" title="Toggle light / dark mode"><div class="theme-toggle-thumb"></div></div>
+      <div class="theme-toggle" onclick="toggleTheme()" title="Toggle theme"></div>
     </div>
   </div>
-  <div class="content fade-in">
-    <div class="welcome-hero">
-      <h1>Identify.<br><em>Diagnose.</em><br>Resolve.</h1>
-      <p>Guided fault diagnosis for the scrubber drum hydraulic drive system. Select observed symptoms to begin.</p>
-      <div style="display:inline-block;margin-top:14px;background:rgba(249,115,22,.10);border:1px solid rgba(249,115,22,.25);color:var(--accent);font-size:12px;font-weight:700;padding:4px 12px;border-radius:20px;letter-spacing:1px;text-transform:uppercase;">v5.0</div>
+  <div class="content">
+    <div class="hero">
+      <div class="hero-inner">
+        <div class="hero-eyebrow">Hägglunds SP-750 &amp; CA-100 System</div>
+        <h1>Identify.<br><em>Diagnose.</em><br>Resolve.</h1>
+        <p class="hero-desc">Guided fault diagnosis for the scrubber drum hydraulic drive system. Select observed symptoms to begin a session.</p>
+        <div class="version-tag">Version 6.0</div>
+      </div>
     </div>
-    <div class="tech-input-block">
-      <label>Technician name (optional)</label>
-      <input type="text" id="tech-name" placeholder="Enter your name"/>
+
+    <div class="tech-block">
+      <label class="field-label">Technician identifier (optional)</label>
+      <input type="text" id="tech-name" placeholder="Enter name or employee number"/>
     </div>
-    <div class="section-label">Filter by category</div>
-    <div class="nav-tabs">
-      <div class="nav-tab active" onclick="filterSymptoms('all',this)">All</div>
-      <div class="nav-tab" onclick="filterSymptoms('hydraulic',this)">Hydraulic</div>
-      <div class="nav-tab" onclick="filterSymptoms('mechanical',this)">Mechanical</div>
-      <div class="nav-tab" onclick="filterSymptoms('drum',this)">Drum</div>
-      <div class="nav-tab" onclick="filterSymptoms('environment',this)">Environ.</div>
-      <div class="nav-tab" onclick="filterSymptoms('electrical',this)">Electrical</div>
+
+    <div class="slabel">Filter by system</div>
+    <div class="filter-row">
+      <div class="ftab active" onclick="filterSymptoms('all',this)">All</div>
+      <div class="ftab" onclick="filterSymptoms('hydraulic',this)">Hydraulic</div>
+      <div class="ftab" onclick="filterSymptoms('mechanical',this)">Mechanical</div>
+      <div class="ftab" onclick="filterSymptoms('drum',this)">Drum</div>
+      <div class="ftab" onclick="filterSymptoms('environment',this)">Environ.</div>
+      <div class="ftab" onclick="filterSymptoms('electrical',this)">Electrical</div>
     </div>
-    <div class="section-label">Observed symptoms <span id="selected-count" style="display:none" class="counter-badge">0</span></div>
+
+    <div class="slabel">Select observed symptoms <span id="selected-count" style="display:none" class="cbadge">0</span></div>
     <div class="symptom-grid" id="symptom-grid"></div>
   </div>
   <div class="bottom-bar">
     <div class="bottom-bar-inner">
-      <button class="btn btn-secondary" onclick="goToLog()" style="flex:0 0 auto;padding:12px 16px;">&#9776; Log</button>
-      <button class="btn btn-primary" id="start-btn" disabled onclick="startDiagnosis()">Start Diagnosis</button>
+      <button class="btn btn-secondary" onclick="goToLog()" style="flex:0 0 auto;padding:13px 18px;">&#9776;&nbsp; Log</button>
+      <button class="btn btn-primary" id="start-btn" disabled onclick="startDiagnosis()">&#9654;&nbsp; Begin Diagnosis</button>
     </div>
   </div>
 </div>
 
-<!-- CHECKLIST -->
+<!-- ── CHECKLIST ── -->
 <div id="page-checklist" class="page">
   <div class="header">
     <button class="btn btn-ghost" onclick="showPage('welcome')" style="padding:8px 0;">&#8592; Back</button>
-    <div class="logo">Scrubber <span>Diagnostix</span></div>
-    <div style="display:flex;align-items:center;gap:8px;">
-      <div style="font-size:12px;color:var(--text3)" id="check-progress-label"></div>
-      <div class="theme-toggle" onclick="toggleTheme()"><div class="theme-toggle-thumb"></div></div>
+    <div class="logo" style="font-size:18px;letter-spacing:1px;">
+      <div class="logo-mark" style="width:26px;height:26px;font-size:11px;">SD</div>
+      Inspection Checklist
     </div>
+    <div style="font-family:var(--fm);font-size:11px;color:var(--amber)" id="check-progress-label"></div>
   </div>
-  <div class="content fade-in">
-    <div class="progress-bar"><div class="progress-fill" id="check-progress-fill" style="width:0%"></div></div>
-    <div class="section-label" style="margin-bottom:6px;">Inspection checklist</div>
-    <p style="font-size:12px;color:var(--text3);margin-bottom:18px;">Work through each inspection in order. Mark Pass, Fail, or N/A. Use N/A for checks that cannot be performed safely or are not applicable to the current fault condition.</p>
+  <div class="content">
+    <div class="progress-wrap">
+      <div class="progress-meta">
+        <span class="progress-label">Inspection progress</span>
+        <span class="progress-count" id="check-progress-label2">0 / 0</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="check-progress-fill" style="width:0%"></div></div>
+    </div>
+    <p style="font-size:12px;color:var(--text3);margin-bottom:20px;font-family:var(--fb);">Work through each inspection in order. Mark Pass, Fail, or N/A. Use N/A for checks that cannot be performed safely or are not applicable to the current fault condition.</p>
     <div class="symptom-summary">
-      <div class="symptom-summary-title">Selected symptoms</div>
+      <div class="symptom-summary-title">Active symptoms</div>
       <div class="symptom-tags" id="symptom-tags"></div>
     </div>
     <div id="checklist-content"></div>
   </div>
   <div class="bottom-bar">
     <div class="bottom-bar-inner">
-      <button class="btn btn-primary" onclick="generateDiagnosis()">Generate Diagnosis</button>
+      <button class="btn btn-primary" onclick="generateDiagnosis()">&#9654;&nbsp; Generate Diagnosis</button>
     </div>
   </div>
 </div>
 
-<!-- RESULTS -->
+<!-- ── RESULTS ── -->
 <div id="page-results" class="page">
   <div class="header">
     <button class="btn btn-ghost" onclick="showPage('checklist')" style="padding:8px 0;">&#8592; Back</button>
-    <div class="logo">Scrubber <span>Diagnostix</span></div>
-    <div class="theme-toggle" onclick="toggleTheme()"><div class="theme-toggle-thumb"></div></div>
+    <div class="logo" style="font-size:18px;letter-spacing:1px;">
+      <div class="logo-mark" style="width:26px;height:26px;font-size:11px;">SD</div>
+      Diagnosis Result
+    </div>
+    <div class="theme-toggle" onclick="toggleTheme()"></div>
   </div>
-  <div class="content fade-in"><div id="results-content"></div></div>
+  <div class="content"><div id="results-content"></div></div>
   <div class="bottom-bar">
     <div class="bottom-bar-inner">
-      <button class="btn btn-secondary" onclick="newSession()" style="flex:1;">New Session</button>
+      <button class="btn btn-secondary" onclick="newSession()" style="flex:1;">&#43;&nbsp; New Session</button>
       <button class="btn btn-primary" style="flex:1;" onclick="goToLog()">View Log</button>
     </div>
   </div>
 </div>
 
-<!-- LOG -->
+<!-- ── LOG ── -->
 <div id="page-log" class="page">
   <div class="header">
     <button class="btn btn-ghost" onclick="showPage('welcome')" style="padding:8px 0;">&#8592; Back</button>
-    <div class="logo">Session <span>Log</span></div>
-    <div style="display:flex;align-items:center;gap:8px;">
-      <button class="btn btn-ghost" onclick="clearLog()" style="font-size:12px;color:var(--critical)">Clear</button>
-      <div class="theme-toggle" onclick="toggleTheme()"><div class="theme-toggle-thumb"></div></div>
+    <div class="logo" style="font-size:18px;letter-spacing:1px;">
+      <div class="logo-mark" style="width:26px;height:26px;font-size:11px;">SD</div>
+      Session Log
     </div>
+    <button class="btn btn-ghost" onclick="clearLog()" style="font-size:12px;color:var(--red)">Clear All</button>
   </div>
-  <div class="content fade-in"><div id="log-content"></div></div>
+  <div class="content"><div id="log-content"></div></div>
 </div>
 
 <script>
-function toggleTheme(){const h=document.documentElement;const t=h.getAttribute('data-theme')==='dark'?'light':'dark';h.setAttribute('data-theme',t);try{localStorage.setItem('diagnostix-theme',t);}catch(e){}}
-(function(){try{const s=localStorage.getItem('diagnostix-theme')||'light';document.documentElement.setAttribute('data-theme',s);}catch(e){}})();
+// ── THEME ──
+function toggleTheme(){
+  const h=document.documentElement;
+  const t=h.getAttribute('data-theme')==='dark'?'light':'dark';
+  h.setAttribute('data-theme',t);
+  try{localStorage.setItem('dx-theme',t);}catch(e){}
+}
+(function(){try{const s=localStorage.getItem('dx-theme')||'dark';document.documentElement.setAttribute('data-theme',s);}catch(e){}})();
 
+// ── SYMPTOMS DATA ──
 const SYMPTOMS=[
-  // HYDRAULIC
   {id:'s1', cat:'hydraulic',   icon:'📈',title:'Main pump pressure HIGH',             desc:'System pressure above 15 MPa, relief valve chattering or lifting'},
   {id:'s2', cat:'hydraulic',   icon:'📉',title:'Main pump pressure LOW',              desc:'System pressure cannot reach 15 MPa under normal load'},
   {id:'s3', cat:'hydraulic',   icon:'⚡',title:'Booster pressure LOW',                desc:'Charge pressure dropped below 1.5 MPa'},
@@ -230,47 +558,42 @@ const SYMPTOMS=[
   {id:'s7', cat:'hydraulic',   icon:'💧',title:'Drive shaft seal leaking',            desc:'Oil leaking from one or more CA 100 motor shaft seals'},
   {id:'s8', cat:'hydraulic',   icon:'🌡️',title:'System running hot',                  desc:'Oil temperature above normal operating range'},
   {id:'s9', cat:'hydraulic',   icon:'🔊',title:'Pump noise / cavitation sounds',      desc:'Whining, knocking or grinding from pump area'},
-  // MECHANICAL
+  {id:'s22',cat:'hydraulic',   icon:'🔧',title:'SP-750 K1 flushing port blocked',     desc:'Closed circuit loop overheating with no other obvious cause. K1 flushing port restricted or blocked.'},
+  {id:'s23',cat:'hydraulic',   icon:'🔩',title:'SP-750 E1/E2 charge filter blocked',  desc:'Booster charge pressure dropping or fluctuating. External charge filter between E1 and E2 blocked.'},
+  {id:'s24',cat:'hydraulic',   icon:'💨',title:'SP-750 K4 accumulator loss of charge',desc:'Pressure spikes during drum loading. K4 accumulator has lost its gas pre-charge.'},
   {id:'s10',cat:'mechanical',  icon:'📳',title:'One drive high vibration',            desc:'Single drive vibration sensor showing elevated reading'},
   {id:'s11',cat:'mechanical',  icon:'📳',title:'Multiple drives high vibration',      desc:'Two or more drive vibration sensors elevated simultaneously'},
   {id:'s12',cat:'mechanical',  icon:'🔥',title:'Hot bearing pedestal',                desc:'One or more bearing pedestals running above normal temperature'},
   {id:'s13',cat:'mechanical',  icon:'⚙️',title:'Tyre bank coupling issue',            desc:'Noise, misalignment or slip at 3-tyre / 4-tyre shaft coupling'},
-  // ELECTRICAL / OPERATIONAL
   {id:'s19',cat:'electrical',  icon:'🔄',title:'One drive rotating in reverse',       desc:'One tyre bank observed turning opposite to the other three, fighting drum rotation'},
-  // DRUM
+  {id:'s25',cat:'electrical',  icon:'🎮',title:'SP-750 XAB control signal failure',   desc:'Drum not responding to speed commands. SP-750 swashplate not responding to XAB pilot pressure signal.'},
   {id:'s14',cat:'drum',        icon:'🐌',title:'Drum rotating slowly',                desc:'Drum speed below normal, drives appear active and pressure is normal'},
   {id:'s15',cat:'drum',        icon:'↔️',title:'Drum rotating unevenly',              desc:'Speed varies, drum wobbling or surging during operation'},
   {id:'s16',cat:'drum',        icon:'⛔',title:'Drum not rotating',                  desc:'Drum has stopped or will not start despite tyres and drives appearing to run'},
-  {id:'s20',cat:'drum',        icon:'🛞',title:'Tyres rotating but drum not moving',  desc:'All tyre banks are turning, drives running, pressure normal - but drum itself is stationary or barely moving. No grip between tyre and drum riding ring.'},
-  {id:'s21',cat:'drum',        icon:'➡️',title:'Drum drifting axially',               desc:'Drum is migrating sideways along its axis, riding off-centre on the tyre banks. Caused by misalignment or missing / collapsed thrust roller.'},
-  // SP-750 SPECIFIC
-  {id:'s22',cat:'hydraulic',   icon:'🔧',title:'SP-750 K1 flushing port blocked',      desc:'Closed circuit loop overheating with no other obvious cause. K1 flushing port restricted or blocked, hot oil cannot exit the loop to the cooler.'},
-  {id:'s23',cat:'hydraulic',   icon:'🔩',title:'SP-750 E1/E2 charge filter blocked',   desc:'Booster charge pressure dropping or fluctuating. External charge filter between E1 and E2 ports is blocked, restricting charge flow to the main pump inlet.'},
-  {id:'s24',cat:'hydraulic',   icon:'💨',title:'SP-750 K4 accumulator loss of charge', desc:'Pressure spikes or surges during drum loading and starting. K4 accumulator has lost its gas pre-charge and can no longer absorb load transients.'},
-  {id:'s25',cat:'electrical',  icon:'🎮',title:'SP-750 XAB control signal failure',    desc:'Drum not responding to speed commands or displacement control. SP-750 swashplate not responding to XAB pilot pressure signal, pump stuck at fixed or zero displacement.'},
-  // ENVIRONMENT
+  {id:'s20',cat:'drum',        icon:'🛞',title:'Tyres rotating but drum not moving',  desc:'All tyre banks turning, drives running, pressure normal - drum itself stationary or barely moving.'},
+  {id:'s21',cat:'drum',        icon:'➡️',title:'Drum drifting axially',               desc:'Drum migrating sideways along its axis. Caused by misalignment or missing / collapsed thrust roller.'},
   {id:'s17',cat:'environment', icon:'💦',title:'Water ingress onto tyres / drum',     desc:'Water dripping or spraying onto tyre banks or riding rings, causing tyre slip'},
 ];
 
 const CHECKS={
   s1:[
     {group:'Immediate Checks',items:[
-      {id:'c1', title:'Check reservoir oil level',detail:'Confirm oil is at the correct mark on the sight glass. Low volume forces the pump to build pressure against reduced capacity.',failWeight:{cause:'Low reservoir level',likelihood:'medium'}},
-      {id:'c2', title:'Confirm no shaft has seized - observe visually and check vibration sensors',detail:'Do NOT attempt to rotate tyre shafts by hand. The drum weighs over 20 tons and the shafts cannot be turned manually with the drum in place. Observe each tyre bank visually for rotation during operation and cross-reference with the drive vibration sensors. A seized shaft stalls the motor and spikes pressure to relief.',failWeight:{cause:'Mechanical seizure on tyre shaft',likelihood:'high'}},
-      {id:'c3', title:'Check system relief valve for heat',detail:'Carefully feel the main relief valve body on the SP-750. If it is significantly hotter than surrounding pipework it is bypassing flow under excess pressure. Confirm against a calibrated test gauge connected at port MAB on the SP-750.',failWeight:{cause:'Relief valve set high or faulty',likelihood:'high'}},
+      {id:'c1',title:'Check reservoir oil level',detail:'Confirm oil is at the correct mark on the sight glass. Low volume forces the pump to build pressure against reduced capacity.',failWeight:{cause:'Low reservoir level',likelihood:'medium'}},
+      {id:'c2',title:'Confirm no shaft has seized - observe visually and check vibration sensors',detail:'Do NOT attempt to rotate tyre shafts by hand. The drum weighs over 20 tons and the shafts cannot be turned manually with the drum in place. Observe each tyre bank visually for rotation during operation and cross-reference with the drive vibration sensors. A seized shaft stalls the motor and spikes pressure to relief.',failWeight:{cause:'Mechanical seizure on tyre shaft',likelihood:'high'}},
+      {id:'c3',title:'Check system relief valve for heat',detail:'Carefully feel the main relief valve body on the SP-750. If it is significantly hotter than surrounding pipework it is bypassing flow under excess pressure. Confirm against a calibrated test gauge connected at port MAB on the SP-750.',failWeight:{cause:'Relief valve set high or faulty',likelihood:'high'}},
     ]},
     {group:'Hydraulic Circuit',items:[
-      {id:'c4', title:'Inspect all directional control valves',detail:'Verify all valves are in their correct operating position. A partially closed or failed valve creates a downstream restriction that forces pressure to climb.',failWeight:{cause:'Control valve failed or partially closed',likelihood:'high'}},
-      {id:'c5', title:'Check for collapsed or restricted hoses',detail:'Inspect all hoses under load for unusual hot spots. A hose delaminated internally restricts flow but looks fine externally.',failWeight:{cause:'Internal hose collapse',likelihood:'medium'}},
+      {id:'c4',title:'Inspect all directional control valves',detail:'Verify all valves are in their correct operating position. A partially closed or failed valve creates a downstream restriction that forces pressure to climb.',failWeight:{cause:'Control valve failed or partially closed',likelihood:'high'}},
+      {id:'c5',title:'Check for collapsed or restricted hoses',detail:'Inspect all hoses under load for unusual hot spots. A hose delaminated internally restricts flow but looks fine externally.',failWeight:{cause:'Internal hose collapse',likelihood:'medium'}},
     ]},
     {group:'SP-750 Pump Condition',items:[
-      {id:'c7', title:'Measure SP-750 main pump case drain flow at T1',detail:'Connect a flow meter at the T1 case drain port on the SP-750 and compare measured drain flow against manufacturer specification. Excessive drain flow alongside high pressure indicates the main axial piston pump is worn and recirculating internally. T1 is your primary case drain measurement point on this pump.',failWeight:{cause:'Worn SP-750 main pump, excessive internal leakage',likelihood:'medium'}},
+      {id:'c7',title:'Measure SP-750 main pump case drain flow at T1',detail:'Connect a flow meter at the T1 case drain port on the SP-750 and compare measured drain flow against manufacturer specification. Excessive drain flow alongside high pressure indicates the main axial piston pump is worn and recirculating internally.',failWeight:{cause:'Worn SP-750 main pump, excessive internal leakage',likelihood:'medium'}},
     ]},
   ],
   s2:[
     {group:'Immediate Checks',items:[
-      {id:'c8', title:'Check booster charge pressure - measure at MS port on SP-750',detail:'Connect a gauge to the MS Minimess port on the SP-750 to read actual suction pressure at the integrated boost pump inlet. Confirm the boost pump is holding 1.8 MPa charge pressure. If charge pressure is also low the fault is upstream of the main pump. If charge pressure is normal at MS the SP-750 main axial piston pump itself is the fault.',failWeight:{cause:'Booster fault affecting main pump inlet',likelihood:'high'}},
-      {id:'c9', title:'Check main relief valve setting and temperature',detail:'The main system relief valve may be set below 15 MPa or stuck partially open, bypassing all flow to tank. The valve body will be hot if continuous flow is passing through it. Measure actual working pressure at port MAB on the SP-750 to confirm.',failWeight:{cause:'Relief valve set low or stuck open',likelihood:'high'}},
+      {id:'c8',title:'Check booster charge pressure - measure at MS port on SP-750',detail:'Connect a gauge to the MS Minimess port on the SP-750 to read actual suction pressure at the integrated boost pump inlet. Confirm the boost pump is holding 1.8 MPa charge pressure. If charge pressure is also low the fault is upstream of the main pump. If charge pressure is normal at MS the SP-750 main axial piston pump itself is the fault.',failWeight:{cause:'Booster fault affecting main pump inlet',likelihood:'high'}},
+      {id:'c9',title:'Check main relief valve setting and temperature',detail:'The main system relief valve may be set below 15 MPa or stuck partially open, bypassing all flow to tank. The valve body will be hot if continuous flow is passing through it. Measure actual working pressure at port MAB on the SP-750 to confirm.',failWeight:{cause:'Relief valve set low or stuck open',likelihood:'high'}},
     ]},
     {group:'SP-750 Pump Assessment',items:[
       {id:'c10',title:'Measure SP-750 case drain flow at T1',detail:'A worn SP-750 main axial piston pump shows excessive case drain flow at T1. It cannot build pressure because oil slips back internally rather than being delivered through A and B to the system.',failWeight:{cause:'SP-750 main pump worn, excessive internal leakage',likelihood:'high'}},
@@ -288,24 +611,24 @@ const CHECKS={
       {id:'c16',title:'Inspect port S suction line for air ingestion points',detail:'Check all fittings and joints on the suction pipe running to SP-750 port S above oil level. A loose fitting draws air without any visible external leak. Look for foam or aeration in the reservoir.',failWeight:{cause:'Air ingestion on SP-750 port S suction line',likelihood:'medium'}},
     ]},
     {group:'SP-750 Boost Pump and Charge Circuit',items:[
-      {id:'c17',title:'Check E1/E2 external charge filter for blockage',detail:'Your installation routes charge oil from the integrated boost pump externally through the E1 port, through the charge filter, and back in through E2 before it reaches the main pump inlet. A blocked charge filter element at E1/E2 will cause exactly the same symptoms as a blocked suction strainer - low charge pressure and main pump starvation. Inspect and replace the E1/E2 charge filter element.',failWeight:{cause:'E1/E2 external charge filter blocked, starving main pump inlet',likelihood:'high'}},
+      {id:'c17',title:'Check E1/E2 external charge filter for blockage',detail:'Your installation routes charge oil from the integrated boost pump externally through the E1 port, through the charge filter, and back in through E2 before it reaches the main pump inlet. A blocked charge filter element at E1/E2 will cause exactly the same symptoms as a blocked suction strainer. Inspect and replace the E1/E2 charge filter element.',failWeight:{cause:'E1/E2 external charge filter blocked, starving main pump inlet',likelihood:'high'}},
       {id:'c18',title:'Inspect internal boost pump charge relief valve',detail:'The internal charge relief valve inside the SP-750 may be stuck open or set too low. If boost pump flow is bypassing through a failed charge relief valve the charge pressure collapses regardless of boost pump condition.',failWeight:{cause:'SP-750 internal charge relief valve stuck open or set too low',likelihood:'medium'}},
     ]},
   ],
   s18:[
     {group:'Immediate Checks - Booster Pressure HIGH',items:[
       {id:'c68',title:'Check charge relief valve for heat and correct operation',detail:'The charge relief valve on the booster outlet is the primary pressure-limiting device for the charge circuit. If it is stuck closed or set too high booster pressure will climb above 1.8 MPa. A correctly functioning relief valve will be warm when passing bypass flow. A cold valve body at elevated pressure means it is not opening at all.',failWeight:{cause:'Charge relief valve stuck closed or set too high',likelihood:'high'}},
-      {id:'c69',title:'Check charge line between booster outlet and main pump inlet for restriction',detail:'High booster pressure can result from a restriction in the charge line itself - a partially closed isolation valve or a blocked check valve. The booster is pumping against a blockage, forcing pressure up. Check all valves and fittings in this line.',failWeight:{cause:'Restriction in charge line between booster and main pump inlet',likelihood:'high'}},
+      {id:'c69',title:'Check charge line between booster outlet and main pump inlet for restriction',detail:'High booster pressure can result from a restriction in the charge line itself - a partially closed isolation valve or a blocked check valve. The booster is pumping against a blockage forcing pressure up. Check all valves and fittings in this line.',failWeight:{cause:'Restriction in charge line between booster and main pump inlet',likelihood:'high'}},
       {id:'c70',title:'Verify charge relief valve setting after any recent maintenance',detail:'If the charge relief valve has been adjusted or replaced recently confirm the setting is correct at 1.8 MPa. An over-adjusted or incorrectly specified replacement valve is a common post-maintenance cause of high charge pressure.',failWeight:{cause:'Charge relief valve incorrectly set after maintenance',likelihood:'medium'}},
     ]},
     {group:'Main Pump Protection',items:[
       {id:'c71',title:'Check main pump shaft seal area for weeping or leakage',detail:'The main pump inlet shaft seal is designed for charge pressure only. If booster pressure has been running high for a period inspect the pump shaft seal area for oil weeping or leakage. Early seal distress indicates the inlet has been over-pressurised.',failWeight:{cause:'Main pump inlet shaft seal distressed by overpressure',likelihood:'medium'}},
-      {id:'c72',title:'Monitor main pump case drain pressure',detail:'Elevated booster pressure feeding the main pump inlet raises case pressure inside the main pump. Check drain pressure at the pump case drain port. If it is above 2 bar the elevated charge pressure is transmitting into the case and threatening the shaft seal.',failWeight:{cause:'Elevated case pressure in main pump due to high charge pressure',likelihood:'medium'}},
+      {id:'c72',title:'Monitor main pump case drain pressure at T1',detail:'Elevated booster pressure feeding the main pump inlet raises case pressure inside the main pump. Check drain pressure at the T1 port on the SP-750. If it is above 2 bar the elevated charge pressure is transmitting into the case and threatening the shaft seal.',failWeight:{cause:'Elevated case pressure in main pump due to high charge pressure',likelihood:'medium'}},
     ]},
   ],
   s4:[
     {group:'Suction Side - Primary Suspect',items:[
-      {id:'c19',title:'Inspect SP-750 port S suction strainer - check vacuum at MS port',detail:'Both pumps fluctuating together strongly indicates suction starvation at SP-750 port S. Connect a vacuum gauge to the MS Minimess port on the SP-750 to confirm. Remove and inspect the strainer element on the S port line. Note what is on it - sludge, metal particles, and rubber fragments each point to different underlying problems.',failWeight:{cause:'Suction strainer blocked on SP-750 port S, high vacuum at MS',likelihood:'high'}},
+      {id:'c19',title:'Inspect SP-750 port S suction strainer - check vacuum at MS port',detail:'Both pumps fluctuating together strongly indicates suction starvation at SP-750 port S. Connect a vacuum gauge to the MS Minimess port on the SP-750 to confirm. Remove and inspect the strainer element on the S port line.',failWeight:{cause:'Suction strainer blocked on SP-750 port S, high vacuum at MS',likelihood:'high'}},
       {id:'c20',title:'Check reservoir oil level',detail:'Confirm oil level is adequate on the sight glass. If near or below minimum the SP-750 integrated boost pump intermittently pulls air through port S causing pressure fluctuation in both the boost and main pump simultaneously.',failWeight:{cause:'Low oil level causing intermittent air draw at SP-750 port S',likelihood:'high'}},
       {id:'c21',title:'Check for aerated or foaming oil in the reservoir',detail:'Observe the oil surface. Foam or persistent bubbles confirm air has entered the suction circuit at port S. Milky oil indicates water contamination which requires an oil change.',failWeight:{cause:'Air ingestion causing oil aeration at SP-750 port S',likelihood:'high'}},
     ]},
@@ -331,7 +654,7 @@ const CHECKS={
   ],
   s7:[
     {group:'Case Pressure Checks',items:[
-      {id:'c29',title:'Check drain line for restriction or backpressure',detail:'The drain line must return freely to tank. Measure pressure at the drain port on the affected motor. More than 2 bar indicates restriction. Check for kinked hoses, closed valves, or a drain line shared with the main return circuit.',failWeight:{cause:'Case drain restriction causing elevated case pressure and seal failure',likelihood:'high'}},
+      {id:'c29',title:'Check drain line for restriction or backpressure',detail:'The drain line must return freely to tank. Measure pressure at the drain port on the affected CA 100 motor. More than 2 bar indicates restriction. Check for kinked hoses, closed valves, or a drain line shared with the main return circuit.',failWeight:{cause:'Case drain restriction causing elevated case pressure and seal failure',likelihood:'high'}},
       {id:'c30',title:'Verify flushing pressure at F4',detail:'Confirm the flushing tap-off is sourced from the charge pressure line (1.8 MPa) and not accidentally connected to the high-pressure supply. Excessive flushing pressure over-pressurises the case.',failWeight:{cause:'Flushing pressure too high, overpressurising motor case',likelihood:'medium'}},
       {id:'c31',title:'Inspect drain line routing back to tank',detail:'Confirm the drain line returns to tank independently and is not shared with the main return circuit. Backpressure spikes in the return line raise case pressure directly.',failWeight:{cause:'Drain line shared with return circuit, causing backpressure',likelihood:'medium'}},
     ]},
@@ -341,9 +664,9 @@ const CHECKS={
   ],
   s8:[
     {group:'SP-750 Flushing Circuit',items:[
-      {id:'c33b',title:'Check SP-750 K1 flushing port line for blockage or restriction',detail:'Your installation uses port K1 as the flushing outlet from the closed circuit loop. Hot oil from the A/B loop exits through K1 and goes through the heat exchanger back to the reservoir. If the K1 line is kinked, blocked, or has a closed valve in it the closed loop has no way to reject heat and will overheat progressively. Confirm the K1 line is free-flowing and warm to the touch when the system is running.',failWeight:{cause:'SP-750 K1 flushing port blocked, closed loop cannot reject heat',likelihood:'high'}},
+      {id:'c33b',title:'Check SP-750 K1 flushing port line for blockage or restriction',detail:'Your installation uses port K1 as the flushing outlet from the closed circuit loop. Hot oil from the A/B loop exits through K1 and goes through the heat exchanger back to the reservoir. If the K1 line is kinked, blocked, or has a closed valve in it the closed loop has no way to reject heat. Confirm the K1 line is free-flowing and warm to the touch when the system is running.',failWeight:{cause:'SP-750 K1 flushing port blocked, closed loop cannot reject heat',likelihood:'high'}},
       {id:'c33',title:'Confirm cooler drive fan is running',detail:'Visually confirm the cooler drive fan on the Rexroth A10V071 circuit is operating. Even with K1 flowing freely if the fan is not running the heat exchanger is not effective and oil temperature will rise continuously.',failWeight:{cause:'Cooler drive fan not running',likelihood:'high'}},
-      {id:'c34',title:'Inspect heat exchanger for fouling or blockage',detail:'Check the cooler core for dust, process material, or scale buildup. A fouled core cannot transfer heat adequately even with full K1 flushing flow passing through it. Clean or replace as necessary.',failWeight:{cause:'Heat exchanger fouled or blocked',likelihood:'high'}},
+      {id:'c34',title:'Inspect heat exchanger for fouling or blockage',detail:'Check the cooler core for dust, process material, or scale buildup. A fouled core cannot transfer heat adequately even with full K1 flushing flow passing through it.',failWeight:{cause:'Heat exchanger fouled or blocked',likelihood:'high'}},
       {id:'c35',title:'Check thermostat setpoint and operation',detail:'Verify the cooling thermostat is functioning and set correctly. A failed thermostat may not signal the cooler fan to activate when oil temperature rises.',failWeight:{cause:'Thermostat failed or set incorrectly',likelihood:'medium'}},
       {id:'c36',title:'Check flushing connections on all four CA 100 drives',detail:'Confirm F4 flushing lines are connected and flowing on all four CA 100 motors. A disconnected flushing line causes heat to build inside the motor case adding to the overall system heat load returned through K1.',failWeight:{cause:'CA 100 flushing lines disconnected on one or more drives',likelihood:'medium'}},
     ]},
@@ -353,10 +676,10 @@ const CHECKS={
   ],
   s9:[
     {group:'Noise Diagnosis',items:[
-      {id:'c38',title:'Check booster pressure gauge immediately',detail:'Pump noise is the primary sign of cavitation. If booster pressure is low the main pump is being starved at its inlet. Urgent - cavitation causes rapid internal erosion of pistons and valve plate.',failWeight:{cause:'Main pump cavitating due to low charge pressure',likelihood:'high'}},
-      {id:'c39',title:'Check for aerated oil in the reservoir',detail:'Foam in the reservoir or a gargling sound at the pump confirms air is entering the suction circuit. Locate and seal the air ingestion point on the suction line.',failWeight:{cause:'Air ingestion causing pump aeration and noise',likelihood:'high'}},
-      {id:'c40',title:'Check for a reversed drive creating sustained overload on the pump',detail:'A drive rotating in reverse fights the drum and forces the other three drives to work against it. This sustained overload causes the pump to labour noisily and pressure to spike repeatedly. Observe each tyre bank rotation direction from a safe position and confirm all four are turning the same way.',failWeight:{cause:'Reversed drive overloading pump, causing noise and pressure spikes',likelihood:'high'}},
-      {id:'c41',title:'Check booster pump coupling integrity',detail:'A partially failed coupling can cause intermittent drive and knocking noise. Inspect the coupling for wear, cracking, or missing elements.',failWeight:{cause:'Pump coupling damaged or failing',likelihood:'medium'}},
+      {id:'c38',title:'Check booster pressure gauge immediately - measure at MS port',detail:'Pump noise is the primary sign of cavitation. Connect a gauge to the MS port on the SP-750 to confirm suction pressure. If booster pressure is low the main pump is being starved at its inlet. Urgent - cavitation causes rapid internal erosion of pistons and valve plate.',failWeight:{cause:'SP-750 main pump cavitating due to low charge pressure',likelihood:'high'}},
+      {id:'c39',title:'Check for aerated oil in the reservoir',detail:'Foam in the reservoir or a gargling sound at the pump confirms air is entering the suction circuit at port S. Locate and seal the air ingestion point on the S port suction line.',failWeight:{cause:'Air ingestion causing pump aeration and noise',likelihood:'high'}},
+      {id:'c40',title:'Check for a reversed drive creating sustained overload on the pump',detail:'A drive rotating in reverse fights the drum and forces the other three drives to work against it. This sustained overload causes the SP-750 to labour noisily and pressure to spike repeatedly. Observe each tyre bank rotation direction from a safe position and confirm all four are turning the same way.',failWeight:{cause:'Reversed drive overloading SP-750 pump, causing noise and pressure spikes',likelihood:'high'}},
+      {id:'c41',title:'Check SP-750 drive shaft coupling integrity',detail:'A partially failed coupling between the electric motor and the SP-750 can cause intermittent drive and knocking noise. Inspect the coupling for wear, cracking, or missing elements.',failWeight:{cause:'SP-750 drive shaft coupling damaged or failing',likelihood:'medium'}},
     ]},
   ],
   s10:[
@@ -391,17 +714,26 @@ const CHECKS={
   s19:[
     {group:'Reverse Rotation - Confirm the Fault',items:[
       {id:'c73',title:'Observe all four tyre bank rotation directions from a safe distance',detail:'From a safe observation point with the system running watch each of the four tyre banks and confirm their direction of rotation. Three banks should be turning the same way. The reversed drive tyre bank will be visibly turning in the opposite direction dragging against the drum. Do not approach rotating equipment.',failWeight:{cause:'One drive confirmed rotating in reverse, opposing drum rotation',likelihood:'high'}},
-      {id:'c74',title:'Check system pressure - expect it to be significantly elevated',detail:'A reversed drive creates a sustained mechanical conflict. The three correct drives are fighting the reversed drive through the drum. System pressure will be significantly above the normal 15 MPa operating level as the pump works to maintain flow against this abnormal load.',failWeight:{cause:'Pressure spike caused by reversed drive opposing drum torque',likelihood:'high'}},
-      {id:'c75',title:'Check vibration sensor on the suspected reversed drive',detail:'The reversed drive motor is experiencing abnormal radial and axial forces as it is pushed against by the drum and the other drives. Its vibration sensor reading will typically be elevated. Compare all four drive sensors and identify which one is anomalous.',failWeight:{cause:'Reversed drive generating abnormal vibration signature',likelihood:'medium'}},
+      {id:'c74',title:'Check system pressure - expect it to be significantly elevated',detail:'A reversed drive creates a sustained mechanical conflict. The three correct drives are fighting the reversed drive through the drum. System pressure will be significantly above the normal 15 MPa operating level.',failWeight:{cause:'Pressure spike caused by reversed drive opposing drum torque',likelihood:'high'}},
+      {id:'c75',title:'Check vibration sensor on the suspected reversed drive',detail:'The reversed drive motor is experiencing abnormal radial and axial forces as it is pushed against by the drum and the other drives. Its vibration sensor reading will typically be elevated. Compare all four drive sensors.',failWeight:{cause:'Reversed drive generating abnormal vibration signature',likelihood:'medium'}},
     ]},
     {group:'Identify the Root Cause of Reversal',items:[
-      {id:'c76',title:'Check A and B port hose connections on the suspected drive',detail:'The most common cause of a reversed drive is the A and B port hoses being swapped at the motor either incorrectly at initial installation or reconnected in reverse after maintenance. With the system shut down and isolated identify the A and B ports on the reversed motor and confirm the hoses match the orientation of the other three drives.',failWeight:{cause:'A and B port hoses swapped on that motor',likelihood:'high'}},
+      {id:'c76',title:'Check A and B port hose connections on the suspected drive',detail:'The most common cause of a reversed drive is the A and B port hoses being swapped at the motor either incorrectly at initial installation or reconnected in reverse after maintenance. With the system shut down and isolated identify the A and B ports and confirm the hoses match the orientation of the other three drives.',failWeight:{cause:'A and B port hoses swapped on that motor',likelihood:'high'}},
       {id:'c77',title:'Check the directional control valve for that drive',detail:'A directional control valve that has failed in the wrong position or has been manually shifted and not returned will reverse the flow direction to the motor. Check the valve position and its electrical or hydraulic signal for the affected drive circuit.',failWeight:{cause:'Directional control valve failed or incorrectly positioned',likelihood:'high'}},
       {id:'c78',title:'Review any recent maintenance activity on that drive circuit',detail:'Reverse rotation after maintenance is almost always a reconnection error. Review the maintenance log for the affected drive. Any work involving disconnection of hydraulic hoses, replacement of control valves, or motor removal on that circuit in recent weeks is the likely cause.',failWeight:{cause:'Incorrect reconnection following recent maintenance',likelihood:'high'}},
     ]},
     {group:'Remediation',items:[
       {id:'c79',title:'Shut down the system before attempting any correction',detail:'Do not attempt to correct hose connections or valve positions while the system is running or pressurised. Shut down, depressurise, and isolate the full hydraulic system before working on any connections.',failWeight:{cause:'System must be shut down before any corrective action on reversed drive',likelihood:'high'}},
       {id:'c80',title:'After correction verify rotation direction before reloading the drum',detail:'After correcting the hose connection or valve position run the drive briefly and confirm the tyre bank is now rotating in the correct direction matching the other three drives before returning to normal drum operation.',failWeight:{cause:'Rotation direction must be confirmed after correction before resuming operation',likelihood:'medium'}},
+    ]},
+  ],
+  s25:[
+    {group:'SP-750 XAB Control Signal - Confirm the Fault',items:[
+      {id:'cx13',title:'Confirm drum speed is not responding to control commands',detail:'Verify that changes to the speed setpoint or control signal are genuinely not producing any response at the drum. Confirm the control system is sending a signal - check the controller output reading. If the controller shows it is commanding a change but the drum does not respond the fault is between the controller output and the SP-750 swashplate.',failWeight:{cause:'SP-750 not responding to control commands - swashplate fault',likelihood:'high'}},
+      {id:'cx14',title:'Check pilot pressure signal at XAB port on SP-750',detail:'The XAB port on the SP-750 receives the electrohydraulic pilot pressure signal that controls swashplate angle and therefore pump displacement. Connect a gauge to the XAB port and confirm that a control signal pressure change is actually arriving at the pump when a speed command is issued.',failWeight:{cause:'No pilot pressure change at SP-750 XAB port when commanded',likelihood:'high'}},
+      {id:'cx15',title:'Check electrohydraulic EP control valve on the SP-750',detail:'The EP control valve converts the electrical control signal into the hydraulic pilot pressure at XAB. If the EP valve solenoid has failed, is incorrectly wired, or its control orifice is blocked the pilot pressure signal will not change even if the electrical command is correct. Check solenoid for electrical continuity and inspect the EP valve for contamination.',failWeight:{cause:'SP-750 EP electrohydraulic control valve failed or contaminated',likelihood:'high'}},
+      {id:'cx16',title:'Check SP-750 swashplate mechanism for mechanical seizure',detail:'If XAB pilot pressure is confirmed changing correctly but the pump displacement still does not respond the swashplate mechanism itself may be seized internally. This is an internal SP-750 fault requiring the pump to be removed and serviced.',failWeight:{cause:'SP-750 swashplate mechanism seized internally',likelihood:'medium'}},
+      {id:'cx17',title:'Check SP-750 is not in pressure compensator override mode',detail:'The SP-750 has an internal pressure compensator that overrides displacement control when system pressure reaches the compensator setpoint. If the compensator is set too low it may be permanently overriding the speed control signal. Check system pressure at MAB and compare against the compensator setpoint.',failWeight:{cause:'SP-750 pressure compensator overriding XAB displacement control',likelihood:'medium'}},
     ]},
   ],
   s14:[
@@ -422,89 +754,79 @@ const CHECKS={
     {group:'Emergency Checks',items:[
       {id:'c61',title:'Confirm powerpack is running and pressure has built',detail:'Check that both pumps are operational and system pressure is at 15 MPa. A drum that will not start may simply have no hydraulic supply. Check all alarms and confirm the powerpack has not tripped.',failWeight:{cause:'Powerpack not supplying pressure to drives',likelihood:'high'}},
       {id:'c62',title:'Check whether a drive may be rotating in reverse - observe visually',detail:'A reversed drive directly opposing drum rotation is capable of preventing the drum from starting at all. Observe each tyre bank from a safe distance when the system is started. If one bank is turning opposite to the others it is fighting the drum and preventing rotation.',failWeight:{cause:'Reversed drive preventing drum from rotating',likelihood:'high'}},
-      {id:'c63',title:'Check whether tyres are turning but drum is not moving',detail:'If all tyre banks appear to be rotating but the drum itself is stationary the fault is loss of grip between the tyre surface and the riding ring, not a hydraulic or drive fault. Select the symptom "Tyres rotating but drum not moving" for the specific checklist for this failure mode.',failWeight:{cause:'Loss of grip between tyre and drum riding ring',likelihood:'high'}},
+      {id:'c63',title:'Check whether tyres are turning but drum is not moving',detail:'If all tyre banks appear to be rotating but the drum itself is stationary the fault is loss of grip between the tyre surface and the riding ring, not a hydraulic or drive fault. Select the symptom Tyres rotating but drum not moving for the specific checklist for this failure mode.',failWeight:{cause:'Loss of grip between tyre and drum riding ring',likelihood:'high'}},
       {id:'c64b',title:'Check for a seized shaft - observe visually and check vibration sensors',detail:'Do NOT attempt to manually rotate any tyre shaft. The drum weighs over 20 tons and the shafts cannot be turned by hand with the drum sitting on them. Observe visually whether any shaft bank is stationary while others rotate and check each drive vibration sensor for an abnormal reading indicating a locked shaft.',failWeight:{cause:'Tyre shaft or bearing seized, preventing drum rotation',likelihood:'high'}},
       {id:'c64c',title:'Check for process material or foreign object obstructing the drum',detail:'Inspect around the drum shell and riding rings for accumulated process material, a dislodged component, or any foreign object that is physically blocking rotation.',failWeight:{cause:'Drum mechanically blocked by process material or foreign object',likelihood:'medium'}},
     ]},
   ],
   s20:[
     {group:'Confirm the Fault Mode',items:[
-      {id:'c81',title:'Confirm hydraulic system is running normally',detail:'Verify that booster pressure is at 1.8 MPa, main pump pressure is at 15 MPa, and all four drives are running. If hydraulic pressure is low the fault is hydraulic not a grip failure. This checklist applies only when pressure and drive rotation are confirmed normal.',failWeight:{cause:'Hydraulic fault incorrectly identified as grip failure',likelihood:'medium'}},
-      {id:'c82',title:'Confirm all four tyre banks are visibly rotating',detail:'From a safe observation position confirm each of the four tyre banks is turning. If any bank is stationary the fault is a seized shaft or failed drive, not tyre-to-drum grip loss. All four banks must be rotating for this to be a grip failure diagnosis.',failWeight:{cause:'One or more tyre banks not rotating - not a grip failure',likelihood:'high'}},
+      {id:'c81',title:'Confirm hydraulic system is running normally',detail:'Verify that booster pressure is at 1.8 MPa, main pump pressure is at 15 MPa, and all four drives are running. If hydraulic pressure is low the fault is hydraulic not a grip failure.',failWeight:{cause:'Hydraulic fault incorrectly identified as grip failure',likelihood:'medium'}},
+      {id:'c82',title:'Confirm all four tyre banks are visibly rotating',detail:'From a safe observation position confirm each of the four tyre banks is turning. If any bank is stationary the fault is a seized shaft or failed drive, not tyre-to-drum grip loss.',failWeight:{cause:'One or more tyre banks not rotating - not a grip failure',likelihood:'high'}},
       {id:'c83',title:'Observe the drum shell directly for any rotation',detail:'Watch a fixed reference point on the drum shell (a bolt, weld seam, or marking) over several seconds. If the reference point does not move while the tyres are clearly turning the drum has lost grip on the tyre banks completely.',failWeight:{cause:'Drum confirmed stationary while tyres rotate - complete grip loss',likelihood:'high'}},
     ]},
     {group:'Riding Ring Surface',items:[
-      {id:'c84',title:'Inspect riding ring surface for contamination',detail:'With the system stopped, inspect the riding ring contact band for oil, grease, process slurry, or water contamination. Any lubricating contamination on the contact surface dramatically reduces friction between tyre and ring. Identify and eliminate the contamination source before restarting.',failWeight:{cause:'Riding ring surface contaminated with oil, grease, or slurry',likelihood:'high'}},
-      {id:'c85',title:'Inspect riding ring surface for glazing or polishing',detail:'Over time the riding ring contact surface can become highly polished and smooth through continuous tyre contact. A glazed riding ring surface has a significantly lower coefficient of friction than a properly textured one. Look for a mirror-like sheen on the contact band as opposed to a dull or slightly rough surface.',failWeight:{cause:'Riding ring surface glazed and polished, reduced friction',likelihood:'high'}},
-      {id:'c86',title:'Check riding ring for severe wear, grooving, or out-of-round condition',detail:'A heavily worn riding ring may have developed circumferential grooves or an out-of-round profile. Grooves can trap lubricating contamination and reduce contact area. Out-of-round causes intermittent loss of contact between tyre and ring.',failWeight:{cause:'Riding ring severely worn, grooved, or out of round',likelihood:'medium'}},
+      {id:'c84',title:'Inspect riding ring surface for contamination',detail:'With the system stopped inspect the riding ring contact band for oil, grease, process slurry, or water contamination. Any lubricating contamination on the contact surface dramatically reduces friction between tyre and ring.',failWeight:{cause:'Riding ring surface contaminated with oil, grease, or slurry',likelihood:'high'}},
+      {id:'c85',title:'Inspect riding ring surface for glazing or polishing',detail:'Over time the riding ring contact surface can become highly polished and smooth through continuous tyre contact. A glazed riding ring surface has a significantly lower coefficient of friction. Look for a mirror-like sheen on the contact band.',failWeight:{cause:'Riding ring surface glazed and polished, reduced friction',likelihood:'high'}},
+      {id:'c86',title:'Check riding ring for severe wear, grooving, or out-of-round condition',detail:'A heavily worn riding ring may have developed circumferential grooves or an out-of-round profile. Grooves can trap lubricating contamination and reduce contact area.',failWeight:{cause:'Riding ring severely worn, grooved, or out of round',likelihood:'medium'}},
     ]},
     {group:'Tyre Condition',items:[
       {id:'c87',title:'Inspect tyre surfaces for glazing across all banks',detail:'Examine the tyre rubber surface on each bank. A glazed tyre surface is smooth and shiny rather than the normal slightly rough compound surface. Glazed tyres have permanently reduced grip and cannot be restored by cleaning. Replacement is required.',failWeight:{cause:'Tyre surfaces glazed, permanent grip reduction requiring replacement',likelihood:'high'}},
-      {id:'c88',title:'Check tyre condition for cracking, chunking, or severe wear',detail:'Inspect each tyre for rubber cracking, surface chunks missing, or tread worn flat. Damaged rubber reduces the effective contact area between tyre and riding ring and reduces the available friction force.',failWeight:{cause:'Tyre rubber damaged or severely worn, insufficient contact area',likelihood:'medium'}},
+      {id:'c88',title:'Check tyre condition for cracking, chunking, or severe wear',detail:'Inspect each tyre for rubber cracking, surface chunks missing, or tread worn flat. Damaged rubber reduces the effective contact area between tyre and riding ring.',failWeight:{cause:'Tyre rubber damaged or severely worn, insufficient contact area',likelihood:'medium'}},
       {id:'c89',title:'Check for water or liquid contamination on tyre surfaces',detail:'Even if no active water source is present residual moisture on the tyre surface from a previous water ingress event can cause grip loss. Check for wet or damp tyre surfaces and trace any moisture source.',failWeight:{cause:'Residual water on tyre surface causing grip loss',likelihood:'medium'}},
     ]},
     {group:'Load Assessment',items:[
-      {id:'c90',title:'Check drum process load against normal operating range',detail:'An overloaded drum requires more friction force than the tyre banks can generate at the current contact pressure. If the drum has been filled beyond its normal operating load the available tyre-to-ring friction may be insufficient to rotate it. Check feed rate and drum fill level.',failWeight:{cause:'Drum overloaded, friction force insufficient to rotate drum',likelihood:'medium'}},
+      {id:'c90',title:'Check drum process load against normal operating range',detail:'An overloaded drum requires more friction force than the tyre banks can generate at the current contact pressure. If the drum has been filled beyond its normal operating load the available tyre-to-ring friction may be insufficient. Check feed rate and drum fill level.',failWeight:{cause:'Drum overloaded, friction force insufficient to rotate drum',likelihood:'medium'}},
     ]},
   ],
   s21:[
     {group:'Confirm Axial Drift and Assess Severity',items:[
-      {id:'c91',title:'Measure drum axial position against a fixed reference',detail:'CRITICAL SAFETY CHECK. Mark a fixed reference on the drum shell and measure its position relative to a fixed structural point. Confirm the drum is actually migrating axially and not simply rocking. Measure drift rate if possible - slow creep is different from rapid migration. If the drum is close to riding off the tyre banks consider an emergency shutdown.',failWeight:{cause:'Drum confirmed migrating axially - risk of riding off tyre banks',likelihood:'high'}},
-      {id:'c92',title:'Check whether drift is toward one end consistently',detail:'Note which direction the drum is drifting. Consistent drift in one direction points to a sustained axial force - typically from tyre bank misalignment creating a herringbone effect pushing the drum in one direction, or a failed thrust roller on the opposite end that can no longer resist the drift.',failWeight:{cause:'Sustained directional axial force causing consistent drum drift',likelihood:'high'}},
+      {id:'c91',title:'Measure drum axial position against a fixed reference',detail:'CRITICAL SAFETY CHECK. Mark a fixed reference on the drum shell and measure its position relative to a fixed structural point. Confirm the drum is actually migrating axially and not simply rocking. Measure drift rate if possible. If the drum is close to riding off the tyre banks consider an emergency shutdown.',failWeight:{cause:'Drum confirmed migrating axially - risk of riding off tyre banks',likelihood:'high'}},
+      {id:'c92',title:'Check whether drift is toward one end consistently',detail:'Note which direction the drum is drifting. Consistent drift in one direction points to a sustained axial force from tyre bank misalignment or a failed thrust roller on the opposite end that can no longer resist the drift.',failWeight:{cause:'Sustained directional axial force causing consistent drum drift',likelihood:'high'}},
     ]},
     {group:'Thrust Roller Inspection',items:[
       {id:'c93',title:'Inspect all thrust rollers for presence and physical condition',detail:'Locate all thrust rollers on your drum installation. These are the guide rollers positioned at the ends of the drum riding rings to prevent axial migration. Check that all thrust rollers are physically present - a missing thrust roller leaves no restraint on one side of the drum.',failWeight:{cause:'One or more thrust rollers missing',likelihood:'high'}},
-      {id:'c94',title:'Check thrust rollers for seizure or collapsed bearing',detail:'A thrust roller whose bearing has seized will no longer rotate freely. Instead of guiding the drum it will be dragged against the riding ring face, grinding and eventually failing to provide any restraint. Check each thrust roller for free rotation by hand with the system stopped and isolated. A seized roller will not turn or will turn with significant resistance.',failWeight:{cause:'Thrust roller bearing seized or collapsed',likelihood:'high'}},
-      {id:'c95',title:'Check thrust roller mounting and bracket integrity',detail:'Inspect the structural mounting of each thrust roller. Cracked or broken mounting brackets, missing fasteners, or a collapsed mounting pedestal will allow the thrust roller to move out of position and lose contact with the drum riding ring face even if the roller itself is intact.',failWeight:{cause:'Thrust roller mounting bracket cracked or failed',likelihood:'high'}},
-      {id:'c96',title:'Check thrust roller contact with riding ring face',detail:'Confirm each thrust roller is making proper contact with the axial face of the drum riding ring. A roller that has shifted in its mounting may no longer be in contact with the riding ring at all, providing no axial restraint. Check clearance between roller and riding ring face.',failWeight:{cause:'Thrust roller out of position, not contacting riding ring face',likelihood:'medium'}},
+      {id:'c94',title:'Check thrust rollers for seizure or collapsed bearing',detail:'A thrust roller whose bearing has seized will no longer rotate freely. Check each thrust roller for free rotation by hand with the system stopped and isolated. A seized roller will not turn or will turn with significant resistance.',failWeight:{cause:'Thrust roller bearing seized or collapsed',likelihood:'high'}},
+      {id:'c95',title:'Check thrust roller mounting and bracket integrity',detail:'Inspect the structural mounting of each thrust roller. Cracked or broken mounting brackets, missing fasteners, or a collapsed mounting pedestal will allow the thrust roller to move out of position and lose contact with the drum riding ring face.',failWeight:{cause:'Thrust roller mounting bracket cracked or failed',likelihood:'high'}},
+      {id:'c96',title:'Check thrust roller contact with riding ring face',detail:'Confirm each thrust roller is making proper contact with the axial face of the drum riding ring. A roller that has shifted in its mounting may no longer be in contact with the riding ring at all providing no axial restraint.',failWeight:{cause:'Thrust roller out of position, not contacting riding ring face',likelihood:'medium'}},
     ]},
     {group:'Tyre Bank Alignment',items:[
-      {id:'c97',title:'Check tyre bank alignment across all four shafts',detail:'Misaligned tyre banks create a resultant axial force on the drum known as a herringbone or skew effect. If the tyre banks are not parallel to each other and perpendicular to the drum axis they will continuously push the drum in one axial direction. This is a common cause of persistent drift even when thrust rollers are intact.',failWeight:{cause:'Tyre bank misalignment creating axial herringbone force on drum',likelihood:'high'}},
+      {id:'c97',title:'Check tyre bank alignment across all four shafts',detail:'Misaligned tyre banks create a resultant axial force on the drum known as a herringbone or skew effect. If the tyre banks are not parallel to each other and perpendicular to the drum axis they will continuously push the drum in one axial direction.',failWeight:{cause:'Tyre bank misalignment creating axial herringbone force on drum',likelihood:'high'}},
       {id:'c98',title:'Check individual tyre positions on each shaft',detail:'Confirm that tyres on each shaft are correctly spaced and positioned to contact the drum riding rings symmetrically. A tyre shifted along its shaft changes the effective contact angle and can contribute to axial force generation.',failWeight:{cause:'Individual tyre mispositioned on shaft, contributing to axial force',likelihood:'medium'}},
     ]},
     {group:'Drum and Riding Ring Condition',items:[
-      {id:'c99',title:'Inspect riding ring profile for uneven wear creating axial bias',detail:'A riding ring that has worn unevenly - thicker on one side than the other - creates a tapered profile that acts like a wedge pushing the drum axially toward the thinner side. Inspect the riding ring cross-section profile for taper or uneven wear.',failWeight:{cause:'Riding ring worn unevenly, creating taper and axial bias',likelihood:'medium'}},
-      {id:'c100',title:'Check drum shell for any permanent deformation or asymmetric loading',detail:'In rare cases a drum that has suffered impact damage or has significant material buildup on one side can develop an asymmetric mass distribution that generates an axial component as the drum rotates. Check the drum shell for visible deformation and inspect for internal buildup if accessible.',failWeight:{cause:'Drum asymmetric loading or deformation contributing to axial drift',likelihood:'low'}},
+      {id:'c99',title:'Inspect riding ring profile for uneven wear creating axial bias',detail:'A riding ring that has worn unevenly - thicker on one side than the other - creates a tapered profile that acts like a wedge pushing the drum axially toward the thinner side.',failWeight:{cause:'Riding ring worn unevenly, creating taper and axial bias',likelihood:'medium'}},
     ]},
   ],
   s22:[
     {group:'SP-750 K1 Flushing Port - Confirm the Fault',items:[
       {id:'cx1',title:'Confirm system is overheating with no other obvious cause',detail:'Before attributing overheating to K1 first confirm the cooler fan is running, the heat exchanger is clean, and oil condition is acceptable. K1 blockage is the diagnosis when all other heat rejection causes have been eliminated and the closed loop continues to rise in temperature.',failWeight:{cause:'Other cooling system fault incorrectly attributed to K1',likelihood:'medium'}},
-      {id:'cx2',title:'Check K1 line is warm and flowing during operation',detail:'With the system running carefully feel the K1 flushing line at the SP-750 port. It should be noticeably warm as it carries hot oil from the closed loop to the heat exchanger. A K1 line that is cold or at ambient temperature while the system is hot indicates no flow is passing through it. The line is blocked, kinked, or has a closed valve.',failWeight:{cause:'K1 flushing line cold - no flushing flow exiting closed loop',likelihood:'high'}},
-      {id:'cx3',title:'Trace the K1 line for kinks, closed valves, or blockages',detail:'Follow the K1 line from the SP-750 port all the way to the heat exchanger inlet. Check for kinks in flexible sections, a valve left closed after maintenance, accumulated sludge in a low point, or a collapsed flexible hose. The flushing flow is relatively low pressure so even a small restriction can significantly reduce or stop flow.',failWeight:{cause:'K1 line kinked, valved off, or blocked between SP-750 and heat exchanger',likelihood:'high'}},
+      {id:'cx2',title:'Check K1 line is warm and flowing during operation',detail:'With the system running carefully feel the K1 flushing line at the SP-750 port. It should be noticeably warm as it carries hot oil from the closed loop to the heat exchanger. A K1 line that is cold or at ambient temperature while the system is hot indicates no flow is passing through it.',failWeight:{cause:'K1 flushing line cold - no flushing flow exiting closed loop',likelihood:'high'}},
+      {id:'cx3',title:'Trace the K1 line for kinks, closed valves, or blockages',detail:'Follow the K1 line from the SP-750 port all the way to the heat exchanger inlet. Check for kinks in flexible sections, a valve left closed after maintenance, accumulated sludge in a low point, or a collapsed flexible hose.',failWeight:{cause:'K1 line kinked, valved off, or blocked between SP-750 and heat exchanger',likelihood:'high'}},
       {id:'cx4',title:'Check flushing shuttle valve inside SP-750 is not stuck',detail:'The internal flushing shuttle valve inside the SP-750 selects whichever of A or B is the low-pressure return side and routes flushing flow from there to K1. If this shuttle valve is stuck it may not be passing flow to K1 even with a clear line. This is an internal fault requiring the SP-750 to be serviced.',failWeight:{cause:'SP-750 internal flushing shuttle valve stuck, no flow to K1',likelihood:'medium'}},
     ]},
   ],
   s23:[
     {group:'SP-750 E1/E2 Charge Filter - Diagnosis',items:[
-      {id:'cx5',title:'Measure charge pressure - check vacuum at MS port on SP-750',detail:'Connect a gauge to the MS Minimess port on the SP-750 to read suction vacuum at the integrated boost pump inlet. Also measure charge pressure at the outlet side. A dropping or fluctuating charge pressure with normal suction vacuum at MS points directly to a restriction between the boost pump outlet and the main pump inlet - which in your installation is the E1/E2 external charge filter.',failWeight:{cause:'Charge pressure dropping due to E1/E2 filter restriction',likelihood:'high'}},
-      {id:'cx6',title:'Check differential pressure across the E1/E2 charge filter',detail:'If your E1/E2 charge filter housing has pressure tapping points, measure the pressure difference across it. A high differential pressure across the filter confirms it is blocked and restricting charge flow to the main pump inlet. Even without tapping points you can feel the E1 side (inlet to filter) should be warmer and at higher pressure than the E2 side (outlet from filter).',failWeight:{cause:'High differential pressure across E1/E2 charge filter confirming blockage',likelihood:'high'}},
+      {id:'cx5',title:'Measure charge pressure - check vacuum at MS port on SP-750',detail:'Connect a gauge to the MS Minimess port on the SP-750 to read suction vacuum at the integrated boost pump inlet. A dropping or fluctuating charge pressure with normal suction vacuum at MS points directly to a restriction between the boost pump outlet and the main pump inlet - which in your installation is the E1/E2 external charge filter.',failWeight:{cause:'Charge pressure dropping due to E1/E2 filter restriction',likelihood:'high'}},
+      {id:'cx6',title:'Check differential pressure across the E1/E2 charge filter',detail:'If your E1/E2 charge filter housing has pressure tapping points measure the pressure difference across it. A high differential pressure across the filter confirms it is blocked and restricting charge flow to the main pump inlet.',failWeight:{cause:'High differential pressure across E1/E2 charge filter confirming blockage',likelihood:'high'}},
       {id:'cx7',title:'Replace the E1/E2 charge filter element',detail:'Shut down the system safely. Replace the charge filter element between E1 and E2. Inspect the removed element for metal particles, rubber fragments, or sludge. Any contamination found must be traced to its source. Restart and confirm charge pressure returns to stable 1.8 MPa.',failWeight:{cause:'E1/E2 charge filter element blinded, requiring replacement',likelihood:'high'}},
       {id:'cx8',title:'Check E1 and E2 port connections and filter housing seals',detail:'After filter replacement confirm both E1 and E2 port connections are tight and leak-free. A loose connection on E2 (the return side into the main pump inlet) allows charge oil to bypass and drop charge pressure even with a clean element.',failWeight:{cause:'E1/E2 filter housing connection loose, bypassing charge oil',likelihood:'medium'}},
     ]},
   ],
   s24:[
     {group:'SP-750 K4 Accumulator - Confirm Loss of Charge',items:[
-      {id:'cx9',title:'Observe pressure behaviour during drum start and load changes',detail:'A correctly charged K4 accumulator smooths out pressure transients during drum starting, stopping, and sudden load changes on the drum. If you are seeing sharp pressure spikes on the system gauge at these moments that were not present before the accumulator is the likely cause. The spikes will be sudden and brief rather than a sustained pressure rise.',failWeight:{cause:'K4 accumulator discharged, no pressure transient absorption',likelihood:'high'}},
-      {id:'cx10',title:'Check accumulator pre-charge pressure at MK4 measuring port',detail:'Connect a gauge to the MK4 Minimess port on the SP-750 which monitors the K4 accumulator circuit. With the system shut down and depressurised the MK4 reading should show the accumulator gas pre-charge pressure. If MK4 reads zero with the system de-energised the accumulator has lost its nitrogen pre-charge completely. Do not confuse hydraulic pressure with gas pre-charge - always measure with system depressurised.',failWeight:{cause:'K4 accumulator gas pre-charge completely lost',likelihood:'high'}},
-      {id:'cx11',title:'Check accumulator bladder or diaphragm integrity',detail:'An accumulator that has lost its gas charge may have a ruptured bladder or diaphragm allowing hydraulic oil into the gas side. This is confirmed if oil comes out of the gas valve when you check the pre-charge. A ruptured bladder means the accumulator requires replacement - it cannot be field-repaired.',failWeight:{cause:'K4 accumulator bladder or diaphragm ruptured',likelihood:'medium'}},
-      {id:'cx12',title:'Re-charge K4 accumulator with dry nitrogen if bladder is intact',detail:'If the bladder is confirmed intact and the gas pre-charge has simply leaked down over time the accumulator can be re-charged with dry nitrogen to the specified pre-charge pressure. Never use compressed air or oxygen to charge a hydraulic accumulator. Confirm the correct pre-charge pressure from the SP-750 documentation before charging.',failWeight:{cause:'K4 accumulator requires nitrogen re-charge',likelihood:'medium'}},
-    ]},
-  ],
-  s25:[
-    {group:'SP-750 XAB Control Signal - Confirm the Fault',items:[
-      {id:'cx13',title:'Confirm drum speed is not responding to control commands',detail:'Verify that changes to the speed setpoint or control signal are genuinely not producing any response at the drum. Confirm the control system is sending a signal - check the controller output reading. If the controller shows it is commanding a change but the drum does not respond the fault is between the controller output and the SP-750 swashplate.',failWeight:{cause:'SP-750 not responding to control commands - swashplate fault',likelihood:'high'}},
-      {id:'cx14',title:'Check pilot pressure signal at XAB port on SP-750',detail:'The XAB port on the SP-750 receives the electrohydraulic pilot pressure signal that controls swashplate angle and therefore pump displacement. Connect a gauge to the XAB port and confirm that a control signal pressure change is actually arriving at the pump when a speed command is issued. If XAB pressure does not change when the controller commands it the fault is in the control signal supply to XAB, not in the pump itself.',failWeight:{cause:'No pilot pressure change at SP-750 XAB port when commanded',likelihood:'high'}},
-      {id:'cx15',title:'Check electrohydraulic EP control valve on the SP-750',detail:'The EP control valve converts the electrical control signal into the hydraulic pilot pressure at XAB. If the EP valve solenoid has failed, is incorrectly wired, or its control orifice is blocked the pilot pressure signal will not change even if the electrical command is correct. Check solenoid for electrical continuity and inspect the EP valve for contamination.',failWeight:{cause:'SP-750 EP electrohydraulic control valve failed or contaminated',likelihood:'high'}},
-      {id:'cx16',title:'Check SP-750 swashplate mechanism for mechanical seizure',detail:'If XAB pilot pressure is confirmed changing correctly but the pump displacement still does not respond the swashplate mechanism itself may be seized internally. This is an internal SP-750 fault requiring the pump to be removed and serviced. Symptoms include correct control signals with no flow change and no speed response at the drum regardless of command.',failWeight:{cause:'SP-750 swashplate mechanism seized internally',likelihood:'medium'}},
-      {id:'cx17',title:'Check SP-750 is not in pressure compensator override mode',detail:'The SP-750 has an internal pressure compensator that overrides displacement control when system pressure reaches the compensator setpoint, reducing pump output to prevent overpressure. If the compensator is set too low it may be permanently overriding the speed control signal. Check system pressure at MAB and compare against the compensator setpoint.',failWeight:{cause:'SP-750 pressure compensator overriding XAB displacement control',likelihood:'medium'}},
+      {id:'cx9',title:'Observe pressure behaviour during drum start and load changes',detail:'A correctly charged K4 accumulator smooths out pressure transients during drum starting, stopping, and sudden load changes. If you are seeing sharp pressure spikes on the system gauge at these moments that were not present before the accumulator is the likely cause.',failWeight:{cause:'K4 accumulator discharged, no pressure transient absorption',likelihood:'high'}},
+      {id:'cx10',title:'Check accumulator pre-charge pressure at MK4 measuring port',detail:'Connect a gauge to the MK4 Minimess port on the SP-750. With the system shut down and depressurised the MK4 reading should show the accumulator gas pre-charge pressure. If MK4 reads zero with the system de-energised the accumulator has lost its nitrogen pre-charge completely.',failWeight:{cause:'K4 accumulator gas pre-charge completely lost',likelihood:'high'}},
+      {id:'cx11',title:'Check accumulator bladder or diaphragm integrity',detail:'An accumulator that has lost its gas charge may have a ruptured bladder allowing hydraulic oil into the gas side. This is confirmed if oil comes out of the gas valve when you check the pre-charge. A ruptured bladder means the accumulator requires replacement.',failWeight:{cause:'K4 accumulator bladder or diaphragm ruptured',likelihood:'medium'}},
+      {id:'cx12',title:'Re-charge K4 accumulator with dry nitrogen if bladder is intact',detail:'If the bladder is confirmed intact and the gas pre-charge has simply leaked down over time the accumulator can be re-charged with dry nitrogen to the specified pre-charge pressure. Never use compressed air or oxygen to charge a hydraulic accumulator.',failWeight:{cause:'K4 accumulator requires nitrogen re-charge',likelihood:'medium'}},
     ]},
   ],
   s17:[
     {group:'Water Ingress - Immediate Checks',items:[
       {id:'c65',title:'Identify and confirm the water source',detail:'Locate where water is coming from. Common sources include a leaking spray bar or nozzle inside the drum, a damaged drum shell seal allowing process water out, condensation dripping from overhead structures, or an external pipe failure above the tyre banks.',failWeight:{cause:'Active water source wetting tyre contact surfaces',likelihood:'high'}},
       {id:'c66',title:'Observe tyre-to-drum contact during operation from a safe distance',detail:'Watch the contact band between the wet tyres and the riding rings. Visible slipping, squealing, or inability to maintain drum speed under load confirms traction loss from water on the contact surfaces.',failWeight:{cause:'Tyre slip on riding ring due to water on contact surfaces',likelihood:'high'}},
-      {id:'c67',title:'Check system pressure for drop or instability during slip events',detail:'When a tyre bank slips that drive suddenly loses its mechanical load and the motor overspeeds momentarily. This may show as a brief pressure drop or fluctuation on the system gauge. A correlation between observed slip and a pressure event confirms tyre slip as the primary cause.',failWeight:{cause:'Drive overspeeding during tyre slip, causing pressure instability',likelihood:'medium'}},
+      {id:'c67',title:'Check system pressure for drop or instability during slip events',detail:'When a tyre bank slips that drive suddenly loses its mechanical load and the motor overspeeds momentarily. A correlation between observed slip and a pressure event confirms tyre slip as the primary cause.',failWeight:{cause:'Drive overspeeding during tyre slip, causing pressure instability',likelihood:'medium'}},
     ]},
     {group:'Remediation Steps',items:[
       {id:'c65b',title:'Isolate or redirect the water source if safe to do so',detail:'If the water source can be safely isolated or redirected away from the tyre banks without stopping the process do so immediately. Even reducing water flow onto the contact surfaces will partially restore traction.',failWeight:{cause:'Ongoing water contamination preventing traction recovery',likelihood:'high'}},
@@ -518,20 +840,33 @@ const CHECKS={
 let selectedSymptoms=[],checkResults={},currentFilter='all';
 let sessions=[];try{sessions=JSON.parse(localStorage.getItem('diagnostix-sessions')||'[]');}catch(e){sessions=[];}
 
-// ── RENDER ──
+// ── RENDER SYMPTOMS ──
 function renderSymptoms(){
   const grid=document.getElementById('symptom-grid');grid.innerHTML='';
   SYMPTOMS.filter(s=>currentFilter==='all'||s.cat===currentFilter).forEach(s=>{
     const sel=selectedSymptoms.includes(s.id);
-    grid.innerHTML+=`<div class="symptom-card cat-${s.cat}${sel?' selected':''}" onclick="toggleSymptom('${s.id}')"><div class="symptom-icon">${s.icon}</div><div class="symptom-info"><div class="symptom-title">${s.title}</div><div class="symptom-desc">${s.desc}</div></div><div class="symptom-check"><div class="symptom-check-inner"></div></div></div>`;
+    grid.innerHTML+=`<div class="symptom-card cat-${s.cat}${sel?' selected':''}" onclick="toggleSymptom('${s.id}')">
+      <div class="symptom-icon">${s.icon}</div>
+      <div class="symptom-info">
+        <div class="symptom-title">${s.title}</div>
+        <div class="symptom-desc">${s.desc}</div>
+      </div>
+      <div class="symptom-sel"></div>
+    </div>`;
   });
 }
-function filterSymptoms(cat,el){currentFilter=cat;document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');renderSymptoms();}
+function filterSymptoms(cat,el){
+  currentFilter=cat;
+  document.querySelectorAll('.ftab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  renderSymptoms();
+}
 function toggleSymptom(id){
   const idx=selectedSymptoms.indexOf(id);
   if(idx>=0)selectedSymptoms.splice(idx,1);else selectedSymptoms.push(id);
   const badge=document.getElementById('selected-count');
-  if(selectedSymptoms.length>0){badge.style.display='inline-flex';badge.textContent=selectedSymptoms.length;}else{badge.style.display='none';}
+  if(selectedSymptoms.length>0){badge.style.display='inline-flex';badge.textContent=selectedSymptoms.length;}
+  else{badge.style.display='none';}
   document.getElementById('start-btn').disabled=selectedSymptoms.length===0;
   renderSymptoms();
 }
@@ -539,12 +874,39 @@ function toggleSymptom(id){
 // ── CHECKLIST ──
 function startDiagnosis(){checkResults={};buildChecklist();showPage('checklist');}
 function buildChecklist(){
-  document.getElementById('symptom-tags').innerHTML=selectedSymptoms.map(id=>{const s=SYMPTOMS.find(x=>x.id===id);return`<span class="symptom-tag">${s.title}</span>`;}).join('');
+  document.getElementById('symptom-tags').innerHTML=selectedSymptoms.map(id=>{
+    const s=SYMPTOMS.find(x=>x.id===id);
+    return`<span class="symptom-tag">${s.title}</span>`;
+  }).join('');
   const container=document.getElementById('checklist-content');container.innerHTML='';
   const allGroups={};
-  selectedSymptoms.forEach(sid=>{(CHECKS[sid]||[]).forEach(group=>{if(!allGroups[group.group])allGroups[group.group]=[];group.items.forEach(item=>{if(!allGroups[group.group].find(x=>x.id===item.id))allGroups[group.group].push(item);});});});
+  selectedSymptoms.forEach(sid=>{
+    (CHECKS[sid]||[]).forEach(group=>{
+      if(!allGroups[group.group])allGroups[group.group]=[];
+      group.items.forEach(item=>{
+        if(!allGroups[group.group].find(x=>x.id===item.id))allGroups[group.group].push(item);
+      });
+    });
+  });
   Object.entries(allGroups).forEach(([gName,items],gi)=>{
-    container.innerHTML+=`<div class="checklist-group"><div class="checklist-group-title">${gName}</div>${items.map((item,i)=>`<div class="check-item" id="ci-${item.id}"><div class="check-item-header"><div class="check-step">S${gi+1}.${i+1}</div><div class="check-text"><div class="check-title">${item.title}</div><div class="check-detail">${item.detail}</div></div></div><div class="check-actions"><button class="check-btn pass-btn" onclick="setCheck('${item.id}','pass')">Pass</button><button class="check-btn fail-btn" onclick="setCheck('${item.id}','fail')">Fail</button><button class="check-btn na-btn" onclick="setCheck('${item.id}','na')">N/A</button></div></div>`).join('')}</div>`;
+    container.innerHTML+=`<div class="checklist-group">
+      <div class="checklist-group-title">${gName}</div>
+      ${items.map((item,i)=>`
+        <div class="check-item" id="ci-${item.id}">
+          <div class="check-item-header">
+            <div class="check-step">S${gi+1}.${i+1}</div>
+            <div class="check-text">
+              <div class="check-title">${item.title}</div>
+              <div class="check-detail">${item.detail}</div>
+            </div>
+          </div>
+          <div class="check-actions">
+            <button class="check-btn pass-btn" onclick="setCheck('${item.id}','pass')">Pass</button>
+            <button class="check-btn fail-btn" onclick="setCheck('${item.id}','fail')">Fail</button>
+            <button class="check-btn na-btn" onclick="setCheck('${item.id}','na')">N/A</button>
+          </div>
+        </div>`).join('')}
+    </div>`;
   });
   updateCheckProgress();
 }
@@ -561,18 +923,32 @@ function updateCheckProgress(){
   const answered=Object.keys(checkResults).length;
   const pct=total>0?Math.round((answered/total)*100):0;
   document.getElementById('check-progress-fill').style.width=pct+'%';
-  document.getElementById('check-progress-label').textContent=answered+'/'+total;
+  const lbl=answered+' / '+total+' checked';
+  document.getElementById('check-progress-label').textContent=lbl;
+  document.getElementById('check-progress-label2').textContent=answered+' / '+total;
 }
 
 // ── DIAGNOSIS ENGINE ──
 function generateDiagnosis(){
   const causes={};const failedItems=[];
-  selectedSymptoms.forEach(sid=>{(CHECKS[sid]||[]).forEach(group=>{group.items.forEach(item=>{if(checkResults[item.id]==='fail'&&item.failWeight){const key=item.failWeight.cause;if(!causes[key])causes[key]={cause:key,likelihood:item.failWeight.likelihood,count:0,items:[],score:0};causes[key].count++;causes[key].items.push(item.title);causes[key].score+=item.failWeight.likelihood==='high'?3:item.failWeight.likelihood==='medium'?2:1;failedItems.push(item.title);}});});});
+  selectedSymptoms.forEach(sid=>{
+    (CHECKS[sid]||[]).forEach(group=>{
+      group.items.forEach(item=>{
+        if(checkResults[item.id]==='fail'&&item.failWeight){
+          const key=item.failWeight.cause;
+          if(!causes[key])causes[key]={cause:key,likelihood:item.failWeight.likelihood,count:0,items:[],score:0};
+          causes[key].count++;causes[key].items.push(item.title);
+          causes[key].score+=item.failWeight.likelihood==='high'?3:item.failWeight.likelihood==='medium'?2:1;
+          failedItems.push(item.title);
+        }
+      });
+    });
+  });
   const sortedCauses=Object.values(causes).sort((a,b)=>b.score-a.score);
   let urgency='normal';
   if(sortedCauses.some(c=>c.likelihood==='high'))urgency='urgent';
   if(selectedSymptoms.some(s=>['s3','s9','s16','s18','s19','s20','s21','s22','s23','s24','s25'].includes(s)))urgency='critical';
-  if(failedItems.some(i=>i.toLowerCase().includes('cavitat')||i.toLowerCase().includes('seized')||i.toLowerCase().includes('immediately')||i.toLowerCase().includes('reverse')||i.toLowerCase().includes('axial')||i.toLowerCase().includes('riding off')))urgency='critical';
+  if(failedItems.some(i=>i.toLowerCase().includes('cavitat')||i.toLowerCase().includes('seized')||i.toLowerCase().includes('reverse')||i.toLowerCase().includes('axial')))urgency='critical';
   const primaryCause=sortedCauses.length>0?sortedCauses[0].cause:null;
   const actionMap={
     critical:'Shut down the system as soon as it is safe to do so to prevent further damage or a structural failure event. Assign a qualified technician immediately. Do not restart until the root cause has been identified and corrected.',
@@ -582,27 +958,35 @@ function generateDiagnosis(){
   const techName=document.getElementById('tech-name').value.trim();
   const session={id:Date.now(),date:new Date().toLocaleString(),technician:techName||'Anonymous',symptoms:selectedSymptoms.map(id=>SYMPTOMS.find(s=>s.id===id).title),causes:sortedCauses,urgency,primaryCause,checkedItems:Object.keys(checkResults).length,failedItems};
   sessions.unshift(session);try{localStorage.setItem('diagnostix-sessions',JSON.stringify(sessions));}catch(e){}
+
   const urgencyLabel={normal:'Normal',urgent:'Urgent',critical:'Critical'}[urgency];
   const dot='<span class="urgency-dot"></span>';
   const causesHTML=sortedCauses.length===0
-    ?`<div class="cause-card"><div class="cause-title" style="color:var(--normal)">No failed checks identified</div><div class="cause-reasoning" style="margin-top:6px;">All checks passed or were marked N/A. The fault may be intermittent. Consider re-running the diagnostic during the active fault condition.</div></div>`
-    :sortedCauses.slice(0,5).map(c=>`<div class="cause-card"><div class="cause-card-header"><div class="cause-title">${c.cause}</div><span class="likelihood ${c.likelihood}">${c.likelihood}</span></div><div class="cause-reasoning">Flagged by: ${c.items.join(', ')}.</div></div>`).join('');
+    ?`<div class="cause-card" style="border-left-color:var(--green)"><div class="cause-title" style="color:var(--green);font-family:var(--fd);font-size:14px;letter-spacing:.5px;text-transform:uppercase;">No failed checks identified</div><div class="cause-reasoning" style="margin-top:6px;">All checks passed or were marked N/A. The fault may be intermittent. Consider re-running the diagnostic during the active fault condition.</div></div>`
+    :sortedCauses.slice(0,5).map((c,i)=>`
+      <div class="cause-card" style="border-left-color:${c.likelihood==='high'?'var(--red)':c.likelihood==='medium'?'var(--amber)':'var(--border3)'}">
+        <div class="cause-card-header">
+          <div class="cause-title">#${i+1} &nbsp;${c.cause}</div>
+          <span class="likelihood ${c.likelihood}">${c.likelihood}</span>
+        </div>
+        <div class="cause-reasoning">Flagged by: ${c.items.join(', ')}.</div>
+      </div>`).join('');
+
   document.getElementById('results-content').innerHTML=`
-    <div class="section-label" style="margin-bottom:12px;">Diagnosis result</div>
-    <div class="result-header">
-      <div class="urgency-badge ${urgency}">${dot}${urgencyLabel}</div>
+    <div class="result-hero ${urgency}-theme">
+      <div class="urgency-badge ${urgency}">${dot} ${urgencyLabel} priority</div>
       <div class="result-title">${primaryCause||'No faults confirmed'}</div>
-      <div style="font-size:12px;color:var(--text3);margin-top:6px;">${session.date}${techName?' &middot; '+techName:''}</div>
+      <div class="result-meta">${session.date}${techName?' &nbsp;/&nbsp; '+techName:''}</div>
       <div class="result-action"><strong>Recommended action</strong>${actionMap[urgency]}</div>
     </div>
-    <div class="section-label" style="margin-bottom:12px;">Probable causes ranked by likelihood</div>
+    <div class="slabel" style="margin-bottom:12px;">Probable causes</div>
     ${causesHTML}
     <div class="divider"></div>
-    <div class="section-label" style="margin-bottom:12px;">Session summary</div>
-    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px;box-shadow:var(--shadow);">
-      <div style="display:flex;justify-content:space-between;margin-bottom:8px;"><span style="font-size:12px;color:var(--text3);">Symptoms selected</span><span style="font-size:12px;font-weight:600;">${selectedSymptoms.length}</span></div>
-      <div style="display:flex;justify-content:space-between;margin-bottom:8px;"><span style="font-size:12px;color:var(--text3);">Checks completed</span><span style="font-size:12px;font-weight:600;">${session.checkedItems}</span></div>
-      <div style="display:flex;justify-content:space-between;"><span style="font-size:12px;color:var(--text3);">Failed checks</span><span style="font-size:12px;font-weight:600;color:${failedItems.length>0?'var(--critical)':'var(--normal)'};">${failedItems.length}</span></div>
+    <div class="slabel" style="margin-bottom:12px;">Session summary</div>
+    <div class="summary-grid">
+      <div class="summary-cell"><div class="summary-val">${selectedSymptoms.length}</div><div class="summary-key">Symptoms</div></div>
+      <div class="summary-cell"><div class="summary-val">${session.checkedItems}</div><div class="summary-key">Checks done</div></div>
+      <div class="summary-cell"><div class="summary-val" style="color:${failedItems.length>0?'var(--red)':'var(--green)'}">${failedItems.length}</div><div class="summary-key">Failed</div></div>
     </div>`;
   showPage('results');
 }
@@ -611,12 +995,42 @@ function generateDiagnosis(){
 function goToLog(){renderLog();showPage('log');}
 function renderLog(){
   const container=document.getElementById('log-content');
-  if(sessions.length===0){container.innerHTML=`<div class="log-empty"><div class="log-empty-icon">📋</div><div>No sessions recorded yet.</div><div style="font-size:12px;margin-top:6px;">Completed diagnostic sessions will appear here.</div></div>`;return;}
-  container.innerHTML=`<div class="section-label" style="margin-bottom:14px;">${sessions.length} session${sessions.length!==1?'s':''} recorded</div>`+sessions.map(s=>`<div class="log-item"><div class="log-item-header"><span class="log-date">${s.date}</span><span class="urgency-badge ${s.urgency}" style="font-size:10px;padding:3px 8px;">${s.urgency}</span></div><div class="log-tech">${s.technician}</div><div class="log-symptoms">${s.symptoms.join(' / ')}</div><div class="log-diagnosis">${s.primaryCause||'No faults confirmed'}</div></div>`).join('');
+  if(sessions.length===0){
+    container.innerHTML=`<div class="log-empty"><div class="log-empty-icon">📋</div><div style="font-family:var(--fd);font-size:16px;letter-spacing:1px;text-transform:uppercase;">No sessions recorded</div><div style="font-size:12px;margin-top:6px;">Completed diagnostic sessions will appear here.</div></div>`;
+    return;
+  }
+  container.innerHTML=`<div class="slabel" style="margin-bottom:14px;">${sessions.length} session${sessions.length!==1?'s':''} on record</div>`+
+    sessions.map(s=>`
+      <div class="log-item ${s.urgency}-log">
+        <div class="log-item-header">
+          <span class="log-date">${s.date}</span>
+          <span class="urgency-badge ${s.urgency}" style="font-size:9px;padding:2px 8px;">${s.urgency}</span>
+        </div>
+        <div class="log-tech">${s.technician}</div>
+        <div class="log-symptoms">${s.symptoms.join(' / ')}</div>
+        <div class="log-diagnosis">${s.primaryCause||'No faults confirmed'}</div>
+      </div>`).join('');
 }
-function clearLog(){if(confirm('Clear all session records?')){sessions=[];try{localStorage.setItem('diagnostix-sessions','[]');}catch(e){}renderLog();}}
-function showPage(name){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById('page-'+name).classList.add('active');window.scrollTo(0,0);}
-function newSession(){selectedSymptoms=[];checkResults={};document.getElementById('selected-count').style.display='none';document.getElementById('start-btn').disabled=true;renderSymptoms();showPage('welcome');}
+function clearLog(){
+  if(confirm('Clear all session records?')){
+    sessions=[];try{localStorage.setItem('diagnostix-sessions','[]');}catch(e){}renderLog();
+  }
+}
+
+// ── NAVIGATION ──
+function showPage(name){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  window.scrollTo(0,0);
+}
+function newSession(){
+  selectedSymptoms=[];checkResults={};
+  document.getElementById('selected-count').style.display='none';
+  document.getElementById('start-btn').disabled=true;
+  renderSymptoms();showPage('welcome');
+}
+
+// ── INIT ──
 renderSymptoms();
 </script>
 </body>
