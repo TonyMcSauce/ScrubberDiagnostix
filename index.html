@@ -132,6 +132,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-si
     <div class="welcome-hero">
       <h1>Identify.<br><em>Diagnose.</em><br>Resolve.</h1>
       <p>Guided fault diagnosis for the scrubber drum hydraulic drive system. Select observed symptoms to begin.</p>
+      <div style="display:inline-block;margin-top:14px;background:rgba(249,115,22,.10);border:1px solid rgba(249,115,22,.25);color:var(--accent);font-size:12px;font-weight:700;padding:4px 12px;border-radius:20px;letter-spacing:1px;text-transform:uppercase;">v5.0</div>
     </div>
     <div class="tech-input-block">
       <label>Technician name (optional)</label>
@@ -499,6 +500,7 @@ const CHECKS={
       {id:'cx17',title:'Check SP-750 is not in pressure compensator override mode',detail:'The SP-750 has an internal pressure compensator that overrides displacement control when system pressure reaches the compensator setpoint, reducing pump output to prevent overpressure. If the compensator is set too low it may be permanently overriding the speed control signal. Check system pressure at MAB and compare against the compensator setpoint.',failWeight:{cause:'SP-750 pressure compensator overriding XAB displacement control',likelihood:'medium'}},
     ]},
   ],
+  s17:[
     {group:'Water Ingress - Immediate Checks',items:[
       {id:'c65',title:'Identify and confirm the water source',detail:'Locate where water is coming from. Common sources include a leaking spray bar or nozzle inside the drum, a damaged drum shell seal allowing process water out, condensation dripping from overhead structures, or an external pipe failure above the tyre banks.',failWeight:{cause:'Active water source wetting tyre contact surfaces',likelihood:'high'}},
       {id:'c66',title:'Observe tyre-to-drum contact during operation from a safe distance',detail:'Watch the contact band between the wet tyres and the riding rings. Visible slipping, squealing, or inability to maintain drum speed under load confirms traction loss from water on the contact surfaces.',failWeight:{cause:'Tyre slip on riding ring due to water on contact surfaces',likelihood:'high'}},
